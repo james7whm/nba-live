@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/NbaLive.Core/NbaLive.Core.csproj" />
+    <Project Path="src/NbaLive/NbaLive.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/NbaLive.Tests.csproj" />
+  </Folder>
+</Solution>

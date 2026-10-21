@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyName>NbaLive</AssemblyName>
+    <Version>1.0.0</Version>
+    <Product>NBA 直播条</Product>
+    <Title>NBA 直播条</Title>
+    <Description>桌面 NBA 文字直播条</Description>
+    <ApplicationIcon>Assets/Tray.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup><ProjectReference Include="../NbaLive.Core/NbaLive.Core.csproj" /></ItemGroup>
+  <ItemGroup>
+    <Page Remove="Assets/AppIcon.xaml" />
+    <None Include="Assets/AppIcon.xaml" />
+    <None Remove="Assets/Tray.ico" />
+    <None Include="Assets/Tray.ico" Link="Tray.ico" CopyToOutputDirectory="PreserveNewest" />
+    <Resource Include="Assets/Tray.ico" />
+  </ItemGroup>
+  <ItemGroup><RuntimeHostConfigurationOption Include="System.GC.ConserveMemory" Value="6" /></ItemGroup>
+</Project>

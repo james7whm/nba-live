@@ -1,0 +1,27 @@
+<DrawingImage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+  <DrawingImage.Drawing>
+    <DrawingGroup>
+      <GeometryDrawing Brush="#53697F">
+        <GeometryDrawing.Geometry>
+          <RectangleGeometry Rect="0,0,256,256" RadiusX="52" RadiusY="52" />
+        </GeometryDrawing.Geometry>
+      </GeometryDrawing>
+      <GeometryDrawing>
+        <GeometryDrawing.Pen><Pen Brush="#F4F7FA" Thickness="12" /></GeometryDrawing.Pen>
+        <GeometryDrawing.Geometry><EllipseGeometry Center="128,106" RadiusX="58" RadiusY="58" /></GeometryDrawing.Geometry>
+      </GeometryDrawing>
+      <GeometryDrawing Geometry="M 70,106 L 186,106 M 128,48 L 128,164">
+        <GeometryDrawing.Pen><Pen Brush="#F4F7FA" Thickness="8" /></GeometryDrawing.Pen>
+      </GeometryDrawing>
+      <GeometryDrawing Geometry="M 87,65 C 141,85 141,127 87,147 M 169,65 C 115,85 115,127 169,147">
+        <GeometryDrawing.Pen><Pen Brush="#F4F7FA" Thickness="7" /></GeometryDrawing.Pen>
+      </GeometryDrawing>
+      <GeometryDrawing Brush="#F4F7FA">
+        <GeometryDrawing.Geometry><RectangleGeometry Rect="66,188,124,12" RadiusX="6" RadiusY="6" /></GeometryDrawing.Geometry>
+      </GeometryDrawing>
+      <GeometryDrawing Brush="#C4D1DE">
+        <GeometryDrawing.Geometry><RectangleGeometry Rect="66,212,84,12" RadiusX="6" RadiusY="6" /></GeometryDrawing.Geometry>
+      </GeometryDrawing>
+    </DrawingGroup>
+  </DrawingImage.Drawing>
+</DrawingImage>
