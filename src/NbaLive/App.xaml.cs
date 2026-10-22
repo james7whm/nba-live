@@ -9,7 +9,7 @@ public partial class App : Application
     protected override async void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
-        _instance = new SingleInstance(e.Args.Contains("--demo"));
+        _instance = new SingleInstance(e.Args.Contains("--demo") || e.Args.Contains("--preview"));
         if (!_instance.IsFirst)
         {
             if (!await _instance.Signal(e.Args.Contains("--settings")))
@@ -35,9 +35,10 @@ public partial class App : Application
             args.Handled = true;
             _controller?.ReportError("操作失败，请重试；详情已记录到本地 error.log。");
         };
-        _controller = new AppController(e.Args.Contains("--demo"), e.Args.Contains("--demo-opening"), e.Args.Contains("--demo-finished"));
+        _controller = new AppController(e.Args.Contains("--demo"), e.Args.Contains("--demo-opening"), e.Args.Contains("--demo-finished"), e.Args.Contains("--preview"));
         MainWindow = _controller.Overlay;
-        await _controller.Start(e.Args.Contains("--demo-picker"));
+        var previewGameIndex = e.Args.Contains("--preview") ? Array.IndexOf(e.Args, "--game") : -1;
+        await _controller.Start(e.Args.Contains("--demo-picker"), previewGameIndex >= 0 && previewGameIndex + 1 < e.Args.Length ? e.Args[previewGameIndex + 1] : null);
         if (e.Args.Contains("--inspect-overlay")) Native.AllowInspection(_controller.Overlay);
         if (_showPending) _controller.Reveal(_settingsPending);
         if (e.Args.Contains("--settings")) _controller.ShowSettings();

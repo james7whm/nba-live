@@ -5,6 +5,11 @@ namespace NbaLive.Core;
 public sealed record SessionState(LiveSnapshot? Snapshot, IReadOnlyList<LiveEntry> History,
     string Message, bool HasError, bool IsLoading)
 {
+    public TextOrigin Origin { get; init; }
+    public string FeedKey { get; init; } = "structured";
+    public string SourceLabel { get; init; } = "赛况实录";
+    public DateTimeOffset? ScoreFetchedAt { get; init; }
+    public string ScoreMessage { get; init; } = "";
     public GameInfo? SelectedGame { get; init; }
     public DateTimeOffset? LastEventObservedAt { get; init; }
     public int HistoryRevision { get; init; }

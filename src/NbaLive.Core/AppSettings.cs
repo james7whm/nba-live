@@ -19,6 +19,8 @@ public sealed record AppSettings
     public OverlayMode DisplayMode { get; init; } = OverlayMode.TwoEvents;
     public bool ImportantEventsOnly { get; init; }
     public bool FollowedPlayersOnly { get; init; }
+    public TextSourcePreference TextSource { get; init; } = TextSourcePreference.AnchorPreferred;
+    public TextDelivery TextDelivery { get; init; } = TextDelivery.Latest;
     public string FavoriteTeam { get; init; } = "";
     public bool CapsuleEnabled { get; init; }
     public OverlayContent ContentMode { get; init; } = OverlayContent.Text;
@@ -34,6 +36,8 @@ public sealed record AppSettings
         LockHotkey = Hotkey.TryParse(LockHotkey, out _) ? LockHotkey : "Ctrl+Alt+L",
         DisplayMode = Enum.IsDefined(DisplayMode) ? DisplayMode : OverlayMode.TwoEvents,
         ContentMode = Enum.IsDefined(ContentMode) ? ContentMode : OverlayContent.Text,
+        TextSource = Enum.IsDefined(TextSource) ? TextSource : TextSourcePreference.AnchorPreferred,
+        TextDelivery = Enum.IsDefined(TextDelivery) ? TextDelivery : TextDelivery.Latest,
         FollowedPlayers = PlayerFavorites.Normalize(FollowedPlayers),
         StatisticsPreset = Enum.IsDefined(StatisticsPreset) ? StatisticsPreset : StatisticsPreset.Full,
         StatisticsLayouts = StatisticsPresets.Normalize(StatisticsLayouts),

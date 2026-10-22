@@ -242,12 +242,12 @@ internal sealed class HistoryWindow : Window
     }
     internal void Update(SessionState state, bool demo)
     {
-        var gameId = state.SelectedGame?.Id ?? state.Snapshot?.Game.Id;
+        var gameId = (state.SelectedGame?.Id ?? state.Snapshot?.Game.Id) + "|" + state.FeedKey;
         _game = state.Snapshot?.Game ?? state.SelectedGame;
         if (gameId != _gameId || (state.IsLoading && state.Snapshot is null))
         { _entries.Clear(); _rows.Clear(); _shownHistory = null; _gameId = gameId; _scroll?.ScrollToTop(); }
         _heading.Text = state.Snapshot?.Game.Score ?? "本次会话历史";
-        _detail.Text = $"{(demo ? "演示数据 · " : "")}由早到晚 · {state.History.Count} 条 · 阅读位置保持不变";
+        _detail.Text = $"{(demo ? "演示数据 · " : "")}{state.SourceLabel} · 由早到晚 · {state.History.Count} 条\n{SessionStatus.Describe(state, DateTimeOffset.UtcNow)} · 阅读位置保持不变";
         if (ReferenceEquals(_shownHistory, state.History)) return;
         _shownHistory = state.History;
         var offset = _scroll?.VerticalOffset ?? 0;
@@ -313,12 +313,20 @@ internal sealed class SettingsWindow : Window
     private readonly TextBox _favorite;
     private readonly CheckBox _capsule;
     private readonly ComboBox _content;
+    private readonly ComboBox _source, _delivery;
     internal SettingsWindow(AppSettings settings, string error, string transport, Func<AppSettings, string?> apply)
     {
         Ui.Initialize(this, "设置 · NBA 直播条", 520, 730);
         var root = new StackPanel { Margin = new(28, 22, 28, 22) };
         root.Children.Add(Ui.Text("让直播安静地待在角落", 20));
         root.Children.Add(Ui.Text("浅灰便签 · 文字始终清晰 · 不播放声音", 12));
+        root.Children.Add(Ui.Text("文字来源", 12));
+        _source = new ComboBox { ItemsSource = new[] { "优先主播解说（无主播时自动回退）", "赛况实录" }, SelectedIndex = (int)settings.TextSource, Margin = new(0, 0, 0, 12), Padding = new(8, 6, 8, 6) };
+        root.Children.Add(_source);
+        root.Children.Add(Ui.Text("文字展示", 12));
+        _delivery = new ComboBox { ItemsSource = new[] { "实时最新 · 直接显示最近动态", "完整补播 · 每页停留 4 秒" }, SelectedIndex = (int)settings.TextDelivery, Margin = new(0, 0, 0, 12), Padding = new(8, 6, 8, 6) };
+        root.Children.Add(_delivery);
+        root.Children.Add(Ui.Text("主播保留全部原文，重要事件与球员筛选仅作用于赛况实录；统计与走势图使用独立赛况快照。主播实况对照验证待完成。", 11));
         _capsule = new CheckBox { Content = "胶囊模式：280×30，悬停展开", IsChecked = settings.CapsuleEnabled, Margin = new(0, 0, 0, 12) };
         root.Children.Add(_capsule);
         root.Children.Add(Ui.Text("展开内容", 12));
@@ -354,7 +362,8 @@ internal sealed class SettingsWindow : Window
                 BackgroundOpacity = _opacity.Value / 100, HideHotkey = _hide.Text.Trim(), LockHotkey = _clickThrough.Text.Trim(),
                 DisplayMode = (OverlayMode)_mode.SelectedIndex, ImportantEventsOnly = _importantOnly.IsChecked == true,
                 FollowedPlayersOnly = _followedOnly.IsChecked == true, FavoriteTeam = _favorite.Text.Trim() };
-            candidate = candidate with { CapsuleEnabled = _capsule.IsChecked == true, ContentMode = (OverlayContent)_content.SelectedIndex };
+            candidate = candidate with { CapsuleEnabled = _capsule.IsChecked == true, ContentMode = (OverlayContent)_content.SelectedIndex,
+                TextSource = (TextSourcePreference)_source.SelectedIndex, TextDelivery = (TextDelivery)_delivery.SelectedIndex };
             var result = apply(candidate);
             if (result is null) Close(); else _error.Text = result;
         }));

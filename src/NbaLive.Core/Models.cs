@@ -6,6 +6,9 @@ using System.Text.RegularExpressions;
 namespace NbaLive.Core;
 
 public enum GameStatus { Scheduled, Live, Finished, Cancelled, Unknown }
+public enum TextOrigin { Structured, Anchor }
+public enum TextSourcePreference { AnchorPreferred, Structured }
+public enum TextDelivery { Latest, Paged }
 
 public sealed record GameInfo(string Id, string Away, string Home, int? AwayScore,
     int? HomeScore, GameStatus Status, string Progress, DateOnly Date)
@@ -17,6 +20,9 @@ public sealed record GameInfo(string Id, string Away, string Home, int? AwayScor
 public sealed record LiveEntry(string? SourceId, int Period, string Clock, string Team,
     string Text, string Score, long Order)
 {
+    public TextOrigin Origin { get; init; }
+    public string Author { get; init; } = "";
+    public DateTimeOffset? PublishedAt { get; init; }
     public string Key => !string.IsNullOrWhiteSpace(SourceId) ? SourceId :
         Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes($"{Period}|{Clock}|{Normalize(Text)}")));
     public string PeriodLabel => Period switch { 0 => "", <= 4 => $"第{Period}节", _ => $"加时{Period - 4}" };

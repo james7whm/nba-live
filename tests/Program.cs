@@ -54,6 +54,59 @@ if (args.Contains("--observe"))
     return;
 }
 
+if (args.Contains("--observe-anchor"))
+{
+    var gameIndex = Array.IndexOf(args, "--game"); var secondsIndex = Array.IndexOf(args, "--seconds");
+    if (gameIndex < 0) throw new ArgumentException("--observe-anchor --game ID [--seconds 1800]");
+    var seconds = secondsIndex < 0 ? 1800 : int.Parse(args[secondsIndex + 1]);
+    using var transport = new WebGameSource(); var adapter = new AnchorSource(transport);
+    var game = (await transport.GetGames(MatchTime.Today, default)).Single(g => g.Id == args[gameIndex + 1]);
+    var match = await adapter.Resolve(game, default);
+    if (match is null || (await adapter.GetMatch(match, default)).Game.Status != GameStatus.Live || await adapter.GetRoom(match, default) is null)
+    { Console.WriteLine("NOT_VERIFIED: a currently live match with an anchor is required."); Environment.ExitCode = 2; return; }
+    using var session = new AnchorSession(adapter); var initial = -1;
+    session.Changed += () =>
+    {
+        var state = session.State;
+        if (initial < 0 && state.Snapshot is not null) initial = state.History.Count;
+        Console.WriteLine(JsonSerializer.Serialize(new { now = DateTimeOffset.UtcNow, state.SourceLabel, state.Message, state.HasError,
+            state.IsLoading, state.Snapshot?.Game, state.ScoreFetchedAt, Count = state.History.Count, state.LastBatchSize, Last = state.History.LastOrDefault() }));
+    };
+    await session.Select(game);
+    try { await Task.Delay(TimeSpan.FromSeconds(seconds)); }
+    finally { await session.StopAsync(); }
+    Console.WriteLine(JsonSerializer.Serialize(new { observationSeconds = seconds, initialCount = initial, finalCount = session.State.History.Count,
+        hasNewEvents = initial >= 0 && session.State.History.Count > initial, manualAppComparisonRequired = true }));
+    return;
+}
+
+if (args.Contains("--probe-anchor"))
+{
+    var gameIndex = Array.IndexOf(args, "--game");
+    var dateIndex = Array.IndexOf(args, "--date");
+    if (gameIndex < 0) throw new ArgumentException("--probe-anchor --game ID [--date yyyy-MM-dd]");
+    var date = dateIndex < 0 ? MatchTime.Today : DateOnly.Parse(args[dateIndex + 1], System.Globalization.CultureInfo.InvariantCulture);
+    using var source = new WebGameSource();
+    using var deadline = new CancellationTokenSource(TimeSpan.FromMinutes(3));
+    var game = (await source.GetGames(date, deadline.Token)).Single(g => g.Id == args[gameIndex + 1]);
+    var adapter = new AnchorSource(source);
+    var mapped = await adapter.Resolve(game, deadline.Token);
+    Console.WriteLine(JsonSerializer.Serialize(new { Mapping = mapped, source.Transport }));
+    using var session = new AnchorSession(adapter);
+    session.Changed += () => Console.WriteLine(JsonSerializer.Serialize(new { session.HasRoom, session.Availability,
+        session.State.SourceLabel, session.State.Message, session.State.HasError, session.State.IsLoading,
+        session.State.Snapshot?.Game, Count = session.State.History.Count, session.ScoreFetchedAt }));
+    await session.Select(game);
+    try { await session.Completion.WaitAsync(deadline.Token); }
+    finally { await session.StopAsync(); }
+    var history = session.State.History;
+    Console.WriteLine(JsonSerializer.Serialize(new { Count = history.Count, Unique = history.DistinctBy(e => e.Key).Count(),
+        First = history.FirstOrDefault(), Last = history.LastOrDefault(),
+        ScreenshotMatches = new[] { "比赛开始！！", "刚在隔壁结束！！", "东契奇击地给无球空切篮下的凯斯勒！", "失误了！！" }.All(text => history.Any(e => e.Text == text)),
+        LiveAcceptance = "PENDING: archived messages only; 30-minute live comparison required" }));
+    return;
+}
+
 var tests = new (string Name, Func<Task> Run)[]
 {
     ("Real schedule: correct teams, ids, scores and finished status", () => Sync(() =>
@@ -289,7 +342,7 @@ var tests = new (string Name, Func<Task> Run)[]
         }
         finally { Directory.Delete(dir, true); }
     }))
-}.Concat(StatisticsTests.Cases).Concat(CompanionTests.Cases).Concat(JerseyTests.Cases).Concat(LiveCompanionTests.Cases).Concat(CollectionTests.Cases).Concat(ScoringTests.Cases).Concat(DeliveryTests.Cases).Concat(ScheduleProgressTests.Cases).ToArray();
+}.Concat(StatisticsTests.Cases).Concat(CompanionTests.Cases).Concat(JerseyTests.Cases).Concat(LiveCompanionTests.Cases).Concat(CollectionTests.Cases).Concat(ScoringTests.Cases).Concat(DeliveryTests.Cases).Concat(ScheduleProgressTests.Cases).Concat(AnchorTests.Cases).ToArray();
 var failures = 0;
 foreach (var test in tests)
 {

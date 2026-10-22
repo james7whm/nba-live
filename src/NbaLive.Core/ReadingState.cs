@@ -35,7 +35,7 @@ public sealed class ReadingState
 
     public SessionState Accept(SessionState state)
     {
-        var id = state.SelectedGame?.Id ?? state.Snapshot?.Game.Id;
+        var id = (state.SelectedGame?.Id ?? state.Snapshot?.Game.Id) + "|" + state.FeedKey;
         var firstSnapshot = Visible?.Snapshot is null && state.Snapshot is not null;
         var changedGame = id != _gameId;
         _gameId = id;
@@ -97,6 +97,10 @@ public static class GameOrdering
 public static class SessionStatus
 {
     public static string Describe(SessionState state, DateTimeOffset now)
+        => (state.SelectedGame is null && state.Snapshot is null ? "" : state.SourceLabel + " · ") + DescribeConnection(state, now) +
+            (state.ScoreMessage.Length > 0 ? " · " + state.ScoreMessage : "") +
+            (state.ScoreFetchedAt is { } score ? $" · 比分 {MatchTime.Format(score)}{(state.Snapshot?.Game.Status == GameStatus.Live && now - score > TimeSpan.FromSeconds(15) ? "（较旧）" : "")}" : "");
+    private static string DescribeConnection(SessionState state, DateTimeOffset now)
     {
         if (state.HasError)
             return state.Snapshot is null ? state.Message : $"{state.Message} · 上次连通 {MatchTime.Format(state.Snapshot.FetchedAt)}";

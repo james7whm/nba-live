@@ -1,7 +1,9 @@
-param([switch]$SkipTests, [string]$Version = '1.0.0')
+param([switch]$SkipTests, [string]$Version = '1.0.0', [string]$ArtifactSuffix = '')
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path -Parent $PSScriptRoot
 if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw 'Version must be a numeric major.minor.patch value.' }
+if ($ArtifactSuffix -notmatch '^[a-z0-9-]*$') { throw 'ArtifactSuffix must use lowercase letters, numbers and hyphens.' }
+$taskPackage = "NbaLive-$Version" + $(if ($ArtifactSuffix) { "-$ArtifactSuffix" } else { '' }) + '-win-x64'
 $taskDotnet = Join-Path $taskRoot '.tools\dotnet\dotnet.exe'
 if (-not (Test-Path -LiteralPath $taskDotnet)) { $taskDotnet = (Get-Command dotnet -ErrorAction Stop).Source }
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
@@ -11,7 +13,7 @@ try {
         & $taskDotnet run --project tests -c Release
         if ($LASTEXITCODE -ne 0) { throw 'Tests failed.' }
     }
-    $taskOutput = Join-Path $taskRoot ("artifacts\NbaLive-$Version-win-x64")
+    $taskOutput = Join-Path $taskRoot ("artifacts\$taskPackage")
     if (Test-Path -LiteralPath $taskOutput) {
         $taskResolvedOutput = (Resolve-Path -LiteralPath $taskOutput).Path
         $taskArtifactsRoot = [IO.Path]::GetFullPath((Join-Path $taskRoot 'artifacts')) + [IO.Path]::DirectorySeparatorChar
@@ -31,7 +33,7 @@ try {
     $taskDotnetRoot = Split-Path -Parent $taskDotnet
     Copy-Item -LiteralPath (Join-Path $taskDotnetRoot 'LICENSE.txt') -Destination (Join-Path $taskOutput 'DOTNET-LICENSE.txt')
     Copy-Item -LiteralPath (Join-Path $taskDotnetRoot 'ThirdPartyNotices.txt') -Destination (Join-Path $taskOutput 'DOTNET-ThirdPartyNotices.txt')
-    $taskZip = Join-Path $taskRoot ("artifacts\NbaLive-$Version-win-x64.zip")
+    $taskZip = Join-Path $taskRoot ("artifacts\$taskPackage.zip")
     Compress-Archive -LiteralPath $taskOutput -DestinationPath $taskZip -Force
     $taskHash = Get-FileHash -LiteralPath $taskZip -Algorithm SHA256
     ('{0}  {1}' -f $taskHash.Hash.ToLowerInvariant(), [IO.Path]::GetFileName($taskZip)) | Set-Content -LiteralPath ($taskZip + '.sha256') -Encoding ascii

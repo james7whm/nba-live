@@ -82,9 +82,9 @@ internal sealed class RecapWindow : Window
         }, DispatcherPriority.Loaded);
     }
     internal void SetUnread(int count) => _new.Content = $"查看新增 ({count})";
-    internal void ResetGame()
+    internal void ResetGame(bool sourceChanged = false)
     {
-        _shown = null; _entries.ItemsSource = null; _heading.Text = "比赛已切换";
-        _summary.Text = "旧场次回顾已清空，请点击查看新增。"; _highlights.Text = ""; _status.Text = "";
+        _shown = null; _entries.ItemsSource = null; _heading.Text = sourceChanged ? "文字来源已切换" : "比赛已切换";
+        _summary.Text = sourceChanged ? "请点击查看新增；不同来源的历史与回顾进度分别保留。" : "旧场次回顾已清空，请点击查看新增。"; _highlights.Text = ""; _status.Text = "";
     }
 }

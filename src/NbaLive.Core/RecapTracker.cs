@@ -1,7 +1,10 @@
 namespace NbaLive.Core;
 
 public sealed record RecapSnapshot(long Generation, long Through, GameInfo? Game, string Heading,
-    string Connection, IReadOnlyList<LiveEntry> Highlights, IReadOnlyList<LiveEntry> Entries, DateTimeOffset CreatedAt, bool HasSnapshot);
+    string Connection, IReadOnlyList<LiveEntry> Highlights, IReadOnlyList<LiveEntry> Entries, DateTimeOffset CreatedAt, bool HasSnapshot)
+{
+    public string FeedKey { get; init; } = "structured";
+}
 
 /// <summary>Arrival order is independent of the source's event chronology, so late events remain unread.</summary>
 public sealed class RecapTracker
@@ -29,7 +32,7 @@ public sealed class RecapTracker
     }
     public void Observe(SessionState state)
     {
-        var id = state.SelectedGame?.Id ?? state.Snapshot?.Game.Id;
+        var id = (state.SelectedGame?.Id ?? state.Snapshot?.Game.Id) + "|" + state.FeedKey;
         if (id != _gameId || (state.IsLoading && state.Snapshot is null)) Reset(id);
         _latest = state;
         if (state.Snapshot is null) return;
@@ -51,7 +54,8 @@ public sealed class RecapTracker
             heading += $"\n比分前后对照：{after.Away} {before.AwayScore} → {after.AwayScore}；{after.Home} {before.HomeScore} → {after.HomeScore}（可能包含来源修正）";
         var connection = _latest is null ? "请选择比赛" : SessionStatus.Describe(_latest, now);
         return new(_generation, _sequence, game, heading, connection,
-            entries.Where(EventSelection.IsImportant).TakeLast(5).ToArray(), entries, now, _latest?.Snapshot is not null);
+            entries.Where(EventSelection.IsImportant).TakeLast(5).ToArray(), entries, now, _latest?.Snapshot is not null)
+        { FeedKey = _latest?.FeedKey ?? "structured" };
     }
     public void MarkViewed(RecapSnapshot snapshot)
     {

@@ -7,7 +7,7 @@ public sealed record BookmarkedEvent(GameInfo Game, LiveEntry Entry, DateTimeOff
 {
     public DateTimeOffset? CorrectedAt { get; init; }
     [JsonIgnore] public (string GameId, string EventKey) Identity => (Game.Id, Entry.Key);
-    [JsonIgnore] public string Display => $"{Game.Date:yyyy-MM-dd} · {Game.Away} vs {Game.Home}\n{Entry.Display}" +
+    [JsonIgnore] public string Display => $"{Game.Date:yyyy-MM-dd} · {Game.Away} vs {Game.Home} · {(Entry.Origin == TextOrigin.Anchor ? "主播解说" : "赛况实录")}\n{Entry.Display}" +
         (string.IsNullOrWhiteSpace(Entry.Score) ? "" : $"\n事件比分：{Entry.Score}") +
         (CorrectedAt is null ? "" : "\n已同步来源修正");
 }

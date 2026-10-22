@@ -17,6 +17,8 @@ internal sealed class NativeTray : IDisposable
     internal bool CapsuleEnabled { get; set; }
     internal OverlayContent ContentMode { get; set; }
     internal bool FollowedPlayersOnly { get; set; }
+    internal TextSourcePreference TextSource { get; set; }
+    internal TextDelivery TextDelivery { get; set; }
     internal event Action<int>? Command;
 
     internal NativeTray(Window window)
@@ -60,6 +62,10 @@ internal sealed class NativeTray : IDisposable
             AppendMenu(menu, ContentMode == OverlayContent.Players ? 8u : 0u, 13, "显示关注球员");
             AppendMenu(menu, ContentMode == OverlayContent.Lineup ? 8u : 0u, 14, "显示场上五人");
             AppendMenu(menu, FollowedPlayersOnly ? 8u : 0u, 15, "文字只看关注球员");
+            AppendMenu(menu, TextSource == TextSourcePreference.AnchorPreferred ? 8u : 0u, 17, "优先主播解说");
+            AppendMenu(menu, TextSource == TextSourcePreference.Structured ? 8u : 0u, 18, "赛况实录");
+            AppendMenu(menu, TextDelivery == TextDelivery.Latest ? 8u : 0u, 19, "实时最新");
+            AppendMenu(menu, TextDelivery == TextDelivery.Paged ? 8u : 0u, 20, "完整补播（每页 4 秒）");
             AppendMenu(menu, ClickThrough ? 8u : 0u, 4, "鼠标穿透");
             AppendMenu(menu, 0, 5, "设置");
             AppendMenu(menu, 0, 8, "回到当前屏幕右下角");

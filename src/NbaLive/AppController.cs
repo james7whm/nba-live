@@ -8,9 +8,17 @@ internal sealed class AppController : IDisposable
     private AppSettings _settings;
     private readonly WebGameSource? _webSource;
     private readonly IGameSource _source;
-    private readonly LiveSession _session;
+    private readonly TextFeedCoordinator _session;
     private readonly StatisticsCoordinator _statisticsCoordinator;
-    private readonly RecapTracker _recaps = new();
+    private readonly Dictionary<string, RecapTracker> _recapTrackers = [];
+    private RecapTracker Recaps(string key)
+    {
+        if (!_recapTrackers.TryGetValue(key, out var tracker)) _recapTrackers[key] = tracker = new();
+        return tracker;
+    }
+    private RecapTracker _recaps => Recaps(_session.State.FeedKey);
+    private string _shownFeed = "structured";
+    private TextOrigin _shownOrigin;
     private readonly EventBookmarks _bookmarks;
     private readonly bool _demo;
     private NativeTray? _tray;
@@ -28,15 +36,15 @@ internal sealed class AppController : IDisposable
     private string _error = "";
     internal OverlayWindow Overlay { get; }
 
-    internal AppController(bool demo, bool demoOpening = false, bool demoFinished = false)
+    internal AppController(bool demo, bool demoOpening = false, bool demoFinished = false, bool preview = false)
     {
         _demo = demo;
-        _store = new SettingsStore(demo ? Path.Combine(Path.GetTempPath(), "NbaLive-Demo") : null);
+        _store = new SettingsStore(demo || preview ? Path.Combine(Path.GetTempPath(), demo ? "NbaLive-Demo" : "NbaLive-Preview") : null);
         _settings = _store.Load();
         _bookmarks = new(_store.DirectoryPath);
         _error = _store.Error ?? "";
         _source = demo ? new DemoSource(demoOpening, demoFinished) : _webSource = new WebGameSource(loadRosters: true);
-        _session = new LiveSession(_source);
+        _session = new(_source, _webSource is null ? null : new AnchorSource(_webSource), _settings.TextSource);
         _statisticsCoordinator = new((IStatisticsSource)_source);
         Overlay = new(_settings);
         Overlay.ChooseRequested += OpenPicker;
@@ -48,15 +56,19 @@ internal sealed class AppController : IDisposable
         Overlay.RecapRequested += OpenRecap;
         Overlay.CapsuleRequested += ToggleCapsule;
         Overlay.FollowedFilterRequested += ToggleFollowedFilter;
+        Overlay.SourceRequested += source => { ApplyPreferences(_settings with { TextSource = source }); Save(); };
+        Overlay.DeliveryRequested += delivery => { ApplyPreferences(_settings with { TextDelivery = delivery }); Save(); };
         Overlay.ContentRequested += SetContent;
         Overlay.ContextMenuRequested += () => _tray?.ShowMenu();
         Overlay.HotkeyPressed += id => { if (id == 1) ToggleVisibility(); else if (id == 2) ToggleClickThrough(); };
         Overlay.PositionSaved += (x, y) => { _settings = _settings with { X = x, Y = y }; Save(); };
         _session.Changed += OnState;
+        _session.StructuredChanged += OnStructuredState;
+        _session.FeedObserved += OnFeedObserved;
         _statisticsCoordinator.Changed += OnStatistics;
     }
 
-    internal async Task Start(bool demoPicker = false)
+    internal async Task Start(bool demoPicker = false, string? previewGame = null)
     {
         Overlay.Show();
         _tray = new(Overlay);
@@ -80,6 +92,10 @@ internal sealed class AppController : IDisposable
                 case 14: SetContent(OverlayContent.Lineup); break;
                 case 15: ToggleFollowedFilter(); break;
                 case 16: OpenBookmarks(); break;
+                case 17: ApplyPreferences(_settings with { TextSource = TextSourcePreference.AnchorPreferred }); Save(); break;
+                case 18: ApplyPreferences(_settings with { TextSource = TextSourcePreference.Structured }); Save(); break;
+                case 19: ApplyPreferences(_settings with { TextDelivery = TextDelivery.Latest }); Save(); break;
+                case 20: ApplyPreferences(_settings with { TextDelivery = TextDelivery.Paged }); Save(); break;
             }
         };
         _hotkeys = new(new WindowInteropHelper(Overlay).Handle);
@@ -91,6 +107,12 @@ internal sealed class AppController : IDisposable
             var games = await _source.GetGames(MatchTime.Today, _lifetime.Token);
             await Select(games[0]);
             return;
+        }
+        if (previewGame is not null)
+        {
+            var games = await _source.GetGames(MatchTime.Today, _lifetime.Token);
+            var requested = games.FirstOrDefault(game => game.Id == previewGame);
+            if (requested is not null) { await Select(requested); return; }
         }
         if (_settings.LastGameId is not null)
         {
@@ -110,12 +132,27 @@ internal sealed class AppController : IDisposable
         var generation = _recaps.Generation;
         _recaps.Observe(state);
         _bookmarks.Observe(state);
-        if (generation != _recaps.Generation) _recapWindow?.ResetGame();
+        if (generation != _recaps.Generation || _shownFeed != state.FeedKey) _recapWindow?.ResetGame(_shownFeed != state.FeedKey);
+        _shownFeed = state.FeedKey;
+        if (_shownOrigin != state.Origin) { _shownOrigin = state.Origin; _ = UpdateStatisticsDemand(); }
         Overlay.Render(state, _demo);
-        _statistics?.SetLiveState(state);
         UpdateUnread();
         _history?.Update(state, _demo);
         if (_tray is not null) _tray.Text = _demo ? "NBA 直播条 · 演示数据" : state.HasError ? $"NBA 直播条 · {state.Message}" : "NBA 直播条";
+    }
+    private void OnStructuredState(SessionState state)
+    {
+        if (_disposed) return;
+        if (!Overlay.Dispatcher.CheckAccess()) { Overlay.Dispatcher.BeginInvoke(() => OnStructuredState(state)); return; }
+        if (!ReferenceEquals(state, _session.StructuredState)) return;
+        Overlay.RenderStructured(state); _statistics?.SetLiveState(state);
+    }
+    private void OnFeedObserved(SessionState state)
+    {
+        if (_disposed) return;
+        if (!Overlay.Dispatcher.CheckAccess()) { Overlay.Dispatcher.BeginInvoke(() => OnFeedObserved(state)); return; }
+        if ((state.SelectedGame?.Id ?? state.Snapshot?.Game.Id) != (_session.StructuredState.SelectedGame?.Id ?? _session.StructuredState.Snapshot?.Game.Id)) return;
+        Recaps(state.FeedKey).Observe(state); _bookmarks.Observe(state);
     }
     private async Task Select(GameInfo game)
     {
@@ -127,6 +164,7 @@ internal sealed class AppController : IDisposable
             Save();
             _picker?.Close();
             if (!Overlay.IsVisible) Overlay.Show();
+            _recapTrackers.Clear(); _recapWindow?.ResetGame();
             await Task.WhenAll(_session.Select(game), _statisticsCoordinator.SetGame(game));
         }
         finally { _selection.Release(); }
@@ -184,7 +222,7 @@ internal sealed class AppController : IDisposable
             return _store.Save(_settings) ? null : "统计布局已在本次生效，但配置保存失败。";
         });
         _statistics = window;
-        window.SetLiveState(_session.State);
+        window.SetLiveState(_session.StructuredState);
         window.Closed += async (_, _) =>
         {
             if (ReferenceEquals(_statistics, window)) _statistics = null;
@@ -201,10 +239,12 @@ internal sealed class AppController : IDisposable
         Overlay.RenderStatistics(state);
     }
     private Task UpdateStatisticsDemand() => _statisticsCoordinator.SetDemand(StatisticsConsumer.PlayerOverlay,
-        OverlayFeatures.NeedsStatistics(_settings));
+        OverlayFeatures.NeedsStatistics(_settings) && !(_settings.ContentMode == OverlayContent.Text && _session.State.Origin == TextOrigin.Anchor));
     private void ApplyPreferences(AppSettings settings)
     {
+        var oldSource = _settings.TextSource;
         _settings = settings.Validate();
+        if (oldSource != _settings.TextSource) _ = _session.SetPreference(_settings.TextSource);
         Overlay.ApplyStyle(_settings);
         _statistics?.SetFavorites(_settings.FollowedPlayers);
         UpdateTray();
@@ -226,6 +266,8 @@ internal sealed class AppController : IDisposable
         _tray.CapsuleEnabled = _settings.CapsuleEnabled;
         _tray.ContentMode = _settings.ContentMode;
         _tray.FollowedPlayersOnly = _settings.FollowedPlayersOnly;
+        _tray.TextSource = _settings.TextSource;
+        _tray.TextDelivery = _settings.TextDelivery;
     }
     private void UpdateUnread() { Overlay.SetUnread(_recaps.UnreadCount); _recapWindow?.SetUnread(_recaps.UnreadCount); }
     internal void ShowRecap() => OpenRecap();
@@ -233,7 +275,7 @@ internal sealed class AppController : IDisposable
     {
         if (_recapWindow is not null) { _recapWindow.Activate(); return; }
         _recapWindow = new(recent => _recaps.Capture(DateTimeOffset.UtcNow, recent), capture =>
-        { _recaps.MarkViewed(capture); UpdateUnread(); }, _demo, _bookmarks, OpenBookmarks);
+        { Recaps(capture.FeedKey).MarkViewed(capture); UpdateUnread(); }, _demo, _bookmarks, OpenBookmarks);
         _recapWindow.Closed += (_, _) => _recapWindow = null;
         _recapWindow.Show();
         UpdateUnread();

@@ -11,6 +11,7 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
     private readonly PriorityRequestGate _requests = new();
     private readonly ConcurrentDictionary<string, GameInfo> _knownGames = new();
     private bool _useHttp;
+    private bool _mobileHttp;
     private sealed record SnapshotCache(string GameId, string Html, LiveSnapshot Snapshot);
     private SnapshotCache? _snapshotCache;
     private sealed record StatisticsCache(string GameId, string Html, BoxScoreSnapshot Snapshot);
@@ -18,7 +19,7 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
     private readonly bool _loadRosters;
     private sealed record RosterCache(DateTimeOffset RetryAfter, IReadOnlyDictionary<string, string> Numbers);
     private readonly ConcurrentDictionary<string, RosterCache> _rosters = new();
-    public string Transport => _useHttp ? "HTTP（只读公开比赛数据）" : "HTTPS";
+    public string Transport => (_useHttp ? "HTTP（只读公开比赛数据）" : "HTTPS") + (_mobileHttp ? " · 比分接口 HTTP（匿名只读）" : "");
 
     public WebGameSource(HttpMessageHandler? handler = null, bool loadRosters = false)
     {
@@ -52,9 +53,29 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
             return html;
         }
     }
-    private async Task<string> ReadPage(string url, CancellationToken ct)
+    internal async Task<string> ReadMobile(Uri uri, bool live, CancellationToken ct)
     {
-        using var response = await _client.GetAsync(url, ct);
+        if (uri.Host is not ("games.mobileapi.hupu.com" or "live-api.liangle.com") ||
+            uri.Scheme != "https" && !(uri.Host == "games.mobileapi.hupu.com" && uri.Scheme == "http"))
+            throw new ArgumentException("Unsupported data endpoint.", nameof(uri));
+        using var lease = await _requests.Enter(live, ct);
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        deadline.CancelAfter(TimeSpan.FromSeconds(8));
+        var mobile = uri.Host == "games.mobileapi.hupu.com";
+        if (mobile && uri.Scheme == "http") _mobileHttp = true;
+        try { return await ReadPage(mobile && _mobileHttp ? new UriBuilder(uri) { Scheme = "http", Port = -1 }.Uri.AbsoluteUri : uri.AbsoluteUri, deadline.Token, json: true); }
+        catch (HttpRequestException ex) when (mobile && !_mobileHttp && IsTlsFailure(ex))
+        {
+            var json = await ReadPage(new UriBuilder(uri) { Scheme = "http", Port = -1 }.Uri.AbsoluteUri, deadline.Token, json: true);
+            _mobileHttp = true;
+            return json;
+        }
+    }
+    private async Task<string> ReadPage(string url, CancellationToken ct, bool json = false)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+        if (json) request.Headers.Accept.ParseAdd("application/json");
+        using var response = await _client.SendAsync(request, ct);
         if ((int)response.StatusCode is >= 300 and < 400)
         {
             var requested = new Uri(url);
