@@ -1,6 +1,9 @@
 namespace NbaLive.Core;
 
-public sealed record StatisticsState(GameInfo? SelectedGame, BoxScoreSnapshot? Snapshot, string Message, bool HasError, bool IsLoading);
+public sealed record StatisticsState(GameInfo? SelectedGame, BoxScoreSnapshot? Snapshot, string Message, bool HasError, bool IsLoading)
+{
+    public StatisticsDeltaSnapshot? Changes { get; init; }
+}
 
 /// <summary>Exists only while the statistics window is open; shares the source's request gate.</summary>
 public sealed class StatisticsSession(IStatisticsSource source,

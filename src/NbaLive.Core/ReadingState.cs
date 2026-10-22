@@ -13,12 +13,12 @@ public static class EventSelection
             Regex.IsMatch(text, @"计[123]分|(?:第.{1,5}节|比赛|加时).*(?:开始|结束)");
     }
 
-    public static IReadOnlyList<LiveEntry> Recent(IReadOnlyList<LiveEntry> history, int count, bool importantOnly)
+    public static IReadOnlyList<LiveEntry> Recent(IReadOnlyList<LiveEntry> history, int count, bool importantOnly, PlayerEventFilter? playerFilter = null)
     {
         if (count <= 0) return [];
         var result = new List<LiveEntry>(count);
         for (var i = history.Count - 1; i >= 0 && result.Count < count; i--)
-            if (!importantOnly || IsImportant(history[i])) result.Add(history[i]);
+            if ((!importantOnly || IsImportant(history[i])) && (playerFilter is null || playerFilter.Matches(history[i]))) result.Add(history[i]);
         return result;
     }
 }
@@ -66,6 +66,8 @@ public sealed class ReadingState
 
 public static class PollingPolicy
 {
+    public static TimeSpan AfterSuccess(GameInfo game, DateTimeOffset now, TimeSpan fetchDuration) =>
+        TimeSpan.FromTicks(Math.Max(0, Next(game, now).Ticks - Math.Max(0, fetchDuration.Ticks)));
     public static TimeSpan Next(GameInfo game, DateTimeOffset now)
     {
         if (game.Status == GameStatus.Scheduled)

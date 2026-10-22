@@ -45,7 +45,15 @@ public sealed class BoxScoreParser
             if (status is GameStatus.Scheduled or GameStatus.Cancelled) return BoxScoreSnapshot.Waiting(game, fetchedAt);
             throw new SourceFormatException("球员统计表格缺失。");
         }
-        var result = new BoxScoreSnapshot(game, ParseTeam(awayTable, awayName), ParseTeam(homeTable, homeName), fetchedAt);
+        static string? Slug(IElement? team)
+        {
+            var href = team?.QuerySelector("p a")?.GetAttribute("href");
+            if (!Uri.TryCreate(SourcePages.BaseUri, href, out var uri) || uri.Host != SourcePages.BaseUri.Host) return null;
+            var match = Regex.Match(uri.AbsolutePath, @"^/teams/([a-zA-Z0-9-]{1,40})/?$");
+            return match.Success ? match.Groups[1].Value : null;
+        }
+        var result = new BoxScoreSnapshot(game, ParseTeam(awayTable, awayName) with { RosterSlug = Slug(away) },
+            ParseTeam(homeTable, homeName) with { RosterSlug = Slug(home) }, fetchedAt);
         // An intact header with no published rows is a waiting state, never invented zero statistics.
         return result;
     }

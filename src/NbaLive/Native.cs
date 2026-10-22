@@ -23,6 +23,18 @@ internal static class Native
     [DllImport("user32.dll")] private static extern uint GetDpiForWindow(IntPtr hwnd);
     [DllImport("user32.dll")] internal static extern bool RegisterHotKey(IntPtr hwnd, int id, uint modifiers, uint key);
     [DllImport("user32.dll")] internal static extern bool UnregisterHotKey(IntPtr hwnd, int id);
+    [DllImport("user32.dll")] private static extern bool IsIconic(IntPtr hwnd);
+    [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hwnd, int command);
+    [DllImport("user32.dll")] private static extern bool SetForegroundWindow(IntPtr hwnd);
+
+    internal static void ActivateDialog(Window window)
+    {
+        var hwnd = new WindowInteropHelper(window).Handle;
+        if (hwnd == IntPtr.Zero) return;
+        if (IsIconic(hwnd)) ShowWindow(hwnd, 9); // SW_RESTORE retains the previous maximized state.
+        window.Activate();
+        SetForegroundWindow(hwnd);
+    }
 
     internal static void Configure(IntPtr hwnd, bool clickThrough)
     {

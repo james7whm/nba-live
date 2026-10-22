@@ -27,10 +27,15 @@ public sealed class GamePageParser
             var homeName = Text(home?.QuerySelector(".txt a"));
             if (id.Length == 0 || awayName.Length == 0 || homeName.Length == 0)
                 throw new SourceFormatException("发现比赛卡片，但无法读取球队或比赛编号。");
-            var progress = Text(box.QuerySelector(".team_vs_b"));
+            var stateBox = box.QuerySelector(".team_vs_c .b, .team_vs_b .b") ?? box.QuerySelector(".team_vs_c, .team_vs_b");
+            var stateText = Text(stateBox);
+            var state = Status(stateText);
+            var progress = state == GameStatus.Live ? Text(stateBox?.QuerySelector("p")) : stateText;
+            if (progress.Length == 0) progress = stateText;
+            if (state == GameStatus.Live) progress = FormatLiveProgress(progress);
             progress = Regex.Replace(progress, @"未开始\s*(?=\d)", "未开始 ");
             games.Add(new(id, awayName, homeName, Score(away?.QuerySelector(".num")),
-                Score(home?.QuerySelector(".num")), Status(progress), progress, date));
+                Score(home?.QuerySelector(".num")), state, progress, date));
         }
         if (games.Count == 0 && !Text(doc.Body).Contains("0场比赛"))
             throw new SourceFormatException("未识别到比赛卡片，也没有找到无比赛提示。");
@@ -99,12 +104,28 @@ public sealed class GamePageParser
         _ when text.Contains("已结束") || text.Contains("全场结束") => GameStatus.Finished,
         _ when text.Contains("未开始") || text.Contains("赛前") => GameStatus.Scheduled,
         _ when text.Contains("取消") || text.Contains("延期") => GameStatus.Cancelled,
-        _ when text.Contains("进行中") || text.Contains("节") || text.Contains("加时") || text.Contains("中场") => GameStatus.Live,
+        _ when text.Contains("进行中") || text.Contains("节") || text.Contains("加时") || text.Contains("中场") || Regex.IsMatch(text, @"加\s*[1-9]\d*\s*剩") => GameStatus.Live,
         _ => GameStatus.Unknown
     };
 
-    private static int Period(string text)
+    public static string FormatLiveProgress(string progress)
     {
+        var text = LiveEntry.Normalize(progress);
+        var clock = Regex.Match(text, @"(?<!\d)(\d{1,2}):([0-5]\d(?:\.\d+)?)(?!\d)");
+        if (!clock.Success) return text;
+        // The clock's leading digits are not an overtime number ("加时赛 04:30").
+        var period = Period(text[..clock.Index]);
+        if (period == 0) return text;
+        var minutes = int.Parse(clock.Groups[1].Value, CultureInfo.InvariantCulture);
+        if (minutes > (period > 4 ? 5 : 12)) return text;
+        var label = period > 4 ? $"加{period - 4}" : $"第{"一二三四"[period - 1]}节";
+        return $"{label}剩{minutes}:{clock.Groups[2].Value}";
+    }
+
+    internal static int Period(string text)
+    {
+        var shortOvertime = Regex.Match(text, @"加\s*([1-9]\d*)\s*剩");
+        if (shortOvertime.Success && int.TryParse(shortOvertime.Groups[1].Value, out var extra) && extra <= 100) return 4 + extra;
         var regular = Regex.Match(text, @"第([一二三四1234])节");
         if (regular.Success) return "一二三四".IndexOf(regular.Groups[1].Value, StringComparison.Ordinal) is var n && n >= 0
             ? n + 1 : int.Parse(regular.Groups[1].Value);

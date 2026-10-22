@@ -13,14 +13,27 @@ internal sealed class OverlayWindow : Window
     private readonly TextBlock _capsuleText = new() { TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center };
     private readonly TextBlock _warning = new() { Text = "离线", FontSize = 9, VerticalAlignment = VerticalAlignment.Center, Margin = new(5, 0, 0, 0) };
     private readonly TextBlock[] _lines = [new(), new()];
+    private readonly StackPanel _textLines = new();
+    private readonly LineupView _lineup = new();
     private readonly TextBlock _status = new() { FontSize = 9, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center };
     private readonly TextBlock _pending = new() { FontSize = 9, MaxWidth = 62, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center };
     private readonly StackPanel _toolbar;
     private readonly StackPanel _navigation;
     private readonly Button _choosePlayers;
+    private readonly Button _chooseGame = new()
+    {
+        Content = new TextBlock { Text = "请选择比赛 · 点击选赛", TextTrimming = TextTrimming.CharacterEllipsis },
+        HorizontalContentAlignment = HorizontalAlignment.Left, VerticalAlignment = VerticalAlignment.Top,
+        Padding = new(0), Margin = new(0), BorderThickness = new(0), Background = Brushes.Transparent,
+        Focusable = false, Cursor = Cursors.Hand, Visibility = Visibility.Collapsed,
+        ToolTip = "打开比赛列表，选择要查看的比赛。"
+    };
     private readonly Button _modeButton;
     private readonly Button _recapButton;
     private readonly ReadingState _reading = new();
+    private readonly TextPlayback _textPlayback = new();
+    private readonly DispatcherTimer _textTimer = new() { Interval = TimeSpan.FromSeconds(1) };
+    private bool _textReady;
     private readonly PlayerRotation _rotation = new();
     private readonly DispatcherTimer _expandTimer = new() { Interval = TimeSpan.FromMilliseconds(100) };
     private readonly DispatcherTimer _leaveTimer = new() { Interval = TimeSpan.FromMilliseconds(250) };
@@ -30,6 +43,10 @@ internal sealed class OverlayWindow : Window
     private AppSettings _settings;
     private StatisticsState? _latestStatistics;
     private StatisticsState? _visibleStatistics;
+    private PlayerEventFilter? _playerFilter;
+    private BoxScoreSnapshot? _filterSnapshot;
+    private IReadOnlyList<FavoritePlayer>? _filterFavorites;
+    private DateTimeOffset _pausedAt;
     private Native.Geometry? _rest;
     private bool _expanded;
     private bool _placing;
@@ -41,11 +58,13 @@ internal sealed class OverlayWindow : Window
     private int _layoutVersion;
     internal event Action? ChooseRequested;
     internal event Action? HistoryRequested;
+    internal event Action? BookmarksRequested;
     internal event Action? StatisticsRequested;
     internal event Action? SettingsRequested;
     internal event Action? HideRequested;
     internal event Action? RecapRequested;
     internal event Action? CapsuleRequested;
+    internal event Action? FollowedFilterRequested;
     internal event Action<OverlayContent>? ContentRequested;
     internal event Action? ContextMenuRequested;
     internal event Action<int>? HotkeyPressed;
@@ -66,12 +85,12 @@ internal sealed class OverlayWindow : Window
         DockPanel.SetDock(_progress, Dock.Right);
         header.Children.Add(_progress); header.Children.Add(_score); _full.Children.Add(header);
         var content = new Grid(); Grid.SetRow(content, 1); _full.Children.Add(content);
-        var lines = new StackPanel(); content.Children.Add(lines);
+        content.Children.Add(_textLines); content.Children.Add(_lineup);
         foreach (var line in _lines)
         {
             line.Height = 22; line.VerticalAlignment = VerticalAlignment.Center;
             line.TextTrimming = TextTrimming.CharacterEllipsis;
-            ToolTipService.SetInitialShowDelay(line, 500); lines.Children.Add(line);
+            ToolTipService.SetInitialShowDelay(line, 500); _textLines.Children.Add(line);
         }
         _navigation = new() { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Bottom };
         _navigation.Children.Add(Tool("‹", () => MovePlayer(-1), "上一位关注球员"));
@@ -80,6 +99,10 @@ internal sealed class OverlayWindow : Window
         _choosePlayers = Tool("去选择球员", () => StatisticsRequested?.Invoke());
         _choosePlayers.HorizontalAlignment = HorizontalAlignment.Left; _choosePlayers.VerticalAlignment = VerticalAlignment.Bottom;
         content.Children.Add(_choosePlayers);
+        content.Children.Add(_chooseGame);
+        _chooseGame.Click += (_, _) => ChooseRequested?.Invoke();
+        _score.MouseLeftButtonUp += ChooseWhenEmpty;
+        _capsuleText.MouseLeftButtonUp += ChooseWhenEmpty;
         var footer = new Grid(); Grid.SetRow(footer, 2); _full.Children.Add(footer);
         footer.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
         footer.ColumnDefinitions.Add(new() { Width = GridLength.Auto });
@@ -103,6 +126,7 @@ internal sealed class OverlayWindow : Window
         ToolTipOpening += (_, _) => { _tipHeld = true; _leaveTimer.Stop(); };
         ToolTipClosing += (_, _) => { _tipHeld = false; ScheduleLeave(); };
         MouseRightButtonUp += (_, _) => WithInteractionHold(() => ContextMenuRequested?.Invoke());
+        _pending.MouseLeftButtonUp += (_, e) => { if (_settings.ContentMode == OverlayContent.Text && _textPlayback.IsReplaying) { JumpTextToLatest(); e.Handled = true; } };
         _expandTimer.Tick += (_, _) => { _expandTimer.Stop(); if (IsMouseOver && IsVisible) SetExpanded(true); };
         _leaveTimer.Tick += (_, _) =>
         {
@@ -114,7 +138,8 @@ internal sealed class OverlayWindow : Window
             _rotation.Move(_settings.FollowedPlayers, 1, automatic: true, paused: _reading.IsPaused, visible: IsVisible && !Collapsed);
             RenderContent();
         };
-        _statusTimer.Tick += (_, _) => { if (IsVisible) UpdateStatus(); };
+        _textTimer.Tick += (_, _) => { RenderContent(); UpdateStatus(); };
+        _statusTimer.Tick += (_, _) => { if (IsVisible) { if (_settings.ContentMode == OverlayContent.Lineup && !_reading.IsPaused) RenderContent(); UpdateStatus(); } };
         _saveTimer.Tick += (_, _) => { _saveTimer.Stop(); Clamp(true); };
         IsVisibleChanged += (_, _) =>
         {
@@ -128,10 +153,15 @@ internal sealed class OverlayWindow : Window
         };
         Loaded += (_, _) => { _ready = true; Reposition(_settings.X, _settings.Y); _statusTimer.Start(); };
         LocationChanged += (_, _) => { if (_ready && !_placing && !_dragging) { _saveTimer.Stop(); _saveTimer.Start(); } };
-        Closed += (_, _) => { _saveTimer.Stop(); _expandTimer.Stop(); _leaveTimer.Stop(); _statusTimer.Stop(); _rotationTimer.Stop(); };
+        Closed += (_, _) => { _saveTimer.Stop(); _expandTimer.Stop(); _leaveTimer.Stop(); _statusTimer.Stop(); _rotationTimer.Stop(); _textTimer.Stop(); };
         ApplyStyle(settings); Render(new(null, [], "请选择一场 NBA 比赛", false, false), false);
     }
     private bool Collapsed => _settings.CapsuleEnabled && !_expanded;
+    private void ChooseWhenEmpty(object sender, MouseButtonEventArgs e)
+    {
+        if ((_reading.Latest?.Snapshot?.Game ?? _reading.Latest?.SelectedGame) is not null) return;
+        ChooseRequested?.Invoke(); e.Handled = true;
+    }
     private Button Tool(string label, Action action, string? tip = null)
     {
         var button = new Button { Content = label, FontSize = 10, Padding = new(5, 0, 5, 0), Margin = new(1, 0, 0, 0),
@@ -143,6 +173,10 @@ internal sealed class OverlayWindow : Window
         var menu = new ContextMenu();
         AddMenu(menu, "文字直播", () => ContentRequested?.Invoke(OverlayContent.Text), _settings.ContentMode == OverlayContent.Text);
         AddMenu(menu, "关注球员", () => ContentRequested?.Invoke(OverlayContent.Players), _settings.ContentMode == OverlayContent.Players);
+        AddMenu(menu, "场上五人", () => ContentRequested?.Invoke(OverlayContent.Lineup), _settings.ContentMode == OverlayContent.Lineup);
+        menu.Items.Add(new Separator());
+        AddMenu(menu, "文字只看关注球员", () => FollowedFilterRequested?.Invoke(), _settings.FollowedPlayersOnly);
+        if (_settings.ContentMode == OverlayContent.Text) AddMenu(menu, "跳到最新文字（历史与回顾保留全部）", JumpTextToLatest);
         ShowMenu(menu, _modeButton);
     }
     private void OpenMoreMenu()
@@ -150,6 +184,8 @@ internal sealed class OverlayWindow : Window
         var menu = new ContextMenu();
         AddMenu(menu, "选择比赛", () => ChooseRequested?.Invoke());
         AddMenu(menu, "本次会话历史", () => HistoryRequested?.Invoke());
+        if (_settings.ContentMode == OverlayContent.Text) AddMenu(menu, "跳到最新文字（历史与回顾保留全部）", JumpTextToLatest);
+        AddMenu(menu, "精彩收藏", () => BookmarksRequested?.Invoke());
         AddMenu(menu, "球员技术统计／关注球员", () => StatisticsRequested?.Invoke());
         AddMenu(menu, "设置", () => SettingsRequested?.Invoke());
         AddMenu(menu, "胶囊模式", () => CapsuleRequested?.Invoke(), _settings.CapsuleEnabled);
@@ -175,10 +211,10 @@ internal sealed class OverlayWindow : Window
     private void EnterReading()
     {
         _leaveTimer.Stop();
-        if (!_reading.IsPaused) { _reading.Pause(); _visibleStatistics = _latestStatistics; }
+        if (!_reading.IsPaused) { _pausedAt = DateTimeOffset.UtcNow; _reading.Pause(); _visibleStatistics = _latestStatistics; }
         _toolbar.Visibility = Visibility.Visible; _status.Visibility = Visibility.Hidden;
         if (Collapsed) _expandTimer.Start();
-        UpdateStatus(); UpdateRotationTimer();
+        UpdateStatus(); UpdateRotationTimer(); UpdateTextTimer();
     }
     private void ScheduleLeave()
     {
@@ -192,6 +228,23 @@ internal sealed class OverlayWindow : Window
         SetExpanded(false); RenderContent(); UpdateStatus(); UpdateRotationTimer();
     }
     private void MovePlayer(int direction) { _rotation.Move(_settings.FollowedPlayers, direction); RenderContent(); }
+    private void JumpTextToLatest()
+    {
+        var paused = _reading.IsPaused;
+        _reading.Resume(); _visibleStatistics = _latestStatistics; _textPlayback.JumpToLatest();
+        RenderContent();
+        if (paused) _reading.Pause();
+        UpdateStatus(); UpdateTextTimer();
+    }
+    private void UpdateTextTimer()
+    {
+        var eligible = IsVisible && !Collapsed && !_reading.IsPaused && _settings.ContentMode == OverlayContent.Text &&
+            (_settings.CapsuleEnabled || _settings.DisplayMode != OverlayMode.ScoreOnly) && _textReady;
+        if (!eligible) _textPlayback.Suspend(DateTimeOffset.UtcNow);
+        if (eligible && _textPlayback.IsReplaying)
+        { if (!_textTimer.IsEnabled) _textTimer.Start(); }
+        else _textTimer.Stop();
+    }
     private void UpdateRotationTimer()
     {
         if (IsVisible && !Collapsed && !_reading.IsPaused && _settings.ContentMode == OverlayContent.Players && _settings.FollowedPlayers.Length > 1)
@@ -200,11 +253,14 @@ internal sealed class OverlayWindow : Window
     }
     internal void ApplyStyle(AppSettings settings)
     {
+        if (_settings.ImportantEventsOnly != settings.ImportantEventsOnly || _settings.FollowedPlayersOnly != settings.FollowedPlayersOnly ||
+            !_settings.FollowedPlayers.SequenceEqual(settings.FollowedPlayers)) _textPlayback.JumpToLatest();
         var wasCapsule = _settings.CapsuleEnabled;
         if (wasCapsule != settings.CapsuleEnabled) _rest = null;
         _settings = settings; _rotation.Sync(settings.FollowedPlayers);
         if (!settings.CapsuleEnabled) _expanded = false;
         _score.FontSize = _capsuleText.FontSize = settings.FontSize;
+        _chooseGame.FontSize = settings.FontSize;
         foreach (var line in _lines) line.FontSize = settings.FontSize;
         _surface.Background = new SolidColorBrush(Color.FromArgb((byte)Math.Round(255 * settings.BackgroundOpacity), 239, 241, 243));
         LayoutWindow(save: _ready && (wasCapsule != settings.CapsuleEnabled || !_expanded));
@@ -218,7 +274,7 @@ internal sealed class OverlayWindow : Window
     }
     private void LayoutWindow(bool save)
     {
-        var height = Collapsed ? 30 : _settings.CapsuleEnabled || _settings.ContentMode == OverlayContent.Players ? 110 :
+        var height = Collapsed ? 30 : _settings.ContentMode == OverlayContent.Lineup ? 154 : _settings.CapsuleEnabled || _settings.ContentMode == OverlayContent.Players ? 110 :
             _settings.DisplayMode switch { OverlayMode.ScoreOnly => 58, OverlayMode.OneEvent => 84, _ => 110 };
         var width = Collapsed ? 280 : _settings.Width;
         _full.Visibility = Collapsed ? Visibility.Collapsed : Visibility.Visible;
@@ -248,12 +304,13 @@ internal sealed class OverlayWindow : Window
         var priorId = _reading.Latest?.SelectedGame?.Id ?? _reading.Latest?.Snapshot?.Game.Id;
         var id = state.SelectedGame?.Id ?? state.Snapshot?.Game.Id;
         if (id != priorId || state.IsLoading) _visibleStatistics = _latestStatistics;
+        _textPlayback.Observe(state);
         _reading.Accept(state); RenderContent(); UpdateStatus();
     }
     internal void RenderStatistics(StatisticsState state)
     {
         _latestStatistics = state;
-        if (!_reading.IsPaused || _visibleStatistics?.Snapshot is null) _visibleStatistics = state;
+        if (!_reading.IsPaused || _visibleStatistics?.Snapshot is null || state.Snapshot is null) _visibleStatistics = state;
         RenderContent(); UpdateStatus();
     }
     internal void SetUnread(int count)
@@ -265,20 +322,33 @@ internal sealed class OverlayWindow : Window
     {
         if (_reading.Visible is not { } state) return;
         var game = state.Snapshot?.Game ?? state.SelectedGame;
-        _score.Text = game?.Score ?? "NBA 直播条"; _score.ToolTip = _score.Text;
+        _score.Text = game?.Score ?? "NBA 直播条 · 请选择比赛";
+        _score.ToolTip = game is null ? "点击选择比赛" : _score.Text;
+        _score.Cursor = _capsuleText.Cursor = game is null ? Cursors.Hand : Cursors.Arrow;
         _progress.Text = game?.Progress ?? ""; _progress.ToolTip = _progress.Text;
         var progress = Regex.Replace(game?.Progress ?? "", "第([一二三四1234])节", m =>
             "Q" + ("一二三四".IndexOf(m.Groups[1].Value, StringComparison.Ordinal) is var n && n >= 0 ? (n + 1).ToString() : m.Groups[1].Value));
         _capsuleText.Text = (_demo ? "演示 · " : "") + (game is null ? "NBA 直播条 · 请选择比赛" :
             $"{game.Away} {game.AwayScore?.ToString() ?? "—"}:{game.HomeScore?.ToString() ?? "—"} {game.Home} · {progress}");
-        _modeButton.Content = _settings.ContentMode == OverlayContent.Players ? "球员 ▾" : "文字 ▾";
+        _modeButton.Content = _settings.ContentMode switch { OverlayContent.Players => "球员 ▾", OverlayContent.Lineup => "阵容 ▾", _ => _settings.FollowedPlayersOnly ? "关注 ▾" : "文字 ▾" };
         var players = _settings.ContentMode == OverlayContent.Players;
+        var lineup = _settings.ContentMode == OverlayContent.Lineup;
+        _lineup.Visibility = lineup ? Visibility.Visible : Visibility.Collapsed;
+        _textLines.Visibility = lineup ? Visibility.Collapsed : Visibility.Visible;
         _navigation.Visibility = players && _settings.FollowedPlayers.Length > 1 ? Visibility.Visible : Visibility.Collapsed;
         _choosePlayers.Visibility = players && _settings.FollowedPlayers.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
         _lines[1].Margin = new(0, 0, players && _settings.FollowedPlayers.Length > 1 ? 50 : 0, 0);
         var count = players || _settings.CapsuleEnabled ? 2 : (int)_settings.DisplayMode;
         for (var index = 0; index < 2; index++) _lines[index].Visibility = index < count ? Visibility.Visible : Visibility.Collapsed;
-        if (players)
+        _chooseGame.Visibility = game is null && count > 0 ? Visibility.Visible : Visibility.Collapsed;
+        if (game is null)
+        {
+            _textLines.Visibility = _lineup.Visibility = _navigation.Visibility = _choosePlayers.Visibility = Visibility.Collapsed;
+            _textReady = false; UpdateTextTimer(); return;
+        }
+        if (lineup)
+            _lineup.Render(game, state, _visibleStatistics, _reading.IsPaused ? _pausedAt : DateTimeOffset.UtcNow);
+        else if (players)
         {
             var favorite = _settings.FollowedPlayers.FirstOrDefault(p => p.Id == _rotation.CurrentId);
             var card = favorite is null ? new PlayerCard("还没有关注球员", "", "在统计表中点击 ☆，最多关注 3 人。") :
@@ -288,35 +358,57 @@ internal sealed class OverlayWindow : Window
         }
         else
         {
-            var recent = EventSelection.Recent(state.History, count, _settings.ImportantEventsOnly);
+            var snapshot = _visibleStatistics?.Snapshot?.Game.Id == game?.Id ? _visibleStatistics?.Snapshot : null;
+            if (_playerFilter is null || !ReferenceEquals(_filterSnapshot, snapshot) || !ReferenceEquals(_filterFavorites, _settings.FollowedPlayers))
+            {
+                _playerFilter = new(snapshot, _settings.FollowedPlayers, game?.Id);
+                _filterSnapshot = snapshot; _filterFavorites = _settings.FollowedPlayers;
+            }
+            var filter = _settings.FollowedPlayersOnly ? _playerFilter : null;
+            _textReady = !_settings.FollowedPlayersOnly || snapshot is not null;
+            _textPlayback.Refresh(count, entry => (!_settings.ImportantEventsOnly || EventSelection.IsImportant(entry)) &&
+                (filter is null || filter.Matches(entry)), _textReady, IsVisible && !Collapsed && !_reading.IsPaused, DateTimeOffset.UtcNow);
+            var recent = _textReady ? _textPlayback.Visible.Where(entry => (!_settings.ImportantEventsOnly || EventSelection.IsImportant(entry)) &&
+                (filter is null || filter.Matches(entry))).ToArray() : [];
+            var empty = _settings.FollowedPlayersOnly ? _settings.FollowedPlayers.Length == 0 ? "还没有关注球员 · 更多→球员统计" :
+                snapshot is null ? "等待本场统计以匹配关注球员" : _playerFilter.AvailableFavorites == 0 ? "关注球员本场暂无数据" :
+                "暂无关注球员动态 · 历史保留全部" :
+                state.History.Count > 0 && _settings.ImportantEventsOnly ? "暂无匹配事件 · 历史可查看全部" : state.Message;
             for (var index = 0; index < 2; index++)
             {
-                _lines[index].Text = index < recent.Count ? recent[index].Display : index == 0 ?
-                    state.History.Count > 0 && _settings.ImportantEventsOnly ? "暂无匹配事件 · 历史可查看全部" : state.Message : "";
-                _lines[index].ToolTip = _lines[index].Text;
+                _lines[index].Text = index < recent.Length ? recent[index].Display : index == 0 ? empty : "";
+                _lines[index].ToolTip = _lines[index].Text + (_settings.FollowedPlayersOnly ? "\n依据本场名单匹配姓名；同名或简称有歧义时不猜测，可能遗漏。与重要事件筛选叠加，历史和回顾保留全部。" : "");
             }
         }
+        UpdateTextTimer();
     }
     private void UpdateStatus()
     {
         if (_reading.Latest is not { } state) return;
         var status = SessionStatus.Describe(state, DateTimeOffset.UtcNow); var stats = _latestStatistics;
-        var relevant = _settings.ContentMode == OverlayContent.Players && _settings.FollowedPlayers.Length > 0 &&
+        var relevant = OverlayFeatures.NeedsStatistics(_settings) &&
             stats?.SelectedGame?.Id == (state.SelectedGame?.Id ?? state.Snapshot?.Game.Id);
         if (relevant && stats is not null)
             status += stats.HasError ? $" · {stats.Message}" : stats.Snapshot is { } snapshot ?
                 $" · 球员 {MatchTime.Format(snapshot.FetchedAt)}{(DateTimeOffset.UtcNow - snapshot.FetchedAt > TimeSpan.FromSeconds(35) ? "（较旧）" : "")}" : " · 等待球员统计";
-        _status.Text = (_demo ? "演示数据 · " : "") + status;
+        var replaying = _settings.ContentMode == OverlayContent.Text && _textReady && _textPlayback.IsReplaying;
+        var playback = replaying ? (_textPlayback.PendingCount > 0 ? $"补播中 · 待播 {_textPlayback.PendingCount} 条 · " : "补播中 · 最后一页 · ") : "";
+        _status.Text = (_demo ? "演示数据 · " : "") + playback + status;
         _status.ToolTip = _status.Text + "\n连通是成功检查比分页面的本机时间；新事件是本机发现新增条目的时间。\n球员统计与比分分别采样；没有新事件不等于断网。";
+        if (state.FetchDuration is { } elapsed) _status.ToolTip += $"\n上次取数耗时 {elapsed.TotalSeconds:0.0} 秒（含排队） · 本批新增 {state.LastBatchSize} 条。";
+        _status.ToolTip += "\n文字每页至少停留 4 秒，批量新增依次补播；比分和节次仍为最近快照，不是补播事件当时的比分。\n悬停、隐藏、胶囊收起、仅比分和其他内容模式暂停补播。可从更多菜单跳到最新，历史与回顾保留全部。";
         _capsuleText.ToolTip = _capsuleText.Text + "\n" + _status.ToolTip;
         var error = state.HasError || relevant && stats?.HasError == true;
         _warning.Text = error ? "离线" : "较旧";
         _warning.Visibility = error || state.Snapshot is { } live && live.Game.Status == GameStatus.Live &&
             DateTimeOffset.UtcNow - live.FetchedAt > TimeSpan.FromSeconds(30) ? Visibility.Visible : Visibility.Collapsed;
         _warning.ToolTip = _status.ToolTip;
-        _pending.Text = !_reading.IsPaused ? "" : error ? "连接异常" : _reading.PendingCount > 0 ? $"+{_reading.PendingCount} 条" : "已暂停";
+        _pending.Text = !_reading.IsPaused ? "" : error ? "连接异常" : replaying && _textPlayback.PendingCount > 0 ?
+            $"待播{_textPlayback.PendingCount}" : _reading.PendingCount > 0 ? $"+{_reading.PendingCount} 条" : "已暂停";
         if (_demo && _reading.IsPaused) _pending.Text = "演示 " + _pending.Text;
-        _pending.ToolTip = $"悬停固定内容，后台继续更新；新增 {_reading.PendingCount} 条。\n{status}";
+        _pending.Cursor = replaying ? Cursors.Hand : Cursors.Arrow;
+        _pending.ToolTip = $"悬停固定内容，后台继续更新；新增 {_reading.PendingCount} 条。\n{status}" +
+            (replaying ? $"\n文字待播 {_textPlayback.PendingCount} 条；点击跳到最新，历史和回顾保留全部。" : "");
     }
     private void DragOverlay()
     {

@@ -3,7 +3,7 @@ using System.Text.Json;
 namespace NbaLive.Core;
 
 public enum OverlayMode { ScoreOnly, OneEvent, TwoEvents }
-public enum OverlayContent { Text, Players }
+public enum OverlayContent { Text, Players, Lineup }
 public sealed record FavoritePlayer(string Id, string Name);
 
 public sealed record AppSettings
@@ -18,10 +18,13 @@ public sealed record AppSettings
     public string? LastGameId { get; init; }
     public OverlayMode DisplayMode { get; init; } = OverlayMode.TwoEvents;
     public bool ImportantEventsOnly { get; init; }
+    public bool FollowedPlayersOnly { get; init; }
     public string FavoriteTeam { get; init; } = "";
     public bool CapsuleEnabled { get; init; }
     public OverlayContent ContentMode { get; init; } = OverlayContent.Text;
     public FavoritePlayer[] FollowedPlayers { get; init; } = [];
+    public StatisticsPreset StatisticsPreset { get; init; } = StatisticsPreset.Full;
+    public StatisticsTableLayout[] StatisticsLayouts { get; init; } = [];
     public AppSettings Validate() => this with
     {
         Width = double.IsFinite(Width) ? Math.Clamp(Width, 280, 480) : 360,
@@ -32,6 +35,8 @@ public sealed record AppSettings
         DisplayMode = Enum.IsDefined(DisplayMode) ? DisplayMode : OverlayMode.TwoEvents,
         ContentMode = Enum.IsDefined(ContentMode) ? ContentMode : OverlayContent.Text,
         FollowedPlayers = PlayerFavorites.Normalize(FollowedPlayers),
+        StatisticsPreset = Enum.IsDefined(StatisticsPreset) ? StatisticsPreset : StatisticsPreset.Full,
+        StatisticsLayouts = StatisticsPresets.Normalize(StatisticsLayouts),
         FavoriteTeam = (FavoriteTeam ?? "").Trim() is var team && team.Length <= 40 ? team : ""
     };
 }

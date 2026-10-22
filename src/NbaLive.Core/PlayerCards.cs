@@ -42,9 +42,13 @@ public static class PlayerCards
             return new(favorite.Name, state?.HasError == true ? state.Message : "等待本场球员统计", "统计与文字直播分别采样；缺失值显示 —。");
         var player = snapshot.Away.Players.Concat(snapshot.Home.Players).FirstOrDefault(p => p.Id == favorite.Id);
         if (player is null) return new(favorite.Name, "本场暂无该球员数据", $"最近统计更新 {MatchTime.Format(snapshot.FetchedAt)}\n未自动替换关注对象。");
+        var team = snapshot.Away.Players.Any(p => p.Id == player.Id) ? snapshot.Away.Team : snapshot.Home.Team;
+        var changes = state.Changes?.GameId == gameId ? state.Changes : null;
+        var delta = changes?.Find(team, player.Id);
         static string N(int? value) => value?.ToString() ?? "—";
-        var details = $"{player.Name} · {player.Role} · {player.Position}\n时间 {player.Minutes} · 投篮 {player.FieldGoals} · 三分 {player.ThreePointers} · 罚球 {player.FreeThrows}\n抢断 {N(player.Steals)} · 盖帽 {N(player.Blocks)} · 失误 {N(player.Turnovers)} · 犯规 {N(player.Fouls)} · +/- {N(player.PlusMinus)}\n最近统计更新 {MatchTime.Format(snapshot.FetchedAt)}；统计与比分分别采样。";
-        return new($"{player.Name}  {N(player.Points)} 分 · {N(player.Rebounds)} 板 · {N(player.Assists)} 助",
+        var details = $"{player.Name} · {player.Role} · {player.Position}\n得分 {N(player.Points)} · 篮板 {N(player.Rebounds)} · 助攻 {N(player.Assists)}\n时间 {player.Minutes} · 投篮 {player.FieldGoals} · 三分 {player.ThreePointers} · 罚球 {player.FreeThrows}\n抢断 {N(player.Steals)} · 盖帽 {N(player.Blocks)} · 失误 {N(player.Turnovers)} · 犯规 {N(player.Fouls)} · +/- {N(player.PlusMinus)}\n最近统计更新 {MatchTime.Format(snapshot.FetchedAt)}；统计与比分分别采样。";
+        if (changes is not null) details += $"\n{changes.Description}\n{delta?.Description ?? "暂无可比较的上次统计"}";
+        return new($"{player.Name}  {PlayerStatDelta.Format(player.Points, delta?.Points)} 分 · {PlayerStatDelta.Format(player.Rebounds, delta?.Rebounds)} 板 · {PlayerStatDelta.Format(player.Assists, delta?.Assists)} 助",
             player.Status.Length > 0 ? player.Status : $"时间 {player.Minutes} · 投篮 {player.FieldGoals}", details);
     }
 }

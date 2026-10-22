@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace NbaLive.Core;
 
 public sealed record SessionState(LiveSnapshot? Snapshot, IReadOnlyList<LiveEntry> History,
@@ -7,6 +9,8 @@ public sealed record SessionState(LiveSnapshot? Snapshot, IReadOnlyList<LiveEntr
     public DateTimeOffset? LastEventObservedAt { get; init; }
     public int HistoryRevision { get; init; }
     public IReadOnlyList<string> AddedEntryKeys { get; init; } = [];
+    public TimeSpan? FetchDuration { get; init; }
+    public int LastBatchSize { get; init; }
 }
 
 public sealed class LiveSession(IGameSource source,
@@ -41,6 +45,7 @@ public sealed class LiveSession(IGameSource source,
         var failures = 0;
         while (!ct.IsCancellationRequested)
         {
+            var started = Stopwatch.GetTimestamp();
             TimeSpan wait;
             try
             {
@@ -67,17 +72,18 @@ public sealed class LiveSession(IGameSource source,
                     SelectedGame = snapshot.Game,
                     LastEventObservedAt = _lastEventObservedAt,
                     HistoryRevision = _revision,
-                    AddedEntryKeys = addedKeys
+                    AddedEntryKeys = addedKeys,
+                    FetchDuration = Stopwatch.GetElapsedTime(started), LastBatchSize = addedKeys.Count
                 });
                 failures = 0;
                 if (snapshot.Game.Status is GameStatus.Finished or GameStatus.Cancelled) return;
-                wait = PollingPolicy.Next(snapshot.Game, snapshot.FetchedAt);
+                wait = PollingPolicy.AfterSuccess(snapshot.Game, snapshot.FetchedAt, Stopwatch.GetElapsedTime(started));
             }
             catch (OperationCanceledException) when (ct.IsCancellationRequested) { return; }
             catch (Exception ex) when (ex is HttpRequestException or OperationCanceledException or SourceFormatException)
             {
                 var text = ex is SourceFormatException ? "数据源异常" : "连接中断";
-                Publish(State with { Message = text, HasError = true, IsLoading = false, AddedEntryKeys = [] });
+                Publish(State with { Message = text, HasError = true, IsLoading = false, AddedEntryKeys = [], FetchDuration = Stopwatch.GetElapsedTime(started), LastBatchSize = 0 });
                 wait = TimeSpan.FromSeconds(new[] { 5, 10, 20, 30 }[Math.Min(failures++, 3)]);
             }
             try { await _delay(wait, ct); }

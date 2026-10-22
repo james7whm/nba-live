@@ -35,14 +35,16 @@ public partial class App : Application
             args.Handled = true;
             _controller?.ReportError("操作失败，请重试；详情已记录到本地 error.log。");
         };
-        _controller = new AppController(e.Args.Contains("--demo"));
+        _controller = new AppController(e.Args.Contains("--demo"), e.Args.Contains("--demo-opening"), e.Args.Contains("--demo-finished"));
         MainWindow = _controller.Overlay;
-        await _controller.Start();
+        await _controller.Start(e.Args.Contains("--demo-picker"));
         if (e.Args.Contains("--inspect-overlay")) Native.AllowInspection(_controller.Overlay);
         if (_showPending) _controller.Reveal(_settingsPending);
         if (e.Args.Contains("--settings")) _controller.ShowSettings();
         if (e.Args.Contains("--statistics")) _controller.ShowStatistics();
         if (e.Args.Contains("--recap")) _controller.ShowRecap();
+        if (e.Args.Contains("--history")) _controller.ShowHistory();
+        if (e.Args.Contains("--bookmarks")) _controller.ShowBookmarks();
     }
     protected override void OnExit(ExitEventArgs e)
     {

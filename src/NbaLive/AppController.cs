@@ -11,6 +11,7 @@ internal sealed class AppController : IDisposable
     private readonly LiveSession _session;
     private readonly StatisticsCoordinator _statisticsCoordinator;
     private readonly RecapTracker _recaps = new();
+    private readonly EventBookmarks _bookmarks;
     private readonly bool _demo;
     private NativeTray? _tray;
     private readonly SemaphoreSlim _selection = new(1, 1);
@@ -21,28 +22,32 @@ internal sealed class AppController : IDisposable
     private HistoryWindow? _history;
     private StatisticsWindow? _statistics;
     private RecapWindow? _recapWindow;
+    private BookmarksWindow? _bookmarksWindow;
     private bool _clickThrough;
     private bool _disposed;
     private string _error = "";
     internal OverlayWindow Overlay { get; }
 
-    internal AppController(bool demo)
+    internal AppController(bool demo, bool demoOpening = false, bool demoFinished = false)
     {
         _demo = demo;
         _store = new SettingsStore(demo ? Path.Combine(Path.GetTempPath(), "NbaLive-Demo") : null);
         _settings = _store.Load();
+        _bookmarks = new(_store.DirectoryPath);
         _error = _store.Error ?? "";
-        _source = demo ? new DemoSource() : _webSource = new WebGameSource();
+        _source = demo ? new DemoSource(demoOpening, demoFinished) : _webSource = new WebGameSource(loadRosters: true);
         _session = new LiveSession(_source);
         _statisticsCoordinator = new((IStatisticsSource)_source);
         Overlay = new(_settings);
         Overlay.ChooseRequested += OpenPicker;
         Overlay.HistoryRequested += OpenHistory;
+        Overlay.BookmarksRequested += OpenBookmarks;
         Overlay.StatisticsRequested += OpenStatistics;
         Overlay.SettingsRequested += OpenSettings;
         Overlay.HideRequested += ToggleVisibility;
         Overlay.RecapRequested += OpenRecap;
         Overlay.CapsuleRequested += ToggleCapsule;
+        Overlay.FollowedFilterRequested += ToggleFollowedFilter;
         Overlay.ContentRequested += SetContent;
         Overlay.ContextMenuRequested += () => _tray?.ShowMenu();
         Overlay.HotkeyPressed += id => { if (id == 1) ToggleVisibility(); else if (id == 2) ToggleClickThrough(); };
@@ -51,7 +56,7 @@ internal sealed class AppController : IDisposable
         _statisticsCoordinator.Changed += OnStatistics;
     }
 
-    internal async Task Start()
+    internal async Task Start(bool demoPicker = false)
     {
         Overlay.Show();
         _tray = new(Overlay);
@@ -72,6 +77,9 @@ internal sealed class AppController : IDisposable
                 case 11: ToggleCapsule(); break;
                 case 12: SetContent(OverlayContent.Text); break;
                 case 13: SetContent(OverlayContent.Players); break;
+                case 14: SetContent(OverlayContent.Lineup); break;
+                case 15: ToggleFollowedFilter(); break;
+                case 16: OpenBookmarks(); break;
             }
         };
         _hotkeys = new(new WindowInteropHelper(Overlay).Handle);
@@ -79,6 +87,7 @@ internal sealed class AppController : IDisposable
         await UpdateStatisticsDemand();
         if (_demo)
         {
+            if (demoPicker) { OpenPicker(); return; }
             var games = await _source.GetGames(MatchTime.Today, _lifetime.Token);
             await Select(games[0]);
             return;
@@ -100,8 +109,10 @@ internal sealed class AppController : IDisposable
         if (!Overlay.Dispatcher.CheckAccess()) { Overlay.Dispatcher.BeginInvoke(() => OnState(state)); return; }
         var generation = _recaps.Generation;
         _recaps.Observe(state);
+        _bookmarks.Observe(state);
         if (generation != _recaps.Generation) _recapWindow?.ResetGame();
         Overlay.Render(state, _demo);
+        _statistics?.SetLiveState(state);
         UpdateUnread();
         _history?.Update(state, _demo);
         if (_tray is not null) _tray.Text = _demo ? "NBA 直播条 · 演示数据" : state.HasError ? $"NBA 直播条 · {state.Message}" : "NBA 直播条";
@@ -122,16 +133,16 @@ internal sealed class AppController : IDisposable
     }
     private void OpenPicker()
     {
-        if (_picker is not null) { _picker.Activate(); return; }
+        if (_picker is not null) { Ui.Present(_picker); return; }
         _picker = new(_source, _settings.FavoriteTeam);
         _picker.Selected += async game => await Select(game);
         _picker.Closed += (_, _) => _picker = null;
-        _picker.Show();
+        Ui.Present(_picker);
     }
     private void OpenHistory()
     {
         if (_history is not null) { _history.Activate(); return; }
-        _history = new();
+        _history = new(_bookmarks, OpenBookmarks);
         _history.Update(_session.State, _demo);
         _history.Closed += (_, _) => _history = null;
         _history.Show();
@@ -145,7 +156,7 @@ internal sealed class AppController : IDisposable
                 if (_hotkeys is null || !_hotkeys.Apply(candidate.HideHotkey, candidate.LockHotkey)) return _hotkeys?.Error ?? "快捷键服务未就绪";
                 // Preserve the current match and position if they changed while settings were open.
                 ApplyPreferences(candidate with { X = _settings.X, Y = _settings.Y, LastGameId = _settings.LastGameId,
-                    FollowedPlayers = _settings.FollowedPlayers });
+                    FollowedPlayers = _settings.FollowedPlayers, StatisticsPreset = _settings.StatisticsPreset, StatisticsLayouts = _settings.StatisticsLayouts });
                 _picker?.SetFavorite(_settings.FavoriteTeam);
                 _error = "";
                 return _store.Save(_settings) ? null : _store.Error;
@@ -154,12 +165,26 @@ internal sealed class AppController : IDisposable
         _settingsWindow.Show();
     }
     internal void ShowSettings() => OpenSettings();
+    internal void ShowHistory() => OpenHistory();
+    internal void ShowBookmarks() => OpenBookmarks();
+    private void OpenBookmarks()
+    {
+        if (_bookmarksWindow is not null) { _bookmarksWindow.Activate(); return; }
+        _bookmarksWindow = new(_bookmarks, _demo);
+        _bookmarksWindow.Closed += (_, _) => _bookmarksWindow = null;
+        _bookmarksWindow.Show();
+    }
     internal void ShowStatistics() => OpenStatistics();
     private async void OpenStatistics()
     {
         if (_statistics is not null) { _statistics.Activate(); return; }
-        var window = new StatisticsWindow(_statisticsCoordinator, _demo, _settings.FollowedPlayers, ToggleFavorite);
+        var window = new StatisticsWindow(_statisticsCoordinator, _demo, _settings, ToggleFavorite, (preset, layouts) =>
+        {
+            _settings = (_settings with { StatisticsPreset = preset, StatisticsLayouts = layouts }).Validate();
+            return _store.Save(_settings) ? null : "统计布局已在本次生效，但配置保存失败。";
+        });
         _statistics = window;
+        window.SetLiveState(_session.State);
         window.Closed += async (_, _) =>
         {
             if (ReferenceEquals(_statistics, window)) _statistics = null;
@@ -176,7 +201,7 @@ internal sealed class AppController : IDisposable
         Overlay.RenderStatistics(state);
     }
     private Task UpdateStatisticsDemand() => _statisticsCoordinator.SetDemand(StatisticsConsumer.PlayerOverlay,
-        _settings.ContentMode == OverlayContent.Players && _settings.FollowedPlayers.Length > 0);
+        OverlayFeatures.NeedsStatistics(_settings));
     private void ApplyPreferences(AppSettings settings)
     {
         _settings = settings.Validate();
@@ -187,6 +212,7 @@ internal sealed class AppController : IDisposable
     }
     private void SetContent(OverlayContent content) { ApplyPreferences(_settings with { ContentMode = content }); Save(); }
     private void ToggleCapsule() { ApplyPreferences(_settings with { CapsuleEnabled = !_settings.CapsuleEnabled }); Save(); }
+    private void ToggleFollowedFilter() { ApplyPreferences(_settings with { FollowedPlayersOnly = !_settings.FollowedPlayersOnly }); Save(); }
     private string? ToggleFavorite(FavoritePlayer player)
     {
         var error = PlayerFavorites.Toggle(_settings.FollowedPlayers, player, out var updated);
@@ -198,7 +224,8 @@ internal sealed class AppController : IDisposable
     {
         if (_tray is null) return;
         _tray.CapsuleEnabled = _settings.CapsuleEnabled;
-        _tray.PlayerContent = _settings.ContentMode == OverlayContent.Players;
+        _tray.ContentMode = _settings.ContentMode;
+        _tray.FollowedPlayersOnly = _settings.FollowedPlayersOnly;
     }
     private void UpdateUnread() { Overlay.SetUnread(_recaps.UnreadCount); _recapWindow?.SetUnread(_recaps.UnreadCount); }
     internal void ShowRecap() => OpenRecap();
@@ -206,7 +233,7 @@ internal sealed class AppController : IDisposable
     {
         if (_recapWindow is not null) { _recapWindow.Activate(); return; }
         _recapWindow = new(recent => _recaps.Capture(DateTimeOffset.UtcNow, recent), capture =>
-        { _recaps.MarkViewed(capture); UpdateUnread(); }, _demo);
+        { _recaps.MarkViewed(capture); UpdateUnread(); }, _demo, _bookmarks, OpenBookmarks);
         _recapWindow.Closed += (_, _) => _recapWindow = null;
         _recapWindow.Show();
         UpdateUnread();
@@ -217,7 +244,7 @@ internal sealed class AppController : IDisposable
         if (!Overlay.IsVisible) Overlay.Show();
         Overlay.Topmost = true;
         if (settings) OpenSettings();
-        else if (_picker is not null) _picker.Activate();
+        else if (_picker is not null) Ui.Present(_picker);
     }
     private void ToggleVisibility()
     {
@@ -239,6 +266,7 @@ internal sealed class AppController : IDisposable
         _session.Dispose();
         _statistics?.Close();
         _recapWindow?.Close();
+        _bookmarksWindow?.Close();
         _statisticsCoordinator.Dispose();
         _hotkeys?.Dispose();
         _tray?.Dispose();
@@ -247,32 +275,88 @@ internal sealed class AppController : IDisposable
     }
 }
 
-internal sealed class DemoSource : IGameSource, IStatisticsSource
+internal sealed class DemoSource(bool opening = false, bool finished = false) : IGameSource, IStatisticsSource
 {
     private int _tick;
     private readonly List<LiveEntry> _entries = [];
+    private GameInfo Game(DateOnly date) => new("0", "湖人", "勇士", 86, 82, finished ? GameStatus.Finished : GameStatus.Live,
+        finished ? "已结束" : opening ? "第一节 12:00" : "第三节 04:32", date);
     public Task<IReadOnlyList<GameInfo>> GetGames(DateOnly date, CancellationToken cancellationToken) =>
-        Task.FromResult<IReadOnlyList<GameInfo>>([new("0", "湖人", "勇士", 86, 82, GameStatus.Live, "演示 · 第三节 04:32", date)]);
+        Task.FromResult<IReadOnlyList<GameInfo>>([Game(date)]);
     public Task<LiveSnapshot> GetSnapshot(string gameId, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
         _tick++;
-        _entries.Add(new($"demo-{_tick}", 3, $"04:{32 - _tick % 30:00}", "湖人", _tick % 2 == 0 ? "演示：库里三分不中，戴维斯拿到篮板" : "演示：詹姆斯突破上篮得分", "86-82", _tick));
-        var game = new GameInfo("0", "湖人", "勇士", 86, 82, GameStatus.Live, "第三节 04:32", MatchTime.Today);
+        if (_entries.Count == 0 && !opening) SeedScores();
+        if (finished) return Task.FromResult(new LiveSnapshot(Game(MatchTime.Today), _entries.ToArray(), DateTimeOffset.UtcNow));
+        var clock = $"04:{32 - _tick % 30:00}";
+        var period = opening ? 1 : 3;
+        if ((!opening || _tick >= 4) && (_tick == 1 || _tick % 3 == 1))
+        {
+            var bench = _tick / 3 % 2 == 1;
+            _entries.Add(new($"demo-lineup-away-{_tick}", period, clock, "湖人",
+                $"湖人队换人（演示：詹姆斯、演示：戴维斯、演示：里夫斯、演示：范德比尔特、{(bench ? "演示：克内克特" : "演示：八村垒")}）", "86-82", _tick * 10));
+            _entries.Add(new($"demo-lineup-home-{_tick}", period, clock, "勇士",
+                "勇士队换人（演示：库里、演示：巴特勒、演示：格林、演示：穆迪、演示：波杰姆斯基）", "86-82", _tick * 10 + 1));
+        }
+        var (eventTeam, text) = (_tick % 4) switch
+        {
+            0 => ("勇士", "演示：穆迪中投得分"),
+            1 => ("湖人", "演示：詹姆斯突破上篮得分"),
+            2 => ("勇士", "演示：库里三分不中，戴维斯拿到篮板"),
+            _ => ("湖人", "演示：湖人请求暂停")
+        };
+        _entries.Add(new($"demo-{_tick}", period, clock, eventTeam, text, "86-82", _tick * 10 + 2));
+        var game = Game(MatchTime.Today);
         return Task.FromResult(new LiveSnapshot(game, _entries.ToArray(), DateTimeOffset.UtcNow));
+    }
+    private void SeedScores()
+    {
+        // Fictional scoring history for --demo only; real mode never synthesizes score records.
+        var targets = finished ? new[] { (28, 26), (55, 57), (75, 72), (86, 82) } : new[] { (28, 26), (55, 57), (86, 82) };
+        var away = 0; var home = 0; var sequence = -1000;
+        for (var index = 0; index < targets.Length; index++)
+        {
+            var period = index + 1; var target = targets[index];
+            void Add(string clock, string text, string team = "")
+            {
+                _entries.Add(new($"demo-scoring-{sequence}", period, clock, team, "演示：" + text, $"{away}-{home}", sequence++));
+            }
+            Add("12:00", $"第{period}节开始");
+            var startAway = away; var startHome = home;
+            var actions = new List<(bool Away, int Points)>();
+            while (away < target.Item1 || home < target.Item2)
+            {
+                if (away < target.Item1) { var points = Math.Min(2 + actions.Count % 2, target.Item1 - away); away += points; actions.Add((true, points)); }
+                if (home < target.Item2) { var points = Math.Min(2 + actions.Count % 2, target.Item2 - home); home += points; actions.Add((false, points)); }
+            }
+            away = startAway; home = startHome;
+            var endClock = !finished && period == 3 ? 272 : 0;
+            for (var action = 0; action < actions.Count; action++)
+            {
+                var shot = actions[action]; if (shot.Away) away += shot.Points; else home += shot.Points;
+                var remaining = 720 - (int)Math.Round((720 - endClock) * (action + 1d) / actions.Count);
+                Add($"{remaining / 60:00}:{remaining % 60:00}", $"{(shot.Away ? "詹姆斯" : "库里")}得{shot.Points}分", shot.Away ? "湖人" : "勇士");
+            }
+            if (endClock == 0) Add("00:00", $"第{period}节结束");
+        }
     }
     public Task<BoxScoreSnapshot> GetBoxScore(string gameId, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        var game = new GameInfo("0", "湖人", "勇士", 86, 82, GameStatus.Live, "第三节 04:32", MatchTime.Today);
+        var game = Game(MatchTime.Today);
         var tick = Volatile.Read(ref _tick);
         static PlayerStatistics Player(string id, string name, int points, int rebounds, int assists, bool starter = true) =>
-            new(id, name, starter, "F", "28:36", $"{(points - 4) / 2}-{(points - 4) / 2 + 6}", "0-2", "4-4", 2, rebounds - 2, rebounds, assists, 2, 1, 2, 1, points, 4);
+            new(id, name, starter, "F", "28:36", points == 0 ? "0-0" : $"{(points - 4) / 2}-{(points - 4) / 2 + 6}", "0-0", points == 0 ? "0-0" : "4-4", Math.Min(2, rebounds), Math.Max(0, rebounds - 2), rebounds, assists, 2, 1, 2, 1, points, 4)
+            { JerseyNumber = id switch { "a1" => "23", "a2" => "3", "a3" => "15", "a4" => "28", "a5" => "2", "a6" => "4", "h1" => "30", "h2" => "10", "h3" => "23", "h4" => "4", "h5" => "2", _ => "0" } };
         var away = new[] { Player("a1", "演示：詹姆斯", 28, 8, 7 + tick / 3), Player("a2", "演示：戴维斯", 26, 12, 3),
-            Player("a3", "演示：里夫斯", 18, 4, 5), Player("a4", "演示：八村垒", 14, 5, 1, false) };
+            Player("a3", "演示：里夫斯", 18, 4, 5), Player("a4", "演示：八村垒", 14, 5, 1),
+            Player("a5", "演示：范德比尔特", 0, 0, 0), Player("a6", "演示：克内克特", 0, 0, 0, false) };
         var home = new[] { Player("h1", "演示：库里", 30, 4, 6), Player("h2", "演示：巴特勒", 22, 6, 5),
-            Player("h3", "演示：格林", 12, 9, 7), Player("h4", "演示：穆迪", 18, 3, 2, false) };
-        static PlayerStatistics Total(PlayerStatistics[] players) => new("total", "球队合计", false, "", "—", $"{players.Sum(p => (p.Points - 4) / 2)}-{players.Sum(p => (p.Points - 4) / 2 + 6)}", "0-8", "16-16",
+            Player("h3", "演示：格林", 12, 9, 7), Player("h4", "演示：穆迪", 18, 3, 2),
+            Player("h5", "演示：波杰姆斯基", 0, 0, 0), Player("h6", "演示：佩顿", 0, 0, 0, false) };
+        static string Shots(IEnumerable<string> shots) => $"{shots.Sum(v => int.Parse(v.Split('-')[0]))}-{shots.Sum(v => int.Parse(v.Split('-')[1]))}";
+        static PlayerStatistics Total(PlayerStatistics[] players) => new("total", "球队合计", false, "", "—", Shots(players.Select(p => p.FieldGoals)), Shots(players.Select(p => p.ThreePointers)), Shots(players.Select(p => p.FreeThrows)),
             players.Sum(p => p.OffensiveRebounds), players.Sum(p => p.DefensiveRebounds), players.Sum(p => p.Rebounds), players.Sum(p => p.Assists),
             players.Sum(p => p.Fouls), players.Sum(p => p.Steals), players.Sum(p => p.Turnovers), players.Sum(p => p.Blocks), players.Sum(p => p.Points), null);
         return Task.FromResult(new BoxScoreSnapshot(game, new(game.Away, away, Total(away)), new(game.Home, home, Total(home)), DateTimeOffset.UtcNow));

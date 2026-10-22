@@ -7,9 +7,13 @@ public sealed record PlayerStatistics(string Id, string Name, bool IsStarter, st
     string Status = "")
 {
     public string Role => IsStarter ? "首发" : "替补";
+    public string? JerseyNumber { get; init; }
 }
 
-public sealed record TeamStatistics(string Team, IReadOnlyList<PlayerStatistics> Players, PlayerStatistics? Total);
+public sealed record TeamStatistics(string Team, IReadOnlyList<PlayerStatistics> Players, PlayerStatistics? Total)
+{
+    public string? RosterSlug { get; init; }
+}
 public sealed record BoxScoreSnapshot(GameInfo Game, TeamStatistics Away, TeamStatistics Home, DateTimeOffset FetchedAt)
 {
     public bool HasPlayerData => Away.Players.Count > 0 || Home.Players.Count > 0;

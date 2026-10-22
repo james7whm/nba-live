@@ -8,17 +8,21 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
 {
     private readonly HttpClient _client;
     private readonly GamePageParser _parser = new();
-    private readonly SemaphoreSlim _requests = new(1, 1);
+    private readonly PriorityRequestGate _requests = new();
     private readonly ConcurrentDictionary<string, GameInfo> _knownGames = new();
     private bool _useHttp;
     private sealed record SnapshotCache(string GameId, string Html, LiveSnapshot Snapshot);
     private SnapshotCache? _snapshotCache;
     private sealed record StatisticsCache(string GameId, string Html, BoxScoreSnapshot Snapshot);
     private StatisticsCache? _statisticsCache;
+    private readonly bool _loadRosters;
+    private sealed record RosterCache(DateTimeOffset RetryAfter, IReadOnlyDictionary<string, string> Numbers);
+    private readonly ConcurrentDictionary<string, RosterCache> _rosters = new();
     public string Transport => _useHttp ? "HTTP（只读公开比赛数据）" : "HTTPS";
 
-    public WebGameSource(HttpMessageHandler? handler = null)
+    public WebGameSource(HttpMessageHandler? handler = null, bool loadRosters = false)
     {
+        _loadRosters = loadRosters;
         _client = new HttpClient(handler ?? new SocketsHttpHandler
         {
             AutomaticDecompression = DecompressionMethods.All,
@@ -34,20 +38,19 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
 
     private async Task<string> Read(string path, CancellationToken ct)
     {
-        await _requests.WaitAsync(ct);
-        try
+        var live = path.StartsWith("/games/playbyplay/", StringComparison.Ordinal);
+        var optional = path.StartsWith("/teams/", StringComparison.Ordinal);
+        using var lease = await _requests.Enter(live, ct);
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(ct);
+        deadline.CancelAfter(TimeSpan.FromSeconds(optional ? 2 : live ? 8 : 5));
+        try { return await ReadPage($"{(_useHttp ? "http" : "https")}://{SourcePages.BaseUri.Host}{path}", deadline.Token); }
+        catch (HttpRequestException ex) when (!_useHttp && IsTlsFailure(ex))
         {
-            try { return await ReadPage($"{(_useHttp ? "http" : "https")}://{SourcePages.BaseUri.Host}{path}", ct); }
-            catch (HttpRequestException ex) when (!_useHttp && IsTlsFailure(ex))
-            {
-                // Public legacy endpoint only; no cookies, credentials or user data are sent.
-                // Certificate validation is never disabled. Transport is shown in settings.
-                var html = await ReadPage($"http://{SourcePages.BaseUri.Host}{path}", ct);
-                _useHttp = true;
-                return html;
-            }
+            // Both transport attempts share one deadline; certificate validation is never disabled.
+            var html = await ReadPage($"http://{SourcePages.BaseUri.Host}{path}", deadline.Token);
+            _useHttp = true;
+            return html;
         }
-        finally { _requests.Release(); }
     }
     private async Task<string> ReadPage(string url, CancellationToken ct)
     {
@@ -109,9 +112,34 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
             return BoxScoreSnapshot.Waiting(scheduled, DateTimeOffset.UtcNow);
         var now = DateTimeOffset.UtcNow;
         var cached = Volatile.Read(ref _statisticsCache);
-        if (cached?.GameId == gameId && cached.Html == html) return cached.Snapshot with { FetchedAt = now };
-        var snapshot = new BoxScoreParser().Parse(html, gameId, now);
-        Volatile.Write(ref _statisticsCache, new(gameId, html, snapshot));
-        return snapshot;
+        BoxScoreSnapshot snapshot;
+        if (cached?.GameId == gameId && cached.Html == html) snapshot = cached.Snapshot with { FetchedAt = now };
+        else
+        {
+            snapshot = new BoxScoreParser().Parse(html, gameId, now);
+            Volatile.Write(ref _statisticsCache, new(gameId, html, snapshot));
+        }
+        if (!_loadRosters) return snapshot;
+        return snapshot with { Away = await AddNumbers(snapshot.Away, cancellationToken), Home = await AddNumbers(snapshot.Home, cancellationToken) };
+    }
+    private async Task<TeamStatistics> AddNumbers(TeamStatistics team, CancellationToken ct)
+    {
+        if (team.RosterSlug is not { } slug || team.Players.Count == 0) return team;
+        if (!_rosters.TryGetValue(slug, out var cache) || cache.RetryAfter <= DateTimeOffset.UtcNow)
+        {
+            try
+            {
+                var numbers = TeamRosterParser.Parse(await Read(SourcePages.TeamRoster(slug).AbsolutePath, ct));
+                cache = new(DateTimeOffset.UtcNow.AddHours(6), numbers);
+            }
+            catch (Exception ex) when (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !ct.IsCancellationRequested)
+            {
+                // Optional metadata failure never discards valid scores or invents a number.
+                cache = new(DateTimeOffset.UtcNow.AddMinutes(1), cache?.Numbers ?? new Dictionary<string, string>());
+            }
+            _rosters[slug] = cache;
+        }
+        ct.ThrowIfCancellationRequested();
+        return team with { Players = team.Players.Select(p => cache.Numbers.TryGetValue(p.Id, out var number) ? p with { JerseyNumber = number } : p).ToArray() };
     }
 }

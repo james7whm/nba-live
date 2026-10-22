@@ -26,6 +26,7 @@ try {
     Copy-Item -LiteralPath (Join-Path $taskRoot 'THIRD-PARTY-NOTICES.md') -Destination $taskOutput
     New-Item -ItemType Directory -Force (Join-Path $taskOutput 'docs') | Out-Null
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\VERIFICATION.md') -Destination (Join-Path $taskOutput 'docs\VERIFICATION.md')
+    Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\TEAM-COLORS.md') -Destination (Join-Path $taskOutput 'docs\TEAM-COLORS.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\app-icon.png') -Destination (Join-Path $taskOutput 'docs\app-icon.png')
     $taskDotnetRoot = Split-Path -Parent $taskDotnet
     Copy-Item -LiteralPath (Join-Path $taskDotnetRoot 'LICENSE.txt') -Destination (Join-Path $taskOutput 'DOTNET-LICENSE.txt')

@@ -5,7 +5,7 @@ if (args.Contains("--probe-statistics"))
 {
     var gameIndex = Array.IndexOf(args, "--game");
     if (gameIndex < 0 || gameIndex + 1 >= args.Length) throw new ArgumentException("--probe-statistics --game ID");
-    using var source = new WebGameSource();
+    using var source = new WebGameSource(loadRosters: true);
     var snapshot = await source.GetBoxScore(args[gameIndex + 1], CancellationToken.None);
     Console.WriteLine(JsonSerializer.Serialize(new { source.Transport, snapshot.Game, snapshot.FetchedAt,
         AwayPlayers = snapshot.Away.Players.Count, HomePlayers = snapshot.Home.Players.Count,
@@ -152,7 +152,7 @@ var tests = new (string Name, Func<Task> Run)[]
         session.Changed += states.Add;
         await session.Select(first.Game);
         await Until(() => session.State.Snapshot?.Game.Status == GameStatus.Finished);
-        Check(waits.SequenceEqual(new double[] { 5, 5, 10, 20, 30, 30 }), "normal interval and retry backoff");
+        Check(waits.Count == 6 && waits[0] is >= 0 and <= 5 && waits.Skip(1).SequenceEqual(new double[] { 5, 10, 20, 30, 30 }), "normal start-to-start interval and retry backoff");
         Check(states.Where(s => s.HasError).All(s => s.Snapshot == first && s.History.Count == 1), "errors retain last snapshot");
         Check(states.Any(s => s.Message == "数据源异常"), "parse failure visible");
         Check(session.State.History.Count == 2 && session.State.History[0].Text == "修正事件", "same source id corrected without duplicate");
@@ -289,7 +289,7 @@ var tests = new (string Name, Func<Task> Run)[]
         }
         finally { Directory.Delete(dir, true); }
     }))
-}.Concat(StatisticsTests.Cases).Concat(CompanionTests.Cases).ToArray();
+}.Concat(StatisticsTests.Cases).Concat(CompanionTests.Cases).Concat(JerseyTests.Cases).Concat(LiveCompanionTests.Cases).Concat(CollectionTests.Cases).Concat(ScoringTests.Cases).Concat(DeliveryTests.Cases).Concat(ScheduleProgressTests.Cases).ToArray();
 var failures = 0;
 foreach (var test in tests)
 {

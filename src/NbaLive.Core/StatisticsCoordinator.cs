@@ -9,6 +9,7 @@ public sealed class StatisticsCoordinator : IDisposable
     private readonly SemaphoreSlim _gate = new(1, 1);
     private readonly object _sync = new();
     private readonly HashSet<StatisticsConsumer> _consumers = [];
+    private readonly StatisticsChangeTracker _changes = new();
     private GameInfo? _game;
     private long _epoch;
     private long? _activeEpoch;
@@ -27,6 +28,7 @@ public sealed class StatisticsCoordinator : IDisposable
         {
             if (_disposed) return Task.CompletedTask;
             _game = game; _epoch++; _acceptingEpoch = null;
+            _changes.Reset();
             State = new(game, null, "等待球员统计", false, false);
         }
         Changed?.Invoke(State);
@@ -80,7 +82,7 @@ public sealed class StatisticsCoordinator : IDisposable
         lock (_sync)
         {
             if (_disposed || _acceptingEpoch != _epoch || state.SelectedGame?.Id != _game?.Id) return;
-            State = state;
+            State = state = _changes.Observe(state);
         }
         Changed?.Invoke(state);
     }

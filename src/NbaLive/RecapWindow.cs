@@ -12,17 +12,29 @@ internal sealed class RecapWindow : Window
     private readonly TextBlock _highlights = Ui.Text("", 13);
     private readonly TextBlock _status = Ui.Text("", 11);
     private readonly Button _new;
+    private readonly Button _bookmark;
+    private readonly EventBookmarks _bookmarks;
     private readonly ListBox _entries = new() { BorderThickness = new(0), Background = Brushes.Transparent, HorizontalContentAlignment = HorizontalAlignment.Stretch };
     private RecapSnapshot? _shown;
-    internal RecapWindow(Func<bool, RecapSnapshot> capture, Action<RecapSnapshot> markViewed, bool demo)
+    internal RecapWindow(Func<bool, RecapSnapshot> capture, Action<RecapSnapshot> markViewed, bool demo, EventBookmarks bookmarks, Action openBookmarks)
     {
         _capture = capture; _markViewed = markViewed; _demo = demo;
+        _bookmarks = bookmarks;
         Ui.Initialize(this, "刚才发生了啥 · NBA 直播条", 780, 620);
         var root = new DockPanel { Margin = new(24) };
         var top = new StackPanel(); top.Children.Add(_heading);
-        var actions = new StackPanel { Orientation = Orientation.Horizontal, Margin = new(0, 0, 0, 12) };
+        var actions = new WrapPanel { Margin = new(0, 0, 0, 12) };
         _new = Ui.Button("查看新增", () => ShowCapture(false)); actions.Children.Add(_new);
-        actions.Children.Add(Ui.Button("重看最近 10 条", () => ShowCapture(true))); top.Children.Add(actions);
+        actions.Children.Add(Ui.Button("重看最近 10 条", () => ShowCapture(true)));
+        _bookmark = Ui.Button("收藏所选", () =>
+        {
+            if (_shown?.Game is { } game && _entries.SelectedItem is LiveEntry entry)
+            {
+                var error = _bookmarks.Toggle(game, entry);
+                if (error is not null) _status.Text = error;
+            }
+        });
+        actions.Children.Add(_bookmark); actions.Children.Add(Ui.Button("精彩收藏", openBookmarks)); top.Children.Add(actions);
         top.Children.Add(_summary);
         top.Children.Add(new ScrollViewer { Content = _highlights, MaxHeight = 170, VerticalScrollBarVisibility = ScrollBarVisibility.Auto });
         top.Children.Add(Ui.Text("本次范围内的全部原文 · 由早到晚", 11));
@@ -41,6 +53,16 @@ internal sealed class RecapWindow : Window
         _entries.ItemContainerStyle = rowStyle;
         root.Children.Add(_entries); Content = root;
         Loaded += (_, _) => ShowCapture(false);
+        _entries.SelectionChanged += (_, _) => UpdateBookmark();
+        _bookmarks.Changed += UpdateBookmark;
+        Closed += (_, _) => _bookmarks.Changed -= UpdateBookmark;
+        UpdateBookmark();
+    }
+    private void UpdateBookmark()
+    {
+        _bookmark.IsEnabled = _shown?.Game is not null && _entries.SelectedItem is LiveEntry;
+        _bookmark.Content = _shown?.Game is { } game && _entries.SelectedItem is LiveEntry entry && _bookmarks.Contains(game.Id, entry.Key) ? "取消所选收藏" : "收藏所选";
+        _bookmark.ToolTip = _bookmarks.Error ?? "仅保存选中的原文，不改变回顾范围与未读边界。";
     }
     private void ShowCapture(bool recent)
     {
