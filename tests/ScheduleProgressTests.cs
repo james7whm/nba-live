@@ -45,6 +45,39 @@ internal static class ScheduleProgressTests
             foreach (var (input, expected) in examples) Check(GamePageParser.FormatLiveProgress(input) == expected, input);
             Check(GamePageParser.Status("加1剩4:30") == GameStatus.Live, "short overtime identifies live snapshots too");
         })),
+        ("Overlay header formats regular quarters and numbered overtime with remaining time", () => Sync(() =>
+        {
+            GameInfo Live(string progress) => new("1", "客队", "主队", 99, 98, GameStatus.Live, progress, Date);
+            Check(OverlayProgress.Format(Live("第4节 11:50")) == "第四节剩11:50", "fourth quarter countdown");
+            Check(OverlayProgress.Format(Live("加1剩4:30")) == "加时1剩4:30", "first overtime");
+            Check(OverlayProgress.Format(Live("第二个加时 02:15")) == "加时2剩2:15", "numbered overtime");
+            Check(OverlayProgress.Format(Live("加1 · 时间未提供")) == "加时1 · 时间未提供", "overtime retains its number when the clock is unavailable");
+            Check(OverlayProgress.Format(Live("中场休息")) == "中场休息", "break isn't a countdown");
+            Check(OverlayProgress.Format(Live("")) == "进行中 · 时间未提供", "missing clocks aren't invented");
+        })),
+        ("Overlay finished and pregame statuses do not reuse old game clocks", () => Sync(() =>
+        {
+            var game = new GameInfo("1", "老鹰", "魔术", 132, 125, GameStatus.Finished, "第四节 11:50", Date);
+            Check(OverlayProgress.Format(game) == "已结束", "don't turn an archive into a live clock");
+            Check(OverlayProgress.Format(game with { Status = GameStatus.Scheduled, Progress = "未开始 19:30" }) == "未开始 19:30", "scheduled time kept as scheduled");
+            Check(OverlayProgress.Format(null) == "", "empty overlay has no phantom game clock");
+        })),
+        ("Inline history expands upward at floating and corner positions across monitor scales", () => Sync(() =>
+        {
+            foreach (var scale in new[] { 1d, 1.25, 1.5, 2d })
+            foreach (var area in new[] { new WorkArea(0, 0, 1920, 1040), new WorkArea(-1920, -200, 0, 880) })
+            {
+                var width = (int)(280 * scale); var oldHeight = (int)(110 * scale); var expandedHeight = (int)(320 * scale);
+                foreach (var y in new[] { area.Top + 16, area.Top + 400, area.Bottom - oldHeight - 16 })
+                {
+                    var x = area.Right - width - 16;
+                    var expanded = WindowPlacement.ExpandUpward(area, x, y, width, oldHeight, expandedHeight, scale);
+                    Check(expanded.X == x && expanded.Y == Math.Max(area.Top, y + oldHeight - expandedHeight), "bottom anchor is stable unless the top work area clamps it");
+                    Check(expanded.Y >= area.Top && expanded.Y + expandedHeight <= area.Bottom, "expanded reader remains in visible work area");
+                    Check(WindowPlacement.Calculate(area, width, oldHeight, scale, x, y) == new WindowPosition(x, y), "stored compact coordinates can be restored");
+                }
+            }
+        })),
         ("Native HTTP schedule uses the real live-card parser without per-game requests", async () =>
         {
             var handler = new ScheduleHandler();

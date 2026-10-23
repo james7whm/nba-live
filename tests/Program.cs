@@ -62,7 +62,7 @@ if (args.Contains("--observe-anchor"))
     using var transport = new WebGameSource(); var adapter = new AnchorSource(transport);
     var game = (await transport.GetGames(MatchTime.Today, default)).Single(g => g.Id == args[gameIndex + 1]);
     var match = await adapter.Resolve(game, default);
-    if (match is null || (await adapter.GetMatch(match, default)).Game.Status != GameStatus.Live || await adapter.GetRoom(match, default) is null)
+    if (match is null || (await adapter.GetMatch(match, default)).Game.Status != GameStatus.Live)
     { Console.WriteLine("NOT_VERIFIED: a currently live match with an anchor is required."); Environment.ExitCode = 2; return; }
     using var session = new AnchorSession(adapter); var initial = -1;
     session.Changed += () =>
@@ -77,6 +77,7 @@ if (args.Contains("--observe-anchor"))
     finally { await session.StopAsync(); }
     Console.WriteLine(JsonSerializer.Serialize(new { observationSeconds = seconds, initialCount = initial, finalCount = session.State.History.Count,
         hasNewEvents = initial >= 0 && session.State.History.Count > initial, manualAppComparisonRequired = true }));
+    if (!session.HasRoom || initial < 0) Environment.ExitCode = 2;
     return;
 }
 

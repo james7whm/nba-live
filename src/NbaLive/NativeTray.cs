@@ -9,7 +9,9 @@ internal sealed class NativeTray : IDisposable
     private const int CallbackMessage = 0x8001;
     private readonly IntPtr _hwnd;
     private readonly HwndSource _source;
-    private readonly IntPtr _icon;
+    private IntPtr _icon;
+    private string _iconFile;
+    private int _iconSize;
     private readonly uint _taskbarCreated;
     private NotifyIconData _data;
     private bool _disposed;
@@ -25,13 +27,23 @@ internal sealed class NativeTray : IDisposable
     {
         _hwnd = new WindowInteropHelper(window).Handle;
         _source = HwndSource.FromHwnd(_hwnd);
-        _icon = LoadImage(IntPtr.Zero, Path.Combine(AppContext.BaseDirectory, "Tray.ico"), 1, 16, 16, 0x10);
+        (_iconFile, _iconSize) = IconPreference();
+        _icon = LoadImage(IntPtr.Zero, Path.Combine(AppContext.BaseDirectory, _iconFile), 1, _iconSize, _iconSize, 0x10);
+        if (_icon == IntPtr.Zero)
+        {
+            _iconFile = "Tray.ico";
+            _icon = LoadImage(IntPtr.Zero, Path.Combine(AppContext.BaseDirectory, _iconFile), 1, _iconSize, _iconSize, 0x10);
+        }
         if (_icon == IntPtr.Zero) throw new InvalidOperationException("无法加载托盘图标。");
         _taskbarCreated = RegisterWindowMessage("TaskbarCreated");
         _data = new() { Size = (uint)Marshal.SizeOf<NotifyIconData>(), Hwnd = _hwnd, Id = 1,
             Flags = 1 | 2 | 4, Callback = CallbackMessage, Icon = _icon, Tip = "NBA 直播条", Info = "", InfoTitle = "" };
         _source.AddHook(Hook);
-        if (!ShellNotifyIcon(0, ref _data)) throw new InvalidOperationException("无法创建系统托盘图标。");
+        if (!ShellNotifyIcon(0, ref _data))
+        {
+            _source.RemoveHook(Hook); DestroyIcon(_icon);
+            throw new InvalidOperationException("无法创建系统托盘图标。");
+        }
     }
     internal string Text
     {
@@ -39,12 +51,37 @@ internal sealed class NativeTray : IDisposable
     }
     private IntPtr Hook(IntPtr hwnd, int message, IntPtr wParam, IntPtr lParam, ref bool handled)
     {
-        if (message == _taskbarCreated) ShellNotifyIcon(0, ref _data);
+        if (message == _taskbarCreated) { ShellNotifyIcon(0, ref _data); RefreshAppearance(); }
+        if (message is 0x001A or 0x031A or Native.WmDpiChanged) RefreshAppearance(); // settings/theme/DPI
         if (message != CallbackMessage) return IntPtr.Zero;
         if (lParam.ToInt32() == 0x0203) Command?.Invoke(1); // double click
         if (lParam.ToInt32() is 0x0205 or 0x007B) ShowMenu();
         handled = true;
         return IntPtr.Zero;
+    }
+    private (string File, int Size) IconPreference()
+    {
+        var file = "Tray.ico"; // The tile remains readable when taskbar-theme information is unavailable.
+        try
+        {
+            using var key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize");
+            file = key?.GetValue("SystemUsesLightTheme") switch { 0 => "TrayDark.ico", 1 => "TrayLight.ico", _ => file };
+        }
+        catch (Exception ex) when (ex is System.Security.SecurityException or UnauthorizedAccessException or IOException) { }
+        var size = GetSystemMetricsForDpi(49, GetDpiForWindow(_hwnd)); // SM_CYSMICON
+        return (file, Math.Clamp(size, 16, 256));
+    }
+    private void RefreshAppearance()
+    {
+        if (_disposed) return;
+        var (file, size) = IconPreference();
+        if (file == _iconFile && size == _iconSize) return;
+        var replacement = LoadImage(IntPtr.Zero, Path.Combine(AppContext.BaseDirectory, file), 1, size, size, 0x10);
+        if (replacement == IntPtr.Zero) return; // Keep a working icon if optional theme artwork is unavailable.
+        var next = _data; next.Icon = replacement;
+        if (!ShellNotifyIcon(1, ref next)) { DestroyIcon(replacement); return; }
+        var previous = _icon; _icon = replacement; _iconFile = file; _iconSize = size; _data.Icon = replacement;
+        DestroyIcon(previous);
     }
     internal void ShowMenu()
     {
@@ -109,6 +146,8 @@ internal sealed class NativeTray : IDisposable
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern IntPtr LoadImage(IntPtr instance, string name, uint type, int cx, int cy, uint flags);
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern uint RegisterWindowMessage(string message);
     [DllImport("user32.dll")] private static extern bool DestroyIcon(IntPtr icon);
+    [DllImport("user32.dll")] private static extern uint GetDpiForWindow(IntPtr hwnd);
+    [DllImport("user32.dll")] private static extern int GetSystemMetricsForDpi(int index, uint dpi);
     [DllImport("user32.dll")] private static extern IntPtr CreatePopupMenu();
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern bool AppendMenu(IntPtr menu, uint flags, uint id, string text);
     [DllImport("user32.dll")] private static extern int TrackPopupMenu(IntPtr menu, uint flags, int x, int y, int reserved, IntPtr hwnd, IntPtr rect);

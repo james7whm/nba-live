@@ -34,7 +34,7 @@ public sealed class TextPlayback
         _history = state.History;
         foreach (var entry in state.History)
         {
-            if (_initialized && !_entries.ContainsKey(entry.Key)) _pending.Add(entry.Key);
+            if (_initialized && Delivery == TextDelivery.Paged && !_entries.ContainsKey(entry.Key)) _pending.Add(entry.Key);
             _entries[entry.Key] = entry;
         }
         if (!_initialized && state.Snapshot is not null)
@@ -48,6 +48,19 @@ public sealed class TextPlayback
         _pending.Clear(); _baseline = _history.Select(e => e.Key).ToArray(); _viewInitialized = false;
     }
     public void Suspend(DateTimeOffset now) => _suspendedAt ??= now;
+    /// <summary>Latest text and inline history must read the SAME captured snapshot, even while playback is suspended.</summary>
+    public IReadOnlyList<LiveEntry> GetVisiblePage(SessionState visibleSnapshot, int count, Func<LiveEntry, bool> matches, bool filterReady)
+    {
+        if (!filterReady || count <= 0) return [];
+        if (Delivery == TextDelivery.Paged && Visible.Count > 0) return Visible.Where(matches).Take(count).ToArray();
+        // A collapsed capsule, an open history view or hidden window may never advance playback.
+        // Their cached page is not a live snapshot. Showing the captured latest entries does not
+        // consume a paged queue, resume hover reading, or mark recap entries as read.
+        var recent = new List<LiveEntry>(count);
+        for (var index = visibleSnapshot.History.Count - 1; index >= 0 && recent.Count < count; index--)
+            if (matches(visibleSnapshot.History[index])) recent.Add(visibleSnapshot.History[index]);
+        return recent;
+    }
     public void Refresh(int count, Func<LiveEntry, bool> matches, bool filterReady, bool canAdvance, DateTimeOffset now)
     {
         if (!filterReady || count <= 0) { Suspend(now); return; }

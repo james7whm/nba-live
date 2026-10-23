@@ -1,27 +1,70 @@
-<DrawingImage xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-  <DrawingImage.Drawing>
-    <DrawingGroup>
-      <GeometryDrawing Brush="#53697F">
-        <GeometryDrawing.Geometry>
-          <RectangleGeometry Rect="0,0,256,256" RadiusX="52" RadiusY="52" />
-        </GeometryDrawing.Geometry>
-      </GeometryDrawing>
-      <GeometryDrawing>
-        <GeometryDrawing.Pen><Pen Brush="#F4F7FA" Thickness="12" /></GeometryDrawing.Pen>
-        <GeometryDrawing.Geometry><EllipseGeometry Center="128,106" RadiusX="58" RadiusY="58" /></GeometryDrawing.Geometry>
-      </GeometryDrawing>
-      <GeometryDrawing Geometry="M 70,106 L 186,106 M 128,48 L 128,164">
-        <GeometryDrawing.Pen><Pen Brush="#F4F7FA" Thickness="8" /></GeometryDrawing.Pen>
-      </GeometryDrawing>
-      <GeometryDrawing Geometry="M 87,65 C 141,85 141,127 87,147 M 169,65 C 115,85 115,127 169,147">
-        <GeometryDrawing.Pen><Pen Brush="#F4F7FA" Thickness="7" /></GeometryDrawing.Pen>
-      </GeometryDrawing>
-      <GeometryDrawing Brush="#F4F7FA">
-        <GeometryDrawing.Geometry><RectangleGeometry Rect="66,188,124,12" RadiusX="6" RadiusY="6" /></GeometryDrawing.Geometry>
-      </GeometryDrawing>
-      <GeometryDrawing Brush="#C4D1DE">
-        <GeometryDrawing.Geometry><RectangleGeometry Rect="66,212,84,12" RadiusX="6" RadiusY="6" /></GeometryDrawing.Geometry>
-      </GeometryDrawing>
-    </DrawingGroup>
-  </DrawingImage.Drawing>
-</DrawingImage>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- Approved chat-bubble and basketball artwork. The 256-square canvas includes transparent corners. -->
+  <RectangleGeometry x:Key="Canvas" Rect="0,0,256,256" />
+  <PathGeometry x:Key="Bubble" Figures="M 65,175 C 54,161 48,144 48,125 C 48,81 84,46 128,46 C 173,46 209,82 209,126 C 209,171 173,207 129,207 C 114,207 101,203 89,198 L 54,211 Z" />
+  <PathGeometry x:Key="Seam" Figures="M 123,59 C 151,78 170,103 170,127 C 170,155 151,184 123,202" />
+  <PathGeometry x:Key="RightSeam" Figures="M 187,78 C 172,103 172,148 191,180 M 177,130 L 198,142" />
+  <PathGeometry x:Key="Message" Figures="M 68,125 C 91,122 117,122 141,125" />
+  <SolidColorBrush x:Key="Graphite" Color="#303840" />
+  <SolidColorBrush x:Key="Orange" Color="#ED863D" />
+  <SolidColorBrush x:Key="WhiteInk" Color="#F9FAFB" />
+  <Pen x:Key="Outline" Brush="{StaticResource Graphite}" Thickness="13" LineJoin="Round" StartLineCap="Round" EndLineCap="Round" />
+  <Pen x:Key="OrangeStroke" Brush="{StaticResource Orange}" Thickness="12" LineJoin="Round" StartLineCap="Round" EndLineCap="Round" />
+  <Pen x:Key="MessageStroke" Brush="{StaticResource Graphite}" Thickness="10" StartLineCap="Round" EndLineCap="Round" />
+  <Pen x:Key="SmallOutline" Brush="{StaticResource Graphite}" Thickness="21" LineJoin="Round" StartLineCap="Round" EndLineCap="Round" />
+  <Pen x:Key="SmallWhiteOutline" Brush="{StaticResource WhiteInk}" Thickness="21" LineJoin="Round" StartLineCap="Round" EndLineCap="Round" />
+  <Pen x:Key="SmallOrange" Brush="{StaticResource Orange}" Thickness="18" StartLineCap="Round" EndLineCap="Round" />
+  <Pen x:Key="SmallMessage" Brush="{StaticResource Graphite}" Thickness="17" StartLineCap="Round" EndLineCap="Round" />
+  <Pen x:Key="SmallWhiteMessage" Brush="{StaticResource WhiteInk}" Thickness="17" StartLineCap="Round" EndLineCap="Round" />
+  <DrawingCollection x:Key="Tile">
+    <GeometryDrawing Brush="Transparent" Geometry="{StaticResource Canvas}" />
+    <GeometryDrawing Brush="#06303840"><GeometryDrawing.Geometry><RectangleGeometry Rect="4,9,248,245" RadiusX="53" RadiusY="53" /></GeometryDrawing.Geometry></GeometryDrawing>
+    <GeometryDrawing Brush="#09303840"><GeometryDrawing.Geometry><RectangleGeometry Rect="5,8,246,243" RadiusX="52" RadiusY="52" /></GeometryDrawing.Geometry></GeometryDrawing>
+    <GeometryDrawing>
+      <GeometryDrawing.Brush><LinearGradientBrush StartPoint="0,0" EndPoint="0.35,1"><GradientStop Color="#FFFFFE" Offset="0" /><GradientStop Color="#F5F3EC" Offset="1" /></LinearGradientBrush></GeometryDrawing.Brush>
+      <GeometryDrawing.Pen><Pen Brush="#E7E5DF" Thickness="1" /></GeometryDrawing.Pen>
+      <GeometryDrawing.Geometry><RectangleGeometry Rect="5,3,246,244" RadiusX="51" RadiusY="51" /></GeometryDrawing.Geometry>
+    </GeometryDrawing>
+    <GeometryDrawing><GeometryDrawing.Pen><Pen Brush="#EEFFFFFF" Thickness="1" /></GeometryDrawing.Pen><GeometryDrawing.Geometry><RectangleGeometry Rect="7,5,242,240" RadiusX="49" RadiusY="49" /></GeometryDrawing.Geometry></GeometryDrawing>
+  </DrawingCollection>
+  <DrawingImage x:Key="Application">
+    <DrawingImage.Drawing><DrawingGroup>
+      <DrawingGroup Children="{StaticResource Tile}" />
+      <DrawingGroup ClipGeometry="{StaticResource Bubble}">
+        <GeometryDrawing Geometry="{StaticResource Seam}" Pen="{StaticResource OrangeStroke}" />
+        <GeometryDrawing Geometry="{StaticResource RightSeam}" Pen="{StaticResource OrangeStroke}" />
+        <GeometryDrawing Geometry="{StaticResource Message}" Pen="{StaticResource MessageStroke}" />
+      </DrawingGroup>
+      <GeometryDrawing Geometry="{StaticResource Bubble}" Pen="{StaticResource Outline}" />
+    </DrawingGroup></DrawingImage.Drawing>
+  </DrawingImage>
+  <DrawingImage x:Key="ApplicationSmall">
+    <DrawingImage.Drawing><DrawingGroup>
+      <DrawingGroup Children="{StaticResource Tile}" />
+      <GeometryDrawing Geometry="{StaticResource Seam}" Pen="{StaticResource SmallOrange}" />
+      <GeometryDrawing Geometry="{StaticResource Message}" Pen="{StaticResource SmallMessage}" />
+      <GeometryDrawing Geometry="{StaticResource Bubble}" Pen="{StaticResource SmallOutline}" />
+    </DrawingGroup></DrawingImage.Drawing>
+  </DrawingImage>
+  <DrawingImage x:Key="TrayLight">
+    <DrawingImage.Drawing><DrawingGroup>
+      <GeometryDrawing Brush="Transparent" Geometry="{StaticResource Canvas}" />
+      <DrawingGroup Transform="1.24,0,0,1.24,-31,-31">
+        <GeometryDrawing Geometry="{StaticResource Seam}" Pen="{StaticResource SmallOrange}" />
+        <GeometryDrawing Geometry="{StaticResource Message}" Pen="{StaticResource SmallMessage}" />
+        <GeometryDrawing Geometry="{StaticResource Bubble}" Pen="{StaticResource SmallOutline}" />
+      </DrawingGroup>
+    </DrawingGroup></DrawingImage.Drawing>
+  </DrawingImage>
+  <DrawingImage x:Key="TrayDark">
+    <DrawingImage.Drawing><DrawingGroup>
+      <GeometryDrawing Brush="Transparent" Geometry="{StaticResource Canvas}" />
+      <DrawingGroup Transform="1.24,0,0,1.24,-31,-31">
+        <GeometryDrawing Geometry="{StaticResource Seam}" Pen="{StaticResource SmallOrange}" />
+        <GeometryDrawing Geometry="{StaticResource Message}" Pen="{StaticResource SmallWhiteMessage}" />
+        <GeometryDrawing Geometry="{StaticResource Bubble}" Pen="{StaticResource SmallWhiteOutline}" />
+      </DrawingGroup>
+    </DrawingGroup></DrawingImage.Drawing>
+  </DrawingImage>
+</ResourceDictionary>

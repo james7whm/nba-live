@@ -89,16 +89,18 @@ internal sealed class GameScoreView : Grid
     private void Cell(string text, int row, int column, string? tip = null, bool bold = false)
     {
         var label = Ui.Text(text, 12); label.HorizontalAlignment = HorizontalAlignment.Center; label.VerticalAlignment = VerticalAlignment.Center;
+        label.Margin = new(0); label.TextWrapping = TextWrapping.NoWrap; label.TextAlignment = TextAlignment.Center;
         label.TextTrimming = TextTrimming.CharacterEllipsis; label.ToolTip = tip ?? text;
         if (bold) label.FontWeight = FontWeights.SemiBold;
         SetRow(label, row); SetColumn(label, column); _table.Children.Add(label);
     }
     private void Team(string name, TeamJerseyColor color, int row)
     {
-        var panel = new DockPanel { Margin = new(12, 0, 8, 0), VerticalAlignment = VerticalAlignment.Center, ToolTip = name };
-        var dot = new System.Windows.Shapes.Ellipse { Width = 9, Height = 9, Fill = ScoreChart.Brush(color), Margin = new(0, 0, 8, 0) };
+        var panel = new DockPanel { Margin = new(6, 0, 6, 0), MaxWidth = 128, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, ToolTip = name };
+        var dot = new System.Windows.Shapes.Ellipse { Width = 9, Height = 9, Fill = ScoreChart.Brush(color), Margin = new(0, 0, 8, 0), VerticalAlignment = VerticalAlignment.Center };
         DockPanel.SetDock(dot, Dock.Left); panel.Children.Add(dot);
-        var label = Ui.Text(name, 12); label.TextTrimming = TextTrimming.CharacterEllipsis; panel.Children.Add(label);
+        var label = Ui.Text(name, 12); label.Margin = new(0); label.VerticalAlignment = VerticalAlignment.Center;
+        label.TextWrapping = TextWrapping.NoWrap; label.TextTrimming = TextTrimming.CharacterEllipsis; panel.Children.Add(label);
         SetRow(panel, row); _table.Children.Add(panel);
     }
 }

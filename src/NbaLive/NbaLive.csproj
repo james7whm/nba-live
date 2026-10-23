@@ -18,6 +18,8 @@
     <None Include="Assets/AppIcon.xaml" />
     <None Remove="Assets/Tray.ico" />
     <None Include="Assets/Tray.ico" Link="Tray.ico" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Assets/TrayLight.ico" Link="TrayLight.ico" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Assets/TrayDark.ico" Link="TrayDark.ico" CopyToOutputDirectory="PreserveNewest" />
     <Resource Include="Assets/Tray.ico" />
   </ItemGroup>
   <ItemGroup><RuntimeHostConfigurationOption Include="System.GC.ConserveMemory" Value="6" /></ItemGroup>

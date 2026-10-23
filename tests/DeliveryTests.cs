@@ -6,6 +6,94 @@ internal static class DeliveryTests
     private static readonly DateTimeOffset Now = new(2026, 10, 22, 2, 0, 0, TimeSpan.Zero);
     internal static readonly (string Name, Func<Task> Run)[] Cases =
     [
+        ("Latest compact text matches the captured inline history during normal polling and hover resume", () => Sync(() =>
+        {
+            var feed = new TextPlayback { Delivery = TextDelivery.Latest }; var reading = new ReadingState();
+            void Receive(int count)
+            {
+                var state = State(Entries(count)); feed.Observe(state); reading.Accept(state);
+                feed.Refresh(2, _ => true, true, !reading.IsPaused, Now);
+            }
+            Receive(2); CheckPage(feed, reading, "2", "1");
+            Receive(5); CheckPage(feed, reading, "5", "4");
+            reading.Pause(); Receive(8); CheckPage(feed, reading, "5", "4");
+            Check(reading.Latest!.History.Count == 8 && reading.Visible!.History.Count == 5, "hover freezes the shared snapshot, not the network");
+            reading.Resume(); CheckPage(feed, reading, "8", "7");
+            Receive(11); CheckPage(feed, reading, "11", "10");
+        })),
+        ("Closing inline history while hovered uses its current snapshot instead of the old compact cache", () => Sync(() =>
+        {
+            var feed = new TextPlayback { Delivery = TextDelivery.Latest }; var reading = new ReadingState();
+            var first = State(Entries(2)); feed.Observe(first); reading.Accept(first); Refresh(feed, Now);
+            // The history is open, the pointer leaves, and new events arrive. Playback is suspended
+            // by the history view but ReadingState correctly moves to the newly received snapshot.
+            var newer = State(Entries(10)); feed.Observe(newer); reading.Accept(newer);
+            Refresh(feed, Now.AddSeconds(5), canAdvance: false);
+            reading.Pause();
+            Check(feed.Visible[0].SourceId == "2", "reproduces stale compact-page cache behind expanded history");
+            CheckPage(feed, reading, "10", "9");
+            feed.Observe(State(Entries(14))); reading.Accept(State(Entries(14)));
+            CheckPage(feed, reading, "10", "9");
+            reading.Resume(); CheckPage(feed, reading, "14", "13");
+        })),
+        ("Capsule startup and repeated collapse expand cycles show the newest captured two lines", () => Sync(() =>
+        {
+            foreach (var previouslyPainted in new[] { false, true })
+            {
+                var feed = new TextPlayback { Delivery = TextDelivery.Latest }; var reading = new ReadingState();
+                var first = State(Entries(2)); feed.Observe(first); reading.Accept(first);
+                Refresh(feed, Now, canAdvance: previouslyPainted);
+                for (var cycle = 1; cycle <= 3; cycle++)
+                {
+                    var count = 2 + cycle * 10;
+                    var state = State(Entries(count)); feed.Observe(state); reading.Accept(state);
+                    Refresh(feed, Now.AddMinutes(cycle), canAdvance: false); // collapsed: still receiving
+                    reading.Pause(); // entering the capsule pauses BEFORE its 100 ms expansion
+                    CheckPage(feed, reading, count.ToString(), (count - 1).ToString());
+                    var next = State(Entries(count + 3)); feed.Observe(next); reading.Accept(next);
+                    Refresh(feed, Now.AddMinutes(cycle).AddSeconds(2), canAdvance: false);
+                    CheckPage(feed, reading, count.ToString(), (count - 1).ToString());
+                    reading.Resume(); // leaving collapses, without displaying or advancing a playback page
+                    Check(feed.PendingCount == 0, "latest-only capsules do not accumulate an unused replay queue");
+                }
+            }
+        })),
+        ("Capsule mode changes and hidden updates preserve hover freezing then resume the current snapshot", () => Sync(() =>
+        {
+            var feed = new TextPlayback { Delivery = TextDelivery.Latest }; var reading = new ReadingState();
+            var first = State(Entries(2)); feed.Observe(first); reading.Accept(first); Refresh(feed, Now);
+            reading.Pause(); // open More and enable/disable capsule without dismissing the menu
+            var burst = State(Entries(9)); feed.Observe(burst); reading.Accept(burst);
+            Refresh(feed, Now.AddSeconds(20), canAdvance: false); CheckPage(feed, reading, "2", "1");
+            reading.Resume(); // hiding ends hover reading, but does not advance the offscreen cache
+            var hidden = State(Entries(16)); feed.Observe(hidden); reading.Accept(hidden);
+            Refresh(feed, Now.AddMinutes(2), canAdvance: false);
+            reading.Pause(); // restore directly under the pointer
+            CheckPage(feed, reading, "16", "15");
+        })),
+        ("Captured latest selection respects filters corrections missing metadata and game boundaries", () => Sync(() =>
+        {
+            var feed = new TextPlayback { Delivery = TextDelivery.Latest }; var reading = new ReadingState();
+            var first = State(Entries(3)); feed.Observe(first); reading.Accept(first); Refresh(feed, Now); reading.Pause();
+            var corrected = State([E(1), E(2), E(3) with { Text = "修正" }]); feed.Observe(corrected); reading.Accept(corrected);
+            Check(feed.GetVisiblePage(reading.Visible!, 2, _ => true, true)[0].Text != "修正", "corrections do not change a hovered snapshot");
+            reading.Resume();
+            Check(feed.GetVisiblePage(reading.Visible!, 2, _ => true, true)[0].Text == "修正", "correction applies when reading resumes");
+            Check(feed.GetVisiblePage(reading.Visible!, 2, e => e.SourceId != "3", true).Select(e => e.SourceId).SequenceEqual(new[] { "2", "1" }), "selection uses current snapshot and matching identities");
+            Check(feed.GetVisiblePage(reading.Visible!, 2, _ => true, false).Count == 0 && feed.GetVisiblePage(reading.Visible!, 0, _ => true, true).Count == 0, "missing metadata and score-only show no misleading page");
+            var other = State([E(99)]) with { FeedKey = "anchor:another", Origin = TextOrigin.Anchor };
+            feed.Observe(other); reading.Accept(other); CheckPage(feed, reading, "99");
+        })),
+        ("Snapshot selection preserves a paged replay page dwell and queued unseen events", () => Sync(() =>
+        {
+            var feed = new TextPlayback(); var first = State(Entries(2)); feed.Observe(first); Refresh(feed, Now);
+            var burst = State(Entries(10)); feed.Observe(burst); Refresh(feed, Now.AddSeconds(4));
+            var pending = feed.PendingCount;
+            var visible = feed.GetVisiblePage(burst, 2, _ => true, true);
+            Check(visible.Select(e => e.SourceId).SequenceEqual(new[] { "4", "3" }) && feed.PendingCount == pending, "full replay intentionally differs from newest history without consuming its queue");
+            Refresh(feed, Now.AddSeconds(5), canAdvance: false);
+            Check(feed.GetVisiblePage(burst, 2, _ => true, true)[0].SourceId == "4", "hover holds the current replay page");
+        })),
         ("Initial history is a baseline and a forty-event burst is displayed without skips", () => Sync(() =>
         {
             var feed = new TextPlayback(); var first = Entries(100);
@@ -110,6 +198,13 @@ internal static class DeliveryTests
         })
     ];
     private static Task Sync(Action action) { action(); return Task.CompletedTask; }
+    private static void CheckPage(TextPlayback feed, ReadingState reading, params string[] expected)
+    {
+        var snapshot = reading.Visible!;
+        var page = feed.GetVisiblePage(snapshot, 2, _ => true, true);
+        Check(page.Select(e => e.SourceId).SequenceEqual(expected), "compact page must match the intended captured events");
+        Check(page.Select(e => e.Key).SequenceEqual(snapshot.History.TakeLast(2).Reverse().Select(e => e.Key)), "compact and expanded latest views use the same history boundary");
+    }
     private static void Check(bool condition, string message) { if (!condition) throw new Exception(message); }
     private static GameInfo Game() => new("1", "湖人", "勇士", 86, 82, GameStatus.Live, "第三节 04:32", MatchTime.Today);
     private static LiveEntry E(int i) => new(i.ToString(), 3, "04:32", "湖人", "球员命中 " + i, "86-82", i);

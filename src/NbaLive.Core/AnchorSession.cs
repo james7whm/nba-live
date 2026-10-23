@@ -74,8 +74,8 @@ public sealed class AnchorSession(IAnchorSource source, Func<TimeSpan, Cancellat
     private Task WaitEnabled(CancellationToken ct) => _enabled ? Task.CompletedTask : _resume.Task.WaitAsync(ct);
     private async Task Run(GameInfo selected, CancellationToken ct)
     {
-        MobileMatch? match = null; AnchorRoom? room = null; var timeline = new AnchorTimeline();
-        string? cursor = null; var initialized = false; var failures = 0; var metadataFailures = 0;
+        MobileMatch? match = null; AnchorRoom? room = null; AnchorHistorySync? sync = null;
+        var failures = 0; var metadataFailures = 0;
         var nextResolve = DateTimeOffset.MinValue; var nextScore = DateTimeOffset.MinValue; var nextRoom = DateTimeOffset.MinValue;
         DateTimeOffset? finalEmpty = null; DateTimeOffset? lastEvent = null;
         while (!ct.IsCancellationRequested)
@@ -118,7 +118,7 @@ public sealed class AnchorSession(IAnchorSource source, Func<TimeSpan, Cancellat
                     {
                         if (room?.Key != resolved.Key)
                         {
-                            timeline = new(); cursor = null; initialized = false; finalEmpty = null; lastEvent = null;
+                            sync = new(resolved); finalEmpty = null; lastEvent = null;
                             State = new(null, [], "正在同步主播历史…", false, true)
                             { Origin = TextOrigin.Anchor, FeedKey = "anchor:" + resolved.Key, SourceLabel = "主播 · " + resolved.Name, SelectedGame = match.Game };
                         }
@@ -127,21 +127,16 @@ public sealed class AnchorSession(IAnchorSource source, Func<TimeSpan, Cancellat
                     else if (room is null) Availability = "本场暂无主播";
                     Changed?.Invoke();
                 }
-                if (room is not null && match is not null)
+                if (room is not null && match is not null && sync is not null)
                 {
-                    var added = new List<string>(); var empty = false; var received = false;
+                    var completed = false;
                     var budget = Stopwatch.GetTimestamp();
                     do
                     {
                         await WaitEnabled(ct);
-                        var page = await source.GetMessages(room, cursor, ct); ct.ThrowIfCancellationRequested();
-                        empty = page.Count == 0;
-                        if (empty) break;
-                        received = true;
-                        added.AddRange(timeline.Merge(room, page));
-                        var next = page[^1].Id;
-                        if (next == cursor) throw new SourceFormatException("主播分页游标未前进");
-                        cursor = next;
+                        var page = await source.GetMessages(room, sync.Cursor, ct); ct.ThrowIfCancellationRequested();
+                        completed = sync.Accept(page);
+                        if (completed) break;
                         if (_now() >= nextScore)
                         {
                             try
@@ -159,25 +154,27 @@ public sealed class AnchorSession(IAnchorSource source, Func<TimeSpan, Cancellat
                         await Task.Yield();
                     }
                     while (Stopwatch.GetElapsedTime(budget) < TimeSpan.FromSeconds(60));
-                    if (empty && !initialized) { initialized = true; added.Clear(); }
+                    var initialized = sync.IsInitialized;
+                    var added = completed ? sync.Added : [];
                     if (added.Count > 0) lastEvent = _now();
                     var game = MobileGame ?? match.Game;
-                    State = new(initialized ? new(game, timeline.History, _now()) : null, initialized ? timeline.History : [],
-                        initialized ? (game.Status == GameStatus.Finished ? "比赛已结束" : timeline.History.Count == 0 ? "等待主播消息" : "") : $"正在同步主播历史（已获取 {timeline.History.Count} 条）…", false, !initialized)
+                    State = new(initialized ? new(game, sync.History, _now()) : null, initialized ? sync.History : [],
+                        !completed && initialized ? "正在补齐新增消息…" : initialized ? (game.Status == GameStatus.Finished ? "比赛已结束" : sync.History.Count == 0 ? "等待主播消息" : "") : $"正在同步主播历史（已获取 {sync.BufferedCount} 条）…", false, !initialized)
                     {
                         Origin = TextOrigin.Anchor, FeedKey = "anchor:" + room.Key, SourceLabel = string.IsNullOrWhiteSpace(room.Name) ? "主播解说" : "主播 · " + room.Name,
-                        SelectedGame = game, ScoreFetchedAt = ScoreFetchedAt, ScoreMessage = ScoreMessage, HistoryRevision = timeline.Revision,
+                        SelectedGame = game, ScoreFetchedAt = ScoreFetchedAt, ScoreMessage = ScoreMessage, HistoryRevision = sync.Revision,
                         AddedEntryKeys = added, LastBatchSize = added.Count, LastEventObservedAt = lastEvent, FetchDuration = Stopwatch.GetElapsedTime(started)
                     };
                     Changed?.Invoke();
-                    if (initialized && room.Finished && empty)
+                    // Finished rooms still return their latest historical page; quiet means no NEW identities.
+                    // A room flag alone must not stop a game whose score feed still says it is live.
+                    if (completed && room.Finished && game.Status == GameStatus.Finished && !sync.ReceivedNew)
                     {
-                        if (received) finalEmpty = null;
                         if (finalEmpty is { } previous && _now() - previous >= TimeSpan.FromSeconds(5)) return;
                         finalEmpty ??= _now();
                     }
                     else finalEmpty = null;
-                    wait = !initialized ? TimeSpan.FromSeconds(1) : room.Finished ? TimeSpan.FromSeconds(5) :
+                    wait = !completed ? TimeSpan.FromSeconds(1) : room.Finished ? TimeSpan.FromSeconds(5) :
                         game.Status == GameStatus.Live ? room.LiveInterval : room.IdleInterval;
                 }
                 else wait = TimeSpan.FromSeconds(5);

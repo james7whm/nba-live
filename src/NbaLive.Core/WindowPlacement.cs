@@ -6,6 +6,8 @@ public readonly record struct WindowPosition(int X, int Y);
 /// <summary>Physical pixel geometry; supports negative monitor coordinates and per-monitor DPI.</summary>
 public static class WindowPlacement
 {
+    public static WindowPosition ExpandUpward(WorkArea area, int x, int y, int width, int height, int expandedHeight, double scale) =>
+        Calculate(area, width, expandedHeight, scale, x, y + height - expandedHeight);
     public static WindowPosition ExpandContaining(WorkArea area, int x, int y, int width, int height,
         int expandedWidth, int expandedHeight, double scale)
     {

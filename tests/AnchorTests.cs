@@ -56,23 +56,24 @@ internal static class AnchorTests
             source.Messages = cursor =>
             {
                 requested.Add(cursor);
-                return cursor switch { null => Enumerable.Range(1, 30).Select(M).ToArray(), "30" => [M(31)], _ => [] };
+                return cursor switch { null => Enumerable.Range(2, 30).Reverse().Select(M).ToArray(), "2" => [M(1)], _ => [] };
             };
             using var session = new AnchorSession(source, step.Delay, () => step.Now); var tracker = new RecapTracker();
             session.Changed += () => tracker.Observe(session.State);
             await session.Select(Game); await Until(() => session.State.History.Count == 31);
-            Check(requested.SequenceEqual(new string?[] { null, "30", "31" }) && tracker.UnreadCount == 0 && session.State.AddedEntryKeys.Count == 0, "oldest first, empty marks sync boundary");
+            Check(requested.SequenceEqual(new string?[] { null, "2", "1" }) && tracker.UnreadCount == 0 && session.State.AddedEntryKeys.Count == 0, "cursor walks older, empty marks sync boundary");
+            Check(session.State.History.Select(e => e.Text).SequenceEqual(Enumerable.Range(1, 31).Select(i => "消息" + i)), "whole page chain is reversed before publishing");
             await session.StopAsync();
         }),
         ("Anchor startup failure retains its cursor and resumes baseline without counting old messages", async () =>
         {
             var source = new FakeAnchor(); var step = new StepClock(); var calls = 0;
-            source.Messages = cursor => { calls++; return calls switch { 1 => [M(1)], 2 => throw new HttpRequestException(), 3 => cursor == "1" ? new[] { M(2) } : throw new Exception("cursor lost"), _ => [] }; };
+            source.Messages = cursor => { calls++; return calls switch { 1 => [M(2)], 2 => throw new HttpRequestException(), 3 => cursor == "2" ? new[] { M(1) } : throw new Exception("cursor lost"), _ => [] }; };
             using var session = new AnchorSession(source, step.Delay, () => step.Now);
             await session.Select(Game); await Until(() => session.State.HasError && step.Waiting);
             Check(session.State.Snapshot is null, "partial history isn't mistaken for live");
             step.Step(); await Until(() => session.State.History.Count == 2 && !session.State.HasError);
-            Check(session.State.AddedEntryKeys.Count == 0, "resumed initial pages remain baseline"); await session.StopAsync();
+            Check(session.State.AddedEntryKeys.Count == 0 && session.State.History[0].Text == "消息1", "resumed initial pages remain chronological baseline"); await session.StopAsync();
         }),
         ("Anchor failures retain displayed text, recover with new entries and independent score timestamps", async () =>
         {
@@ -88,14 +89,16 @@ internal static class AnchorTests
         }),
         ("Ended anchor rooms collect late tail messages then require two quiet checks five seconds apart", async () =>
         {
-            var source = new FakeAnchor { RoomValue = Room with { Finished = true } }; var step = new StepClock(); var calls = 0;
-            source.Messages = _ => ++calls switch { 1 => [M(1)], 2 => [], 3 => [M(2)], _ => [] };
+            var source = new FakeAnchor { RoomValue = Room with { Finished = true }, UpdatedGame = Game with { Status = GameStatus.Finished } }; var step = new StepClock(); var calls = 0;
+            source.Messages = _ => ++calls switch { 1 => [M(1)], 2 => [], 3 => [M(2), M(1)], _ => [M(2), M(1)] };
             using var session = new AnchorSession(source, step.Delay, () => step.Now);
             await session.Select(Game); await Until(() => session.State.History.Count == 1 && step.Waiting);
             step.Step(); await Until(() => session.State.History.Count == 2 && step.Waiting);
             Check(!session.Completion.IsCompleted, "new tail resets quiet period");
+            step.Step(); await Until(() => step.Waiting);
+            Check(!session.Completion.IsCompleted, "first unchanged head is only one quiet check");
             step.Step(); await session.Completion.WaitAsync(TimeSpan.FromSeconds(3));
-            Check(step.Now >= StepClock.Start.AddSeconds(10), "two empty checks after last nonempty page"); await session.StopAsync();
+            Check(step.Now >= StepClock.Start.AddSeconds(15), "two unchanged heads after last new tail message"); await session.StopAsync();
         }),
         ("Cancelling an anchor match ignores a late response from the old selection", async () =>
         {
@@ -203,7 +206,7 @@ internal static class AnchorTests
             await Until(() => session.State.History.Count == 1);
             Check(rooms == 2 && session.HasRoom, "recheck starts anchor subscription"); await session.StopAsync();
         }),
-        ("Switching away pauses unused anchor requests and switching back preserves the cursor and history", async () =>
+        ("Switching away pauses unused anchor requests and switching back checks the head with existing history", async () =>
         {
             var source = new FakeAnchor(); var step = new StepClock(); var cursors = new List<string?>();
             source.Messages = cursor => { cursors.Add(cursor); return cursor is null ? new[] { M(1) } : []; };
@@ -212,8 +215,105 @@ internal static class AnchorTests
             var history = session.State.History; session.SetEnabled(false); step.Step(); await Until(() => !step.Waiting);
             Check(source.MessageCalls == 2 && ReferenceEquals(history, session.State.History), "paused source keeps history without polling");
             session.SetEnabled(true); await Until(() => source.MessageCalls == 3);
-            Check(cursors[^1] == "1" && cursors.Count(c => c is null) == 1 && ReferenceEquals(history, session.State.History), "resumes the previous cursor"); await session.StopAsync();
+            Check(cursors[^1] is null && cursors.Count(c => c is null) == 2 && ReferenceEquals(history, session.State.History), "polls head rather than resuming the exhausted oldest cursor"); await session.StopAsync();
         }),
+        ("Newest-first live pages show current events, poll the head repeatedly and recover multi-page bursts", async () =>
+        {
+            var messages = Enumerable.Range(1, 100).Select(M).ToList();
+            messages[0] = M(1) with { Text = "骑士首发：沃特森、塞布里、阿伦、米切尔、哈登！" };
+            messages[1] = M(2) with { Text = "76人首发：布朗、詹姆斯、恩比德、埃奇库姆、马克西！" };
+            var source = new FakeAnchor(); var step = new StepClock(); var cursors = new List<string?>();
+            source.Messages = cursor => { cursors.Add(cursor); return OlderPage(messages, cursor); };
+            using var session = new AnchorSession(source, step.Delay, () => step.Now);
+            var tracker = new RecapTracker(); session.Changed += () => tracker.Observe(session.State);
+            await session.Select(Game); await Until(() => session.State.History.Count == 100 && step.Waiting);
+            Check(session.State.History[0].Text.StartsWith("骑士首发") && session.State.History[^1].Text == "消息100", "lineups stay at the beginning, not on the current page");
+            var playback = new TextPlayback { Delivery = TextDelivery.Latest };
+            playback.Observe(session.State); playback.Refresh(2, _ => true, true, true, step.Now);
+            Check(playback.Visible.Select(e => e.Text).SequenceEqual(new[] { "消息100", "消息99" }) && tracker.UnreadCount == 0, "current two events and no startup unread");
+            var history = session.State.History; var before = cursors.Count;
+            step.Step(); await Until(() => cursors.Count > before && step.Waiting);
+            Check(cursors[before] is null && cursors.Count == before + 1 && ReferenceEquals(history, session.State.History), "unchanged head is a healthy one-request refresh");
+            messages[99] = M(100) with { Text = "修正消息100" }; messages.AddRange(Enumerable.Range(101, 45).Select(M));
+            step.Step(); await Until(() => session.State.History.Count == 145 && step.Waiting);
+            Check(session.State.LastBatchSize == 45 && tracker.UnreadCount == 45 && session.State.History[99].Text == "修正消息100", "gap longer than a page includes corrections without unread inflation");
+            Check(session.State.History.Skip(100).Select(e => e.Text).SequenceEqual(Enumerable.Range(101, 45).Select(i => "消息" + i)), "new pages merge from oldest to newest");
+            playback.Observe(session.State); playback.Refresh(2, _ => true, true, true, step.Now);
+            Check(playback.Visible[0].Text == "消息145", "live display advances to newest, not old lineup");
+            await session.StopAsync();
+        }),
+        ("Interrupted incremental backfill resumes its older cursor and publishes each new message exactly once", async () =>
+        {
+            var messages = new List<AnchorMessage> { M(1), M(2) }; var step = new StepClock();
+            var fail = true; var cursors = new List<string?>(); var source = new FakeAnchor();
+            source.Messages = cursor =>
+            {
+                cursors.Add(cursor);
+                if (cursor == "18" && fail) { fail = false; throw new HttpRequestException(); }
+                return OlderPage(messages, cursor);
+            };
+            using var session = new AnchorSession(source, step.Delay, () => step.Now);
+            await session.Select(Game); await Until(() => session.State.History.Count == 2 && step.Waiting);
+            messages.AddRange(Enumerable.Range(3, 45).Select(M)); step.Step();
+            await Until(() => session.State.HasError && step.Waiting);
+            Check(session.State.History.Count == 2, "partial newer pages don't disturb the last complete snapshot");
+            step.Step(); await Until(() => session.State.History.Count == 47 && step.Waiting);
+            Check(cursors[^1] == "18" && session.State.LastBatchSize == 45 && session.State.History.Select(e => e.Text).SequenceEqual(Enumerable.Range(1, 47).Select(i => "消息" + i)), "retry fills the gap once in chronological order");
+            await session.StopAsync();
+        }),
+        ("Newest-first equal-time fragments reverse server order without sorting nonmonotonic IDs", () => Sync(() =>
+        {
+            var sync = new AnchorHistorySync(Room);
+            Check(!sync.Accept([M(12), M(90)]) && !sync.Accept([M(3), M(81)]) && sync.Accept([]), "backward pages reach oldest edge");
+            Check(sync.History.Select(e => e.Text).SequenceEqual(new[] { "消息81", "消息3", "消息90", "消息12" }) && sync.Added.Count == 0, "same clocks and numeric IDs aren't sorting keys");
+            Check(sync.Accept([M(7), M(12) with { Text = "修正" }, M(90)]) && sync.Added.Count == 1 && sync.History[^1].Text == "消息7" && sync.History[^2].Text == "修正", "one new fragment and correction preserve identities");
+            var revision = sync.Revision;
+            Check(sync.Accept([M(7), M(12) with { Text = "修正" }, M(90)]) && sync.Added.Count == 0 && sync.Revision == revision, "repeated head isn't an error or new event");
+        })),
+        ("A cyclic history cursor is rejected and a finished room flag cannot stop an in-progress score feed", async () =>
+        {
+            var sync = new AnchorHistorySync(Room);
+            sync.Accept([M(3)]); sync.Accept([M(2)]);
+            Throws(() => sync.Accept([M(3)]));
+            var source = new FakeAnchor { RoomValue = Room with { Finished = true } }; var step = new StepClock();
+            source.Messages = cursor => cursor is null ? [M(1)] : [];
+            using var session = new AnchorSession(source, step.Delay, () => step.Now);
+            await session.Select(Game); await Until(() => step.Waiting);
+            for (var i = 0; i < 3; i++)
+            {
+                var calls = source.MessageCalls; step.Step(); await Until(() => source.MessageCalls > calls && step.Waiting);
+            }
+            Check(!session.Completion.IsCompleted && session.State.History.Count == 1, "a live game keeps checking the head");
+            await session.StopAsync();
+        }),
+        ("Archived forward pages and late closing remarks keep chronological order and the newest cursor", () => Sync(() =>
+        {
+            var sync = new AnchorHistorySync(Room with { Finished = true });
+            var first = M(90) with { Text = "比赛开始！！" };
+            var second = M(12) with { PublishedAt = StepClock.Start.AddSeconds(5) };
+            var last = M(3) with { PublishedAt = StepClock.Start.AddSeconds(60), Text = "东契奇28+8+7" };
+            Check(!sync.Accept([first, second]) && sync.Cursor == "12" && !sync.Accept([last]) && sync.Accept([]), "forward pagination drains newer pages");
+            Check(sync.History.Select(e => e.Text).SequenceEqual(new[] { "比赛开始！！", "消息12", "东契奇28+8+7" }) && sync.Cursor == "3" && sync.Added.Count == 0, "archive baseline keeps beginning and ending in place");
+            Check(!sync.Accept([M(8) with { PreviousId = "3" }]) && sync.Accept([]) && sync.Cursor == "8" && sync.Added.Count == 1, "late closing message follows the newest archive cursor");
+        })),
+        ("Room protocol changes restart pagination without replacing history or counting old messages again", () => Sync(() =>
+        {
+            AnchorMessage Linked(int id) => M(id) with { PreviousId = (id - 1).ToString() };
+            var sync = new AnchorHistorySync(Room);
+            sync.Accept([Linked(3), Linked(2)]); sync.Accept([Linked(1)]); sync.Accept([]);
+            Check(!sync.Accept([Linked(1), Linked(2)]) && sync.Cursor is null && sync.History.Count == 3, "backwards to forwards restarts from the head");
+            sync.Accept([Linked(1), Linked(2)]); sync.Accept([Linked(3), Linked(4)]); sync.Accept([]);
+            Check(sync.History.Select(e => e.Text).SequenceEqual(Enumerable.Range(1, 4).Select(i => "消息" + i)) && sync.Added.Count == 1 && sync.Cursor == "4", "old identities don't inflate unread at final buzzer");
+            Check(!sync.Accept([Linked(3), Linked(2)]) && sync.Cursor is null && sync.Accept([Linked(5), Linked(4)]) && sync.Added.Count == 1, "returning to a live head checks new messages too");
+        })),
+        ("Source predecessor links distinguish equal-time page direction and preserve nineteen-digit identities", () => Sync(() =>
+        {
+            var messages = AnchorParser.Messages(Json(new[] {
+                new { commentId = "1537445624809521153", previousCommentId = 1537445624809521152L, content = "后一句", time = "2026-10-23 08:51:52" },
+                new { commentId = "1537445624809521152", previousCommentId = 0L, content = "前一句", time = "2026-10-23 08:51:52" } }));
+            var sync = new AnchorHistorySync(Room); sync.Accept(messages); sync.Accept([]);
+            Check(messages[0].PreviousId == messages[1].Id && sync.History.Select(e => e.Text).SequenceEqual(new[] { "前一句", "后一句" }), "numeric predecessor ID stays exact and equal clocks keep source sequence");
+        })),
         ("Coordinator uses mobile header snapshots while statistics and scoring retain original structured events", async () =>
         {
             var source = new FakeAnchor { UpdatedGame = Game with { AwayScore = 999 } };
@@ -228,6 +328,12 @@ internal static class AnchorTests
             Check(ReferenceEquals(coordinator.State.History, previous), "source toggles keep anchor history"); await coordinator.StopAsync();
         })
     ];
+    private static IReadOnlyList<AnchorMessage> OlderPage(List<AnchorMessage> messages, string? cursor)
+    {
+        var edge = cursor is null ? messages.Count : messages.FindIndex(m => m.Id == cursor);
+        if (edge < 0) throw new Exception("unknown cursor");
+        return messages.Take(edge).TakeLast(30).Reverse().ToArray();
+    }
     private static AnchorMessage M(int id) => new(id.ToString(), "消息" + id, "犀牛", StepClock.Start, false);
     private static LiveEntry E(int id) => new("anchor:" + Room.Key + ":" + id, 0, "", "", "消息" + id, "", id) { Origin = TextOrigin.Anchor };
     private static SessionState State(LiveEntry[] history) => new(new(Game, history, StepClock.Start), history, "", false, false) { SelectedGame = Game, HistoryRevision = 1, Origin = TextOrigin.Anchor, FeedKey = "anchor:" + Room.Key };

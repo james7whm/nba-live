@@ -6,12 +6,17 @@ namespace NbaLive.Core;
 
 public sealed record MobileMatch(string Id, GameInfo Game);
 public sealed record AnchorRoom(string MatchId, string Key, string Name, bool Finished, TimeSpan LiveInterval, TimeSpan IdleInterval);
-public sealed record AnchorMessage(string Id, string Text, string Author, DateTimeOffset? PublishedAt, bool IsClock);
+public sealed record AnchorMessage(string Id, string Text, string Author, DateTimeOffset? PublishedAt, bool IsClock)
+{
+    public string PreviousId { get; init; } = "";
+}
 public interface IAnchorSource
 {
     Task<MobileMatch?> Resolve(GameInfo game, CancellationToken ct);
     Task<MobileMatch> GetMatch(MobileMatch match, CancellationToken ct);
     Task<AnchorRoom?> GetRoom(MobileMatch match, CancellationToken ct);
+    // Live rooms return newest first and older cursor pages; archives may return oldest first and newer pages.
+    // Preserve server order and predecessor IDs so the session can distinguish both protocols.
     Task<IReadOnlyList<AnchorMessage>> GetMessages(AnchorRoom room, string? cursor, CancellationToken ct);
 }
 
@@ -131,7 +136,7 @@ public static class AnchorParser
             if (id.Length == 0 || string.IsNullOrWhiteSpace(text)) throw new SourceFormatException("主播消息缺少标识或内容");
             DateTimeOffset? published = DateTime.TryParseExact(Str(item, "time"), "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out var time) ? new DateTimeOffset(DateTime.SpecifyKind(time, DateTimeKind.Unspecified), TimeSpan.FromHours(8)) : null;
-            result.Add(new(id, text, Str(item, "nickName"), published, Str(item, "style") == "event"));
+            result.Add(new(id, text, Str(item, "nickName"), published, Str(item, "style") == "event") { PreviousId = Str(item, "previousCommentId") });
         }
         return result;
     }

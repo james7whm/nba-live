@@ -8,12 +8,16 @@ internal sealed class OverlayWindow : Window
     private readonly Border _surface;
     private readonly Grid _full;
     private readonly Grid _capsule;
-    private readonly TextBlock _score = new() { FontWeight = FontWeights.SemiBold, TextTrimming = TextTrimming.CharacterEllipsis };
+    private readonly TextBlock _score = new() { FontWeight = FontWeights.SemiBold, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center };
     private readonly TextBlock _progress = new() { FontSize = 10, MaxWidth = 110, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center };
     private readonly TextBlock _capsuleText = new() { TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center };
     private readonly TextBlock _warning = new() { Text = "离线", FontSize = 9, VerticalAlignment = VerticalAlignment.Center, Margin = new(5, 0, 0, 0) };
     private readonly TextBlock[] _lines = [new(), new()];
     private readonly StackPanel _textLines = new();
+    private readonly InlineTextHistory _inlineHistory = new() { Visibility = Visibility.Collapsed };
+    private readonly Button _historyToggle;
+    private bool _historyOpen;
+    private Native.Geometry? _historyRest;
     private readonly LineupView _lineup = new();
     private readonly TextBlock _status = new() { FontSize = 9, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center };
     private readonly TextBlock _pending = new() { FontSize = 9, MaxWidth = 62, TextTrimming = TextTrimming.CharacterEllipsis, VerticalAlignment = VerticalAlignment.Center };
@@ -79,10 +83,16 @@ internal sealed class OverlayWindow : Window
         _full.RowDefinitions.Add(new() { Height = GridLength.Auto });
         _full.RowDefinitions.Add(new() { Height = new(22) });
         var header = new DockPanel();
+        _historyToggle = Tool("⌃", ToggleInlineHistory, "展开文字记录");
+        _historyToggle.Width = 22; _historyToggle.Height = 20;
+        _historyToggle.FontSize = 16; _historyToggle.Padding = new(0);
+        System.Windows.Automation.AutomationProperties.SetName(_historyToggle, "展开文字记录");
+        DockPanel.SetDock(_historyToggle, Dock.Right); header.Children.Add(_historyToggle);
         DockPanel.SetDock(_progress, Dock.Right);
+        _progress.Margin = new(8, 0, 2, 0);
         header.Children.Add(_progress); header.Children.Add(_score); _full.Children.Add(header);
         var content = new Grid(); Grid.SetRow(content, 1); _full.Children.Add(content);
-        content.Children.Add(_textLines); content.Children.Add(_lineup);
+        content.Children.Add(_textLines); content.Children.Add(_lineup); content.Children.Add(_inlineHistory);
         foreach (var line in _lines)
         {
             line.Height = 22; line.VerticalAlignment = VerticalAlignment.Center;
@@ -153,7 +163,15 @@ internal sealed class OverlayWindow : Window
         Closed += (_, _) => { _saveTimer.Stop(); _expandTimer.Stop(); _leaveTimer.Stop(); _statusTimer.Stop(); _rotationTimer.Stop(); _textTimer.Stop(); };
         ApplyStyle(settings); Render(new(null, [], "请选择一场 NBA 比赛", false, false), false);
     }
-    private bool Collapsed => _settings.CapsuleEnabled && !_expanded;
+    private bool Collapsed => _settings.CapsuleEnabled && !_expanded && !_historyOpen;
+    private void ToggleInlineHistory()
+    {
+        if (_settings.ContentMode != OverlayContent.Text || _reading.Visible?.SelectedGame is null && _reading.Visible?.Snapshot is null) return;
+        if (!_historyOpen) { _historyRest = Native.GetGeometry(this); _historyOpen = true; _inlineHistory.Open(); }
+        else { _historyOpen = false; if (_settings.CapsuleEnabled) _expanded = true; }
+        LayoutWindow(false); RenderContent(); UpdateStatus();
+        if (!_historyOpen) _historyRest = null;
+    }
     private Button Tool(string label, Action action, string? tip = null)
     {
         var button = new Button { Content = label, FontSize = 10, Padding = new(5, 0, 5, 0), Margin = new(1, 0, 0, 0),
@@ -216,6 +234,7 @@ internal sealed class OverlayWindow : Window
         if (!_reading.IsPaused) { _pausedAt = DateTimeOffset.UtcNow; _reading.Pause(); _visibleStatistics = _latestStatistics; _structuredVisible = _structuredLatest; }
         _toolbar.Visibility = Visibility.Visible; _status.Visibility = Visibility.Hidden;
         if (Collapsed) _expandTimer.Start();
+        RenderContent();
         UpdateStatus(); UpdateRotationTimer(); UpdateTextTimer();
     }
     private void ScheduleLeave()
@@ -240,7 +259,7 @@ internal sealed class OverlayWindow : Window
     }
     private void UpdateTextTimer()
     {
-        var eligible = IsVisible && !Collapsed && !_reading.IsPaused && _settings.ContentMode == OverlayContent.Text &&
+        var eligible = IsVisible && !Collapsed && !_historyOpen && !_reading.IsPaused && _settings.ContentMode == OverlayContent.Text &&
             (_settings.CapsuleEnabled || _settings.DisplayMode != OverlayMode.ScoreOnly) && _textReady;
         if (!eligible) _textPlayback.Suspend(DateTimeOffset.UtcNow);
         if (eligible && _settings.TextDelivery == TextDelivery.Paged && _textPlayback.IsReplaying)
@@ -255,6 +274,8 @@ internal sealed class OverlayWindow : Window
     }
     internal void ApplyStyle(AppSettings settings)
     {
+        if (_historyOpen && (settings.ContentMode != OverlayContent.Text || settings.CapsuleEnabled != _settings.CapsuleEnabled ||
+            settings.Width != _settings.Width || settings.FontSize != _settings.FontSize || settings.DisplayMode != _settings.DisplayMode)) ToggleInlineHistory();
         _textPlayback.Delivery = settings.TextDelivery;
         if (_settings.ImportantEventsOnly != settings.ImportantEventsOnly || _settings.FollowedPlayersOnly != settings.FollowedPlayersOnly ||
             !_settings.FollowedPlayers.SequenceEqual(settings.FollowedPlayers)) _textPlayback.JumpToLatest();
@@ -265,7 +286,7 @@ internal sealed class OverlayWindow : Window
         _score.FontSize = _capsuleText.FontSize = settings.FontSize;
         foreach (var line in _lines) line.FontSize = settings.FontSize;
         _surface.Background = new SolidColorBrush(Color.FromArgb((byte)Math.Round(255 * settings.BackgroundOpacity), 239, 241, 243));
-        LayoutWindow(save: _ready && (wasCapsule != settings.CapsuleEnabled || !_expanded));
+        LayoutWindow(save: _ready && !_historyOpen && (wasCapsule != settings.CapsuleEnabled || !_expanded));
         RenderContent(); UpdateStatus(); UpdateRotationTimer();
     }
     private void SetExpanded(bool expanded)
@@ -276,7 +297,7 @@ internal sealed class OverlayWindow : Window
     }
     private void LayoutWindow(bool save)
     {
-        var height = Collapsed ? 30 : _settings.ContentMode == OverlayContent.Lineup ? 154 : _settings.CapsuleEnabled || _settings.ContentMode == OverlayContent.Players ? 110 :
+        double height = _historyOpen ? 320 : Collapsed ? 30 : _settings.ContentMode == OverlayContent.Lineup ? 154 : _settings.CapsuleEnabled || _settings.ContentMode == OverlayContent.Players ? 110 :
             _settings.DisplayMode switch { OverlayMode.ScoreOnly => 58, OverlayMode.OneEvent => 84, _ => 110 };
         var width = Collapsed ? 280 : _settings.Width;
         _full.Visibility = Collapsed ? Visibility.Collapsed : Visibility.Visible;
@@ -285,9 +306,13 @@ internal sealed class OverlayWindow : Window
         if (!_ready) { Width = width; Height = height; return; }
         _saveTimer.Stop(); _placing = true;
         var token = ++_layoutVersion; var before = Native.GetGeometry(this);
+        if (_historyOpen) height = Math.Min(height, Math.Max(110, (before.Area.Bottom - before.Area.Top) / before.Scale - 32));
         var newWidth = (int)Math.Round(width * before.Scale); var newHeight = (int)Math.Round(height * before.Scale);
         WindowPosition position;
-        if (_settings.CapsuleEnabled && _rest is { } rest)
+        if (_historyRest is { } historyRest)
+            position = _historyOpen ? WindowPlacement.ExpandUpward(before.Area, historyRest.X, historyRest.Y, newWidth, historyRest.Height, newHeight, before.Scale) :
+                WindowPlacement.Calculate(before.Area, newWidth, newHeight, before.Scale, historyRest.X, historyRest.Y);
+        else if (_settings.CapsuleEnabled && _rest is { } rest)
             position = Collapsed ? WindowPlacement.Calculate(before.Area, newWidth, newHeight, before.Scale, rest.X, rest.Y) :
                 WindowPlacement.ExpandContaining(before.Area, rest.X, rest.Y, (int)Math.Round(280 * before.Scale),
                     (int)Math.Round(30 * before.Scale), newWidth, newHeight, before.Scale);
@@ -305,6 +330,11 @@ internal sealed class OverlayWindow : Window
         _demo = demo;
         var priorId = _reading.Latest?.SelectedGame?.Id ?? _reading.Latest?.Snapshot?.Game.Id;
         var id = state.SelectedGame?.Id ?? state.Snapshot?.Game.Id;
+        if (id != priorId || state.FeedKey != _reading.Latest?.FeedKey || state.IsLoading && state.Snapshot is null)
+        {
+            if (_historyOpen) ToggleInlineHistory();
+            _inlineHistory.Reset();
+        }
         if (id != priorId || state.IsLoading) _visibleStatistics = _latestStatistics;
         _textPlayback.Observe(state);
         _reading.Accept(state); RenderContent(); UpdateStatus();
@@ -336,9 +366,14 @@ internal sealed class OverlayWindow : Window
         _capsuleText.Visibility = game is null ? Visibility.Collapsed : Visibility.Visible;
         _emptyMatch.Visibility = _emptyCapsule.Visibility = game is null ? Visibility.Visible : Visibility.Collapsed;
         _modeButton.Visibility = _recapButton.Visibility = game is null ? Visibility.Collapsed : Visibility.Visible;
-        _full.RowDefinitions[1].Height = game is null ? new(1, GridUnitType.Star) : GridLength.Auto;
+        _full.RowDefinitions[1].Height = game is null || _historyOpen ? new(1, GridUnitType.Star) : GridLength.Auto;
         _emptyMatch.Apply(_settings.FontSize, !_settings.CapsuleEnabled && _settings.ContentMode == OverlayContent.Text && _settings.DisplayMode == OverlayMode.ScoreOnly);
-        _progress.Text = game?.Progress ?? ""; _progress.ToolTip = _progress.Text;
+        _progress.Text = OverlayProgress.Format(game); _progress.ToolTip = _progress.Text;
+        _score.ToolTip = game is null ? null : $"{game.Score} · {_progress.Text}";
+        _historyToggle.Visibility = game is not null && _settings.ContentMode == OverlayContent.Text ? Visibility.Visible : Visibility.Collapsed;
+        _historyToggle.Content = _historyOpen ? "⌄" : "⌃";
+        _historyToggle.ToolTip = _historyOpen ? "收起文字记录" : "向上展开，查看本次会话更早的消息";
+        System.Windows.Automation.AutomationProperties.SetName(_historyToggle, _historyOpen ? "收起文字记录" : "展开文字记录");
         var progress = Regex.Replace(game?.Progress ?? "", "第([一二三四1234])节", m =>
             "Q" + ("一二三四".IndexOf(m.Groups[1].Value, StringComparison.Ordinal) is var n && n >= 0 ? (n + 1).ToString() : m.Groups[1].Value));
         _capsuleText.Text = (_demo ? "演示 · " : "") + (game is null ? "NBA 直播条 · 请选择比赛" :
@@ -347,7 +382,9 @@ internal sealed class OverlayWindow : Window
         var players = _settings.ContentMode == OverlayContent.Players;
         var lineup = _settings.ContentMode == OverlayContent.Lineup;
         _lineup.Visibility = lineup ? Visibility.Visible : Visibility.Collapsed;
-        _textLines.Visibility = lineup ? Visibility.Collapsed : Visibility.Visible;
+        _textLines.Visibility = lineup || _historyOpen ? Visibility.Collapsed : Visibility.Visible;
+        _inlineHistory.Visibility = _historyOpen ? Visibility.Visible : Visibility.Collapsed;
+        if (_historyOpen) _inlineHistory.Update(state, _settings.FontSize);
         _navigation.Visibility = players && _settings.FollowedPlayers.Length > 1 ? Visibility.Visible : Visibility.Collapsed;
         _choosePlayers.Visibility = players && _settings.FollowedPlayers.Length == 0 ? Visibility.Visible : Visibility.Collapsed;
         _lines[1].Margin = new(0, 0, players && _settings.FollowedPlayers.Length > 1 ? 50 : 0, 0);
@@ -381,17 +418,16 @@ internal sealed class OverlayWindow : Window
             var followed = !anchor && _settings.FollowedPlayersOnly;
             var filter = followed ? _playerFilter : null;
             _textReady = !followed || snapshot is not null;
-            _textPlayback.Refresh(count, entry => (!important || EventSelection.IsImportant(entry)) &&
-                (filter is null || filter.Matches(entry)), _textReady, IsVisible && !Collapsed && !_reading.IsPaused, DateTimeOffset.UtcNow);
-            var recent = _textReady ? _textPlayback.Visible.Where(entry => (!important || EventSelection.IsImportant(entry)) &&
-                (filter is null || filter.Matches(entry))).ToArray() : [];
+            bool Matches(LiveEntry entry) => (!important || EventSelection.IsImportant(entry)) && (filter is null || filter.Matches(entry));
+            _textPlayback.Refresh(count, Matches, _textReady, IsVisible && !Collapsed && !_historyOpen && !_reading.IsPaused, DateTimeOffset.UtcNow);
+            var recent = _textPlayback.GetVisiblePage(state, count, Matches, _textReady);
             var empty = followed ? _settings.FollowedPlayers.Length == 0 ? "还没有关注球员 · 更多→球员统计" :
                 snapshot is null ? "等待本场统计以匹配关注球员" : _playerFilter.AvailableFavorites == 0 ? "关注球员本场暂无数据" :
                 "暂无关注球员动态 · 历史保留全部" :
                 state.History.Count > 0 && important ? "暂无匹配事件 · 历史可查看全部" : state.Message;
             for (var index = 0; index < 2; index++)
             {
-                _lines[index].Text = index < recent.Length ? recent[index].Display : index == 0 ? empty : "";
+                _lines[index].Text = index < recent.Count ? recent[index].Display : index == 0 ? empty : "";
                 _lines[index].ToolTip = _lines[index].Text + (anchor ? $"\n{state.SourceLabel} · 保留主播原文；重要事件和关注球员筛选仅用于赛况实录。" : followed ? "\n依据本场名单匹配姓名；同名或简称有歧义时不猜测，可能遗漏。与重要事件筛选叠加，历史和回顾保留全部。" : "");
             }
         }
@@ -427,7 +463,7 @@ internal sealed class OverlayWindow : Window
             DateTimeOffset.UtcNow - live.FetchedAt > TimeSpan.FromSeconds(30) ? Visibility.Visible : Visibility.Collapsed;
         _warning.ToolTip = _status.ToolTip;
         _pending.Text = !_reading.IsPaused ? "" : error ? "连接异常" : replaying && _textPlayback.PendingCount > 0 ?
-            $"待播{_textPlayback.PendingCount}" : _reading.PendingCount > 0 ? $"+{_reading.PendingCount} 条" : "已暂停";
+            $"待播{_textPlayback.PendingCount}" : _reading.PendingCount > 0 ? $"暂停 +{_reading.PendingCount}条" : "悬停暂停";
         if (_demo && _reading.IsPaused) _pending.Text = "演示 " + _pending.Text;
         _pending.Cursor = replaying ? Cursors.Hand : Cursors.Arrow;
         _pending.ToolTip = $"悬停固定内容，后台继续更新；新增 {_reading.PendingCount} 条。\n{status}" +
@@ -436,12 +472,30 @@ internal sealed class OverlayWindow : Window
     private void DragOverlay()
     {
         _dragging = true; _leaveTimer.Stop(); _saveTimer.Stop();
-        try { DragMove(); Clamp(false, snap: true); CommitPosition(); }
+        try
+        {
+            DragMove(); Clamp(false, snap: true);
+            if (_historyOpen && _historyRest is { } rest)
+            {
+                var geometry = Native.GetGeometry(this);
+                if (_settings.CapsuleEnabled && _rest is { } capsuleRest)
+                    _rest = capsuleRest with { X = geometry.X + Math.Clamp(capsuleRest.X - rest.X, 0, Math.Max(0, geometry.Width - capsuleRest.Width)),
+                        Y = geometry.Y + geometry.Height - capsuleRest.Height };
+                _historyRest = rest with { X = geometry.X, Y = geometry.Y + geometry.Height - rest.Height };
+            }
+            CommitPosition();
+        }
         finally { _dragging = false; ScheduleLeave(); }
     }
     private void CommitPosition()
     {
         var geometry = Native.GetGeometry(this);
+        if (_historyOpen && _historyRest is { } historyRest)
+        {
+            var saved = _settings.CapsuleEnabled && _rest is { } capsuleRest ? new WindowPosition(capsuleRest.X, capsuleRest.Y) :
+                WindowPlacement.Calculate(geometry.Area, historyRest.Width, historyRest.Height, geometry.Scale, historyRest.X, historyRest.Y);
+            PositionSaved?.Invoke(saved.X, saved.Y); return;
+        }
         var position = _settings.CapsuleEnabled && _expanded ? WindowPlacement.PreserveCorner(geometry.Area,
             geometry.Width, geometry.Height, (int)Math.Round(280 * geometry.Scale), (int)Math.Round(30 * geometry.Scale),
             geometry.Scale, geometry.X, geometry.Y) : new WindowPosition(geometry.X, geometry.Y);
@@ -450,6 +504,7 @@ internal sealed class OverlayWindow : Window
     }
     internal void Reposition(int? x, int? y)
     {
+        if (_historyOpen) ToggleInlineHistory();
         _placing = true;
         if (_settings.CapsuleEnabled && _expanded) { _expanded = false; _rest = null; LayoutWindow(false); }
         Native.Place(this, x, y); _placing = false; CommitPosition();
@@ -471,7 +526,7 @@ internal sealed class OverlayWindow : Window
         if (message == Native.WmMouseActivate) { handled = true; return new IntPtr(3); }
         if (message == Native.WmHotkey) { HotkeyPressed?.Invoke(wParam.ToInt32()); handled = true; }
         if (message is Native.WmDisplayChange or Native.WmDpiChanged)
-            Dispatcher.BeginInvoke(() => { Clamp(false); CommitPosition(); LayoutWindow(false); }, DispatcherPriority.Loaded);
+            Dispatcher.BeginInvoke(() => { if (_historyOpen) ToggleInlineHistory(); Clamp(false); CommitPosition(); LayoutWindow(false); }, DispatcherPriority.Loaded);
         return IntPtr.Zero;
     }
 }
