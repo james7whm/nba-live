@@ -31,6 +31,8 @@ internal sealed class AppController : IDisposable
     private StatisticsWindow? _statistics;
     private RecapWindow? _recapWindow;
     private BookmarksWindow? _bookmarksWindow;
+    private readonly HashSet<Window> _hiddenWindows = [];
+    private bool _allHidden;
     private bool _clickThrough;
     private bool _disposed;
     private string _error = "";
@@ -84,7 +86,7 @@ internal sealed class AppController : IDisposable
                 case 4: ToggleClickThrough(); break;
                 case 5: OpenSettings(); break;
                 case 7: Application.Current.Shutdown(); break;
-                case 8: Overlay.Reposition(null, null); if (!Overlay.IsVisible) Overlay.Show(); break;
+                case 8: Overlay.Reposition(null, null); RestoreWindows(); break;
                 case 9: OpenStatistics(); break;
                 case 10: OpenRecap(); break;
                 case 11: ToggleCapsule(); break;
@@ -104,7 +106,7 @@ internal sealed class AppController : IDisposable
         await UpdateStatisticsDemand();
         if (_demo)
         {
-            if (demoPicker) { OpenPicker(); return; }
+            if (demoPicker) { EnsurePicker(reveal: false); return; }
             var games = await _source.GetGames(MatchTime.Today, _lifetime.Token);
             await Select(games[0]);
             return;
@@ -124,7 +126,7 @@ internal sealed class AppController : IDisposable
             }
             catch (Exception ex) when (ex is System.Net.Http.HttpRequestException or OperationCanceledException or SourceFormatException or ArgumentException) { }
         }
-        if (!_disposed) OpenPicker();
+        if (!_disposed) EnsurePicker(reveal: false);
     }
     private void OnState(SessionState state)
     {
@@ -164,23 +166,27 @@ internal sealed class AppController : IDisposable
             _settings = _settings with { LastGameId = game.Id };
             Save();
             _picker?.Close();
-            if (!Overlay.IsVisible) Overlay.Show();
+            if (!_allHidden && !Overlay.IsVisible) Overlay.Show();
             _recapTrackers.Clear(); _recapWindow?.ResetGame();
             await Task.WhenAll(_session.Select(game), _statisticsCoordinator.SetGame(game));
         }
         finally { _selection.Release(); }
     }
     private void OpenPicker()
+        => EnsurePicker(reveal: true);
+    private void EnsurePicker(bool reveal)
     {
-        if (_picker is not null) { Ui.Present(_picker); return; }
+        if (reveal) RestoreWindows();
+        if (_picker is not null) { if (!_allHidden) Ui.Present(_picker); return; }
         _picker = new(_source, _settings.FavoriteTeam);
         _picker.Selected += async game => await Select(game);
         _picker.Closed += (_, _) => _picker = null;
-        Ui.Present(_picker);
+        if (_allHidden) _hiddenWindows.Add(_picker); else Ui.Present(_picker);
     }
     private void OpenHistory()
     {
-        if (_history is not null) { _history.Activate(); return; }
+        RestoreWindows();
+        if (_history is not null) { Ui.Present(_history); return; }
         _history = new(_bookmarks, OpenBookmarks);
         _history.Update(_session.State, _demo);
         _history.Closed += (_, _) => _history = null;
@@ -188,7 +194,8 @@ internal sealed class AppController : IDisposable
     }
     private void OpenSettings()
     {
-        if (_settingsWindow is not null) { _settingsWindow.Activate(); return; }
+        RestoreWindows();
+        if (_settingsWindow is not null) { Ui.Present(_settingsWindow); return; }
         _settingsWindow = new(_settings, string.Join("\n", new[] { _error, _hotkeys?.Error, _store.Error }.Where(s => !string.IsNullOrEmpty(s)).Distinct()),
             _webSource?.Transport ?? "演示（无网络）", candidate =>
             {
@@ -208,7 +215,8 @@ internal sealed class AppController : IDisposable
     internal void ShowBookmarks() => OpenBookmarks();
     private void OpenBookmarks()
     {
-        if (_bookmarksWindow is not null) { _bookmarksWindow.Activate(); return; }
+        RestoreWindows();
+        if (_bookmarksWindow is not null) { Ui.Present(_bookmarksWindow); return; }
         _bookmarksWindow = new(_bookmarks, _demo);
         _bookmarksWindow.Closed += (_, _) => _bookmarksWindow = null;
         _bookmarksWindow.Show();
@@ -216,7 +224,8 @@ internal sealed class AppController : IDisposable
     internal void ShowStatistics() => OpenStatistics();
     private async void OpenStatistics()
     {
-        if (_statistics is not null) { _statistics.Activate(); return; }
+        RestoreWindows();
+        if (_statistics is not null) { Ui.Present(_statistics); return; }
         var window = new StatisticsWindow(_statisticsCoordinator, _demo, _settings, ToggleFavorite, (preset, layouts) =>
         {
             _settings = (_settings with { StatisticsPreset = preset, StatisticsLayouts = layouts }).Validate();
@@ -275,7 +284,8 @@ internal sealed class AppController : IDisposable
     internal void ShowRecap() => OpenRecap();
     private void OpenRecap()
     {
-        if (_recapWindow is not null) { _recapWindow.Activate(); return; }
+        RestoreWindows();
+        if (_recapWindow is not null) { Ui.Present(_recapWindow); return; }
         _recapWindow = new(recent => _recaps.Capture(DateTimeOffset.UtcNow, recent), capture =>
         { Recaps(capture.FeedKey).MarkViewed(capture); UpdateUnread(); }, _demo, _bookmarks, OpenBookmarks);
         _recapWindow.Closed += (_, _) => _recapWindow = null;
@@ -285,14 +295,38 @@ internal sealed class AppController : IDisposable
     internal void Reveal(bool settings = false)
     {
         if (_disposed) return;
-        if (!Overlay.IsVisible) Overlay.Show();
-        Overlay.Topmost = true;
+        RestoreWindows();
         if (settings) OpenSettings();
         else if (_picker is not null) Ui.Present(_picker);
     }
     private void ToggleVisibility()
     {
-        if (Overlay.IsVisible) Overlay.Hide(); else { Overlay.Show(); Overlay.Topmost = true; }
+        if (_allHidden) { RestoreWindows(); return; }
+        _allHidden = true;
+        _hiddenWindows.Clear();
+        foreach (var window in Windows().Where(window => window.IsVisible)) _hiddenWindows.Add(window);
+        foreach (var window in _hiddenWindows)
+        {
+            Ui.DismissPopups(window);
+            window.Hide();
+        }
+    }
+    private IEnumerable<Window> Windows() => new Window?[] { Overlay, _picker, _statistics, _settingsWindow, _history, _recapWindow, _bookmarksWindow }.OfType<Window>();
+    private void RestoreWindows()
+    {
+        if (_disposed) return;
+        _allHidden = false;
+        var restore = Windows().Where(window => _hiddenWindows.Contains(window)).ToArray();
+        _hiddenWindows.Clear();
+        foreach (var window in restore)
+        {
+            var activate = window.ShowActivated;
+            window.ShowActivated = false;
+            try { window.Show(); }
+            finally { window.ShowActivated = activate; }
+        }
+        if (!Overlay.IsVisible) Overlay.Show();
+        Overlay.Topmost = true;
     }
     private void ToggleClickThrough()
     {

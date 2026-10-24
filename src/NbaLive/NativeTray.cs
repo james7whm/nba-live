@@ -90,7 +90,7 @@ internal sealed class NativeTray : IDisposable
         var menu = CreatePopupMenu();
         try
         {
-            AppendMenu(menu, 0, 1, "显示／隐藏直播条");
+            AppendMenu(menu, 0, 1, "显示／隐藏全部窗口");
             AppendMenu(menu, 0, 2, "选择比赛");
             AppendMenu(menu, 0, 3, "本次会话历史");
             AppendMenu(menu, 0, 16, "精彩收藏");

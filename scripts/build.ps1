@@ -1,4 +1,4 @@
-param([switch]$SkipTests, [string]$Version = '1.2.0', [string]$ArtifactSuffix = '', [switch]$Compatible)
+param([switch]$SkipTests, [string]$Version = '1.2.1', [string]$ArtifactSuffix = '', [switch]$Compatible)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path -Parent $PSScriptRoot
 if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw 'Version must be a numeric major.minor.patch value.' }

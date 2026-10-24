@@ -73,6 +73,17 @@ internal static class Ui
             if (window.IsVisible) Native.ActivateDialog(window);
         }, DispatcherPriority.ContextIdle);
     }
+    internal static void DismissPopups(DependencyObject root)
+    {
+        if (root is System.Windows.Controls.Primitives.Popup popup) popup.IsOpen = false;
+        if (root is ComboBox combo) combo.IsDropDownOpen = false;
+        if (root is FrameworkElement element)
+        {
+            if (element.ContextMenu is { } menu) menu.IsOpen = false;
+            if (element.ToolTip is ToolTip tip) tip.IsOpen = false;
+        }
+        for (var i = 0; i < VisualTreeHelper.GetChildrenCount(root); i++) DismissPopups(VisualTreeHelper.GetChild(root, i));
+    }
 }
 
 internal sealed class GamePickerWindow : Window
@@ -358,7 +369,7 @@ internal sealed class SettingsWindow : Window
     private readonly ComboBox _mode;
     private readonly CheckBox _importantOnly;
     private readonly CheckBox _followedOnly;
-    private readonly TextBox _favorite;
+    private readonly ComboBox _favorite;
     private readonly CheckBox _capsule;
     private readonly ComboBox _content;
     private readonly ComboBox _source, _delivery;
@@ -407,8 +418,10 @@ internal sealed class SettingsWindow : Window
         _followedOnly = new CheckBox { Content = "文字只看关注球员", IsChecked = settings.FollowedPlayersOnly, Margin = new(0, 0, 0, 16),
             ToolTip = "仅对赛况实录按本场名单匹配姓名；简称有歧义时不猜测。历史和回顾保留全部。" };
         reading.Children.Add(_followedOnly);
-        _favorite = AddInput(reading, "关注球队", settings.FavoriteTeam);
-        _favorite.ToolTip = "填写赛程中的球队名，例如：湖人。仅优先排列，不自动切场；留空表示不设置。";
+        _favorite = FavoriteTeams(settings.FavoriteTeam);
+        Ui.Field(reading, "关注球队", _favorite);
+        _favorite.ToolTip = "选择一支球队，在比赛列表中优先排列；选择“不设置”取消关注。";
+        reading.Children.Add(Ui.Text("在比赛列表中优先显示该队比赛，不会自动切换正在看的比赛。", 11));
         reading.Children.Add(Ui.Text("统计表点击 ☆，最多关注 3 人；球员卡每 8 秒切换，悬停暂停。场上五人为双方迷你阵容，名单未确认时会提示。", 11));
         reading.Children.Add(Ui.Text("主播保留全部原文，筛选仅作用于赛况实录；统计与走势图独立采样。主播实况对照验证待完成。", 11));
 
@@ -421,7 +434,7 @@ internal sealed class SettingsWindow : Window
             var candidate = settings with { Theme = (AppTheme)_theme.SelectedIndex, Width = _width.Value, FontSize = _font.Value,
                 BackgroundOpacity = _opacity.Value / 100, HideHotkey = _hide.Text.Trim(), LockHotkey = _clickThrough.Text.Trim(),
                 DisplayMode = (OverlayMode)_mode.SelectedIndex, ImportantEventsOnly = _importantOnly.IsChecked == true,
-                FollowedPlayersOnly = _followedOnly.IsChecked == true, FavoriteTeam = _favorite.Text.Trim(),
+                FollowedPlayersOnly = _followedOnly.IsChecked == true, FavoriteTeam = (_favorite.SelectedItem as FavoriteTeamChoice)?.Value ?? "",
                 CapsuleEnabled = _capsule.IsChecked == true, ContentMode = (OverlayContent)_content.SelectedIndex,
                 TextSource = (TextSourcePreference)_source.SelectedIndex, TextDelivery = (TextDelivery)_delivery.SelectedIndex };
             var result = apply(candidate);
@@ -431,6 +444,31 @@ internal sealed class SettingsWindow : Window
         sections.Children.Add(Ui.Text($"数据连接：{transport}", 10));
         root.Children.Add(new ScrollViewer { Content = sections, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled });
         Content = root;
+    }
+    private sealed record FavoriteTeamChoice(string Value, string Name);
+    private static ComboBox FavoriteTeams(string favorite)
+    {
+        var choices = new List<FavoriteTeamChoice> { new("", "不设置") };
+        choices.AddRange(TeamPalette.All.Select(team => new FavoriteTeamChoice(team.Name, team.Name)));
+        var raw = (favorite ?? "").Trim();
+        var resolved = TeamPalette.Resolve(raw);
+        var value = resolved == TeamPalette.Unknown ? raw : resolved.Name;
+        var selected = choices.FirstOrDefault(team => team.Value == value);
+        if (selected is null) { selected = new(value, value + "（原有设置）"); choices.Add(selected); }
+        var picker = new ComboBox { ItemsSource = choices, SelectedItem = selected, IsEditable = false, IsTextSearchEnabled = true, MaxDropDownHeight = 320 };
+        TextSearch.SetTextPath(picker, nameof(FavoriteTeamChoice.Name));
+        picker.ItemTemplate = (DataTemplate)System.Windows.Markup.XamlReader.Parse("""
+            <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:NbaLive;assembly=NbaLive">
+              <StackPanel Orientation="Horizontal">
+                <local:TeamLogo x:Name="Logo" Team="{Binding Value}" Width="20" Height="20" Margin="0,0,8,0" VerticalAlignment="Center" />
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+              </StackPanel>
+              <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding Value}" Value=""><Setter TargetName="Logo" Property="Visibility" Value="Collapsed" /></DataTrigger>
+              </DataTemplate.Triggers>
+            </DataTemplate>
+            """);
+        return picker;
     }
     private static Slider AddSlider(Panel parent, string label, double min, double max, double value, string format)
     {

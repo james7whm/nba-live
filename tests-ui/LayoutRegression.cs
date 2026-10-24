@@ -31,7 +31,22 @@ internal static class LayoutRegression
             var content=string.Concat(score.Inlines.OfType<Run>().Select(r=>r.Text));Check(content.Contains(points.Item1.ToString())&&content.Contains(points.Item2.ToString()),"both triple digit scores retained");
             var box=Find<Viewbox>(picker).Single();var bounds=score.TransformToAncestor(box).TransformBounds(new Rect(score.RenderSize));
             Check(bounds.Left>=-1&&bounds.Right<=box.ActualWidth+1,"triple digit score fits visible viewbox");
-            if(points.Item1==114)Shot(picker,"score-"+settings.Theme+"-"+typeof(object).Assembly.GetName().Name);picker.Close();
+            if(points.Item1==114)
+            {
+                var date=Find<NbaLive.PremiumDatePicker>(picker).Single();
+                var arrow=(System.Windows.Shapes.Path)Field(date,"_chevron");var label=(TextBlock)Field(date,"_label");
+                foreach(var font in new[]{11,16})foreach(var open in new[]{false,true})
+                {
+                    label.FontSize=font;date.IsDropDownOpen=open;await Pump();
+                    var arrowCenter=arrow.TranslatePoint(new Point(arrow.ActualWidth/2,arrow.ActualHeight/2),date);
+                    var labelCenter=label.TranslatePoint(new Point(label.ActualWidth/2,label.ActualHeight/2),date);
+                    Check(Math.Abs(arrowCenter.Y-labelCenter.Y)<1,"calendar vector arrow stays centered with date label");
+                    Check(arrow.Data.ToString()==Geometry.Parse(open?"M0,4 L4,0 L8,4":"M0,0 L4,4 L8,0").ToString(),"calendar arrow indicates open or closed state");
+                }
+                date.IsDropDownOpen=false;label.FontSize=14;await Pump();
+                Shot(picker,"score-"+settings.Theme+"-"+typeof(object).Assembly.GetName().Name);
+            }
+            picker.Close();
         }
         foreach(var width in new[]{280,360,480})foreach(var font in new[]{11,16})
         {

@@ -13,6 +13,8 @@ internal static class Program
             timer.Tick+=(_,_)=>{timer.Stop();if(smoke.Windows.Count<2){Console.Error.WriteLine("Startup did not create expected windows");smokeExit=1;}else Console.WriteLine("PASS App startup: "+string.Join(",",smoke.Windows.Cast<Window>().Select(w=>w.GetType().Name)));smoke.Shutdown();};
             smoke.Startup+=(_,_)=>timer.Start();smoke.Run();return smokeExit;
         }
+        var scratch=System.IO.Path.GetFullPath(System.IO.Path.Combine("artifacts","ui-regression",Guid.NewGuid().ToString("N")));
+        System.IO.Directory.CreateDirectory(scratch);Environment.SetEnvironmentVariable("TMP",scratch);Environment.SetEnvironmentVariable("TEMP",scratch);
         var app=new Application {ShutdownMode=ShutdownMode.OnExplicitShutdown};var exit=0;
         app.Resources.MergedDictionaries.Add(new ResourceDictionary {Source=new Uri("pack://application:,,,/NbaLive;component/UiTheme.xaml")});
         var assembly=typeof(NbaLive.App).Assembly;
@@ -33,8 +35,9 @@ internal static class Program
                     total+=await ReadingRegression.Run(overlay,new(live,live.Entries,"",false,false){SelectedGame=live.Game},settings);
                     total+=await LayoutRegression.Run(overlay,new(live,live.Entries,"",false,false){SelectedGame=live.Game},settings);
                     overlay.Close();
+                    total+=await VisibilityRegression.Run(settings);
                 }
-                Console.WriteLine($"PASS {total} WPF assertions: reading, triple digit scores and collapse arrow alignment, both themes.");app.Shutdown();
+                Console.WriteLine($"PASS {total} WPF assertions: reading, score and calendar alignment, whole-app hide and restore, both themes.");app.Shutdown();
             }
             catch(Exception ex){Console.Error.WriteLine(ex);exit=1;app.Shutdown(1);}
         };

@@ -14,7 +14,9 @@ public sealed class PremiumDatePicker : ContentControl
     public event EventHandler<SelectionChangedEventArgs>? SelectedDateChanged;
     private readonly Button _trigger=new(),_previous=new(),_next=new(),_title=new();
     private readonly TextBlock _label=new() {FontSize=14,VerticalAlignment=VerticalAlignment.Center,Foreground=Ui.Brush("Ink")};
-    private readonly TextBlock _chevron=new() {Text="⌄",FontSize=16,VerticalAlignment=VerticalAlignment.Center,Foreground=Ui.Brush("MutedInk")};
+    private readonly System.Windows.Shapes.Path _chevron=new() {Data=Geometry.Parse("M0,0 L4,4 L8,0"),Width=8,Height=4,Stretch=Stretch.Fill,
+        HorizontalAlignment=HorizontalAlignment.Center,VerticalAlignment=VerticalAlignment.Center,Stroke=Ui.Brush("MutedInk"),StrokeThickness=1.3,
+        StrokeStartLineCap=PenLineCap.Round,StrokeEndLineCap=PenLineCap.Round,StrokeLineJoin=PenLineJoin.Round};
     private readonly Popup _popup=new() {Placement=PlacementMode.Bottom,StaysOpen=false,AllowsTransparency=true};
     private readonly Grid _days=new();
     private readonly Border _popupRoot;
@@ -28,7 +30,7 @@ public sealed class PremiumDatePicker : ContentControl
         var triggerContent=new Grid(); triggerContent.ColumnDefinitions.Add(new() {Width=new(21)}); triggerContent.ColumnDefinitions.Add(new());triggerContent.ColumnDefinitions.Add(new(){Width=new(16)});
         var glyph=new System.Windows.Shapes.Path {Data=Geometry.Parse("M2,5 L16,5 16,18 2,18Z M2,9 L16,9 M6,2 L6,7 M12,2 L12,7"),Stroke=Ui.Brush("MutedInk"),StrokeThickness=1.3,Width=16,Height=19,Stretch=Stretch.Uniform};
         triggerContent.Children.Add(glyph); Grid.SetColumn(_label,1);triggerContent.Children.Add(_label);Grid.SetColumn(_chevron,2);triggerContent.Children.Add(_chevron);
-        _trigger.Content=triggerContent;_trigger.Margin=new(0);_trigger.Padding=new(10,6,10,6);_trigger.HorizontalContentAlignment=HorizontalAlignment.Stretch;
+        _trigger.Content=triggerContent;_trigger.Margin=new(0);_trigger.Padding=new(10,6,10,6);_trigger.HorizontalContentAlignment=HorizontalAlignment.Stretch;_trigger.VerticalContentAlignment=VerticalAlignment.Center;
         _trigger.Click+=(_,_)=>IsDropDownOpen=!IsDropDownOpen;
         System.Windows.Automation.AutomationProperties.SetName(_trigger,"选择比赛日期");
         var stack=new StackPanel();
@@ -50,14 +52,15 @@ public sealed class PremiumDatePicker : ContentControl
         _popupRoot.PreviewKeyDown+=CalendarKeyDown;
         _popup.Child=new Border {Child=_popupRoot,Padding=new(9),Background=Brushes.Transparent};
         var root=new Grid();root.Children.Add(_trigger);root.Children.Add(_popup);Content=root;_popup.PlacementTarget=_trigger;
-        _popup.Opened+=(_,_)=>{_trigger.BorderBrush=Ui.Brush("AccentBrush");_chevron.Text="⌃";FocusDay();};
-        _popup.Closed+=(_,_)=>{SetCurrentValue(IsDropDownOpenProperty,false);_trigger.BorderBrush=Ui.Brush("LineBrush");_chevron.Text="⌄";};
+        _popup.Opened+=(_,_)=>{_trigger.BorderBrush=Ui.Brush("AccentBrush");_chevron.Data=Geometry.Parse("M0,4 L4,0 L8,4");FocusDay();};
+        _popup.Closed+=(_,_)=>{SetCurrentValue(IsDropDownOpenProperty,false);_trigger.BorderBrush=Ui.Brush("LineBrush");_chevron.Data=Geometry.Parse("M0,0 L4,4 L8,0");};
         _trigger.PreviewKeyDown+=(_,e)=>
         {
             if(e.Key==Key.Down && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt)){IsDropDownOpen=true;e.Handled=true;}
             else if(e.Key==Key.Escape && IsDropDownOpen){Close();e.Handled=true;}
         };
         Unloaded+=(_,_)=>_popup.IsOpen=false;
+        IsVisibleChanged+=(_,_)=>{if(!IsVisible)SetCurrentValue(IsDropDownOpenProperty,false);};
         UpdateLabel();
     }
     private static void Configure(Button button,string label,Action click)
