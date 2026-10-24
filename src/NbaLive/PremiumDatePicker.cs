@@ -93,7 +93,7 @@ public sealed class PremiumDatePicker : ContentControl
     {
         var count=_mode==0?direction:direction*(_mode==1?12:120);
         var index=(_displayMonth.Year-1)*12+_displayMonth.Month-1;
-        index=Math.Clamp(index+count,0,9999*12-1);_displayMonth=new(index/12+1,index%12+1,1);RenderCalendar();
+        index=RuntimeCompat.Clamp(index+count,0,9999*12-1);_displayMonth=new(index/12+1,index%12+1,1);RenderCalendar();
     }
     private void RenderCalendar()
     {

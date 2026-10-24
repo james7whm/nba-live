@@ -47,7 +47,7 @@ internal static class ThemeManager
     }
     internal static void Apply(AppTheme theme)
     {
-        Ensure(); theme = Enum.IsDefined(theme)?theme:AppTheme.Warm;
+        Ensure(); theme = RuntimeCompat.IsDefined(theme)?theme:AppTheme.Warm;
         if(Current==theme) return;
         Current=theme; Colors.Set(theme);
         foreach(Window window in Application.Current.Windows) Native.SetThemeCaption(window);

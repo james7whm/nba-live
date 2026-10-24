@@ -380,7 +380,7 @@ internal sealed class StatisticsWindow : Window
             {
                 Preset = _preset,
                 Columns = _grid.Columns.Where(c => c.Visibility == Visibility.Visible).OrderBy(c => c.DisplayIndex)
-                    .Select(c => new StatisticsColumnSetting(Key(c), double.IsFinite(c.ActualWidth) && c.ActualWidth >= 30 ? c.ActualWidth : c.Width.Value)).ToArray(),
+                    .Select(c => new StatisticsColumnSetting(Key(c), RuntimeCompat.IsFinite(c.ActualWidth) && c.ActualWidth >= 30 ? c.ActualWidth : c.Width.Value)).ToArray(),
                 SortColumn = sort.PropertyName, SortDescending = sort.Direction == ListSortDirection.Descending
             });
         }

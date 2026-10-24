@@ -1,9 +1,9 @@
-param([switch]$SkipTests, [string]$Version = '1.1.0', [string]$ArtifactSuffix = '')
+param([switch]$SkipTests, [string]$Version = '1.2.0', [string]$ArtifactSuffix = '', [switch]$Compatible)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path -Parent $PSScriptRoot
 if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw 'Version must be a numeric major.minor.patch value.' }
 if ($ArtifactSuffix -notmatch '^[a-z0-9-]*$') { throw 'ArtifactSuffix must use lowercase letters, numbers and hyphens.' }
-$taskPackage = "NbaLive-$Version" + $(if ($ArtifactSuffix) { "-$ArtifactSuffix" } else { '' }) + '-win-x64'
+$taskPackage = "NbaLive-$Version" + $(if ($ArtifactSuffix) { "-$ArtifactSuffix" } else { '' }) + $(if($Compatible){'-net48'}else{''}) + '-win-x64'
 $taskDotnet = Join-Path $taskRoot '.tools\dotnet\dotnet.exe'
 if (-not (Test-Path -LiteralPath $taskDotnet)) { $taskDotnet = (Get-Command dotnet -ErrorAction Stop).Source }
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
@@ -12,6 +12,12 @@ try {
     if (-not $SkipTests) {
         & $taskDotnet run --project tests -c Release
         if ($LASTEXITCODE -ne 0) { throw 'Tests failed.' }
+        if($Compatible){
+            & $taskDotnet build tests-compat -c Release
+            if($LASTEXITCODE -ne 0){throw 'Compatibility test build failed.'}
+            & (Join-Path $taskRoot 'tests-compat\bin\Release\net48\NbaLive.CompatTests.exe')
+            if($LASTEXITCODE -ne 0){throw 'Compatibility tests failed.'}
+        }
     }
     $taskOutput = Join-Path $taskRoot ("artifacts\$taskPackage")
     if (Test-Path -LiteralPath $taskOutput) {
@@ -22,13 +28,18 @@ try {
         if ($taskRunning) { throw 'Close the packaged app before rebuilding it.' }
         Remove-Item -LiteralPath $taskResolvedOutput -Recurse -Force
     }
-    & $taskDotnet publish src\NbaLive\NbaLive.csproj -c Release -r win-x64 --self-contained true -p:Version=$Version -p:DebugType=None -p:DebugSymbols=false -o $taskOutput
+    if($Compatible){
+        & $taskDotnet publish src\NbaLive\NbaLive.csproj -f net48 -c Release -p:Version=$Version -p:DebugType=None -p:DebugSymbols=false -o $taskOutput
+    }else{
+        & $taskDotnet publish src\NbaLive\NbaLive.csproj -f net10.0-windows -c Release -r win-x64 --self-contained true -p:Version=$Version -p:DebugType=None -p:DebugSymbols=false -o $taskOutput
+    }
     if ($LASTEXITCODE -ne 0) { throw 'Publish failed.' }
     Copy-Item -LiteralPath (Join-Path $taskRoot 'README.md') -Destination (Join-Path $taskOutput '使用说明.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'THIRD-PARTY-NOTICES.md') -Destination $taskOutput
     New-Item -ItemType Directory -Force (Join-Path $taskOutput 'docs') | Out-Null
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\VERIFICATION.md') -Destination (Join-Path $taskOutput 'docs\VERIFICATION.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\TEAM-COLORS.md') -Destination (Join-Path $taskOutput 'docs\TEAM-COLORS.md')
+    Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\COMPATIBILITY.md') -Destination (Join-Path $taskOutput 'docs\COMPATIBILITY.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\app-icon.png') -Destination (Join-Path $taskOutput 'docs\app-icon.png')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\screenshots') -Destination (Join-Path $taskOutput 'docs') -Recurse
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\releases') -Destination (Join-Path $taskOutput 'docs') -Recurse

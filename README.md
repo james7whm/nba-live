@@ -2,15 +2,17 @@
   <img src="docs/app-icon.png" alt="NBA 直播条：聊天气泡与篮球 Logo" width="112" height="112">
   <h1>NBA 桌面直播条</h1>
   <p>把比分和文字直播，安静地放在桌面一角。</p>
-  <p>Windows 11 x64 · .NET 10 / WPF · 暖白与炭灰双主题 · 解压即用</p>
+  <p>Windows 10 / 11 x64 · Win7 SP1 兼容预览 · 暖白与炭灰双主题</p>
   <p><a href="https://github.com/james7whm/nba-live/releases">下载应用</a> · <a href="#界面预览">界面预览</a> · <a href="#使用说明">使用说明</a> · <a href="docs/VERIFICATION.md">验证记录</a></p>
 </div>
 
 原生 Windows NBA 悬浮文字直播工具。默认 **360×110 DIP**，提供置顶、胶囊收展、球员统计和比赛回顾；没有声音、闪烁或滚动动画，直播更新不会抢走键盘焦点。
 
-当前版本 **1.1.0**。[查看更新说明](docs/releases/1.1.0.md) · [下载 Windows x64 免安装包](https://github.com/james7whm/nba-live/releases/download/v1.1.0/NbaLive-1.1.0-win-x64.zip)。旧版用户解压到新目录即可使用，原有本地配置与收藏继续保留。
+当前版本 **1.2.0**。[查看更新说明](docs/releases/1.2.0.md) · [下载 Win10/11 x64 免安装包](https://github.com/james7whm/nba-live/releases/download/v1.2.0/NbaLive-1.2.0-win-x64.zip) · [下载 Win7 兼容预览包](https://github.com/james7whm/nba-live/releases/download/v1.2.0/NbaLive-1.2.0-compatibility-preview-net48-win-x64.zip)。旧版用户解压到新目录即可使用，原有本地配置与收藏继续保留。
 
 ## 功能概览
+
+**新增兼容预览包：** 独立 `net48` 兼容包目标为 Win7 SP1／Win10／Win11 x64，需要先安装 .NET Framework 4.8 或兼容的后续 4.x 运行环境。当前已完成 Win11 上的双运行时回归，尚未完成 Win7／Win10 实机验收；Win10／Win11 优先使用现代版。选择方式及完整条件见 [系统兼容说明](docs/COMPATIBILITY.md)。
 
 | 功能 | 可以做什么 |
 | --- | --- |
@@ -25,7 +27,7 @@
 
 ### 快速开始
 
-1. 从 [Releases](https://github.com/james7whm/nba-live/releases) 下载 Windows x64 ZIP，解压后运行 `NbaLive.exe`。保留整个解压目录，无需安装 .NET 或管理员权限。
+1. 从 [Releases](https://github.com/james7whm/nba-live/releases) 下载适合系统的 x64 ZIP，解压后运行 `NbaLive.exe`。保留整个解压目录；现代版无需安装 .NET，兼容预览版需预装 .NET Framework 4.8。应用本身无需管理员权限。
 2. 选择一场比赛，点击「查看文字直播」。鼠标移入卡片即可使用文字／球员／阵容切换、回顾和更多菜单。
 3. 在「更多 → 设置 → 外观」切换主题、字号、宽度、不透明度或胶囊模式，保存后生效。
 
@@ -225,7 +227,7 @@
 ```powershell
 dotnet build src/NbaLive/NbaLive.csproj -c Release
 dotnet run --project tests -c Release
-dotnet run --project tests-ui -c Release
+dotnet run --project tests-ui -f net10.0-windows -c Release
 dotnet run --project tests -c Release -- --probe
 dotnet run --project tests -c Release -- --probe-statistics --game 168863
 dotnet run --project tests -c Release -- --probe-anchor --game 168866 --date 2026-10-22

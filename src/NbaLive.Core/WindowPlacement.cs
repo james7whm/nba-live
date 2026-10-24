@@ -13,8 +13,8 @@ public static class WindowPlacement
     {
         var desired = PreserveCorner(area, width, height, expandedWidth, expandedHeight, scale, x, y);
         return Calculate(area, expandedWidth, expandedHeight, scale,
-            Math.Clamp(desired.X, x + width - expandedWidth, x),
-            Math.Clamp(desired.Y, y + height - expandedHeight, y));
+            RuntimeCompat.Clamp(desired.X, x + width - expandedWidth, x),
+            RuntimeCompat.Clamp(desired.Y, y + height - expandedHeight, y));
     }
     public static WindowPosition PreserveCorner(WorkArea area, int oldWidth, int oldHeight, int newWidth, int newHeight,
         double scale, int x, int y)
@@ -39,8 +39,8 @@ public static class WindowPlacement
             if (Math.Abs((double)y - (area.Top + margin)) < threshold) y = area.Top + margin;
             if (Math.Abs((double)y - (area.Bottom - height - margin)) < threshold) y = area.Bottom - height - margin;
         }
-        x = Math.Clamp(x, area.Left, Math.Max(area.Left, area.Right - width));
-        y = Math.Clamp(y, area.Top, Math.Max(area.Top, area.Bottom - height));
+        x = RuntimeCompat.Clamp(x, area.Left, Math.Max(area.Left, area.Right - width));
+        y = RuntimeCompat.Clamp(y, area.Top, Math.Max(area.Top, area.Bottom - height));
         return new(x, y);
     }
 }

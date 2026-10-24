@@ -72,7 +72,7 @@ public sealed class EventBookmarks
         {
             Directory.CreateDirectory(Path.GetDirectoryName(_path)!);
             File.WriteAllText(_path + ".tmp", JsonSerializer.Serialize(next.OrderByDescending(e => e.SavedAt), new JsonSerializerOptions { WriteIndented = true, IgnoreReadOnlyProperties = true }));
-            File.Move(_path + ".tmp", _path, true);
+            RuntimeCompat.ReplaceFile(_path + ".tmp", _path);
             Items = Array.AsReadOnly(next.OrderByDescending(e => e.SavedAt).ToArray()); Error = null;
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)

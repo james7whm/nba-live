@@ -26,11 +26,17 @@ internal sealed class SingleInstance : IDisposable
         {
             try
             {
+#if NETFRAMEWORK
+                var security = new PipeSecurity();
+                security.AddAccessRule(new PipeAccessRule(WindowsIdentity.GetCurrent().User!,PipeAccessRights.FullControl,System.Security.AccessControl.AccessControlType.Allow));
+                using var server = new NamedPipeServerStream(_pipeName,PipeDirection.In,1,PipeTransmissionMode.Byte,PipeOptions.Asynchronous,0,0,security);
+#else
                 using var server = new NamedPipeServerStream(_pipeName, PipeDirection.In, 1,
                     PipeTransmissionMode.Byte, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
+#endif
                 await server.WaitForConnectionAsync(_lifetime.Token).ConfigureAwait(false);
                 var packet = new byte[1];
-                var count = await server.ReadAsync(packet, _lifetime.Token).AsTask()
+                var count = await server.ReadAsync(packet, 0, packet.Length, _lifetime.Token)
                     .WaitAsync(TimeSpan.FromSeconds(2), _lifetime.Token).ConfigureAwait(false);
                 if (count == 1 && packet[0] is 1 or 2) ShowRequested?.Invoke(packet[0] == 2);
             }
@@ -47,9 +53,13 @@ internal sealed class SingleInstance : IDisposable
     {
         try
         {
-            using var client = new NamedPipeClientStream(".", _pipeName, PipeDirection.Out, PipeOptions.Asynchronous | PipeOptions.CurrentUserOnly);
+            using var client = new NamedPipeClientStream(".", _pipeName, PipeDirection.Out, PipeOptions.Asynchronous
+#if !NETFRAMEWORK
+                | PipeOptions.CurrentUserOnly
+#endif
+                );
             await client.ConnectAsync(1500);
-            await client.WriteAsync(new byte[] { settings ? (byte)2 : (byte)1 });
+            await client.WriteAsync(new byte[] { settings ? (byte)2 : (byte)1 },0,1);
             return true;
         }
         catch (Exception ex) when (ex is IOException or TimeoutException) { return false; }

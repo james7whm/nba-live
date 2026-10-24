@@ -21,6 +21,13 @@ internal static class Native
     [DllImport("user32.dll")] internal static extern bool GetWindowRect(IntPtr hwnd, out Rect rect);
     [DllImport("user32.dll")] private static extern bool SetWindowPos(IntPtr hwnd, IntPtr after, int x, int y, int cx, int cy, uint flags);
     [DllImport("user32.dll")] private static extern uint GetDpiForWindow(IntPtr hwnd);
+    internal static uint WindowDpi(IntPtr hwnd)
+    {
+        try { var dpi = GetDpiForWindow(hwnd); if (dpi > 0) return dpi; }
+        catch (EntryPointNotFoundException) { }
+        var scale = HwndSource.FromHwnd(hwnd)?.CompositionTarget?.TransformToDevice.M11 ?? 1;
+        return (uint)Math.Max(96, Math.Round(scale * 96));
+    }
     [DllImport("user32.dll")] internal static extern bool RegisterHotKey(IntPtr hwnd, int id, uint modifiers, uint key);
     [DllImport("user32.dll")] internal static extern bool UnregisterHotKey(IntPtr hwnd, int id);
     [DllImport("user32.dll")] private static extern bool IsIconic(IntPtr hwnd);
@@ -75,7 +82,7 @@ internal static class Native
         var info = new MonitorInfo { Size = Marshal.SizeOf<MonitorInfo>() };
         if (!GetMonitorInfo(monitor, ref info)) throw new InvalidOperationException("无法读取屏幕工作区。");
         var area = info.Work;
-        var scale = GetDpiForWindow(hwnd) / 96.0;
+        var scale = WindowDpi(hwnd) / 96.0;
         var width = rect.Right - rect.Left;
         var height = rect.Bottom - rect.Top;
         var position = WindowPlacement.Calculate(new(area.Left, area.Top, area.Right, area.Bottom), width, height, scale, savedX, savedY, snap);
@@ -91,7 +98,7 @@ internal static class Native
         var info = new MonitorInfo { Size = Marshal.SizeOf<MonitorInfo>() };
         if (!GetMonitorInfo(MonitorFromWindow(hwnd, 2), ref info)) throw new InvalidOperationException("无法读取屏幕工作区。");
         return new(new(info.Work.Left, info.Work.Top, info.Work.Right, info.Work.Bottom), rect.Left, rect.Top,
-            rect.Right - rect.Left, rect.Bottom - rect.Top, GetDpiForWindow(hwnd) / 96.0);
+            rect.Right - rect.Left, rect.Bottom - rect.Top, WindowDpi(hwnd) / 96.0);
     }
     internal static WindowPosition ResizeKeepingCorner(Window window, Geometry before)
     {

@@ -6,6 +6,13 @@ internal static class Program
 {
     [STAThread] static int Main()
     {
+        if(Environment.GetCommandLineArgs().Contains("--smoke"))
+        {
+            var smoke=new NbaLive.App();smoke.InitializeComponent();
+            var timer=new System.Windows.Threading.DispatcherTimer{Interval=TimeSpan.FromSeconds(5)};var smokeExit=0;
+            timer.Tick+=(_,_)=>{timer.Stop();if(smoke.Windows.Count<2){Console.Error.WriteLine("Startup did not create expected windows");smokeExit=1;}else Console.WriteLine("PASS App startup: "+string.Join(",",smoke.Windows.Cast<Window>().Select(w=>w.GetType().Name)));smoke.Shutdown();};
+            smoke.Startup+=(_,_)=>timer.Start();smoke.Run();return smokeExit;
+        }
         var app=new Application {ShutdownMode=ShutdownMode.OnExplicitShutdown};var exit=0;
         app.Resources.MergedDictionaries.Add(new ResourceDictionary {Source=new Uri("pack://application:,,,/NbaLive;component/UiTheme.xaml")});
         var assembly=typeof(NbaLive.App).Assembly;
@@ -24,9 +31,10 @@ internal static class Program
                     var overlay=(Window)Activator.CreateInstance(assembly.GetType("NbaLive.OverlayWindow")!,BindingFlags.NonPublic|BindingFlags.Instance,null,[settings],null)!;
                     overlay.Show();
                     total+=await ReadingRegression.Run(overlay,new(live,live.Entries,"",false,false){SelectedGame=live.Game},settings);
+                    total+=await LayoutRegression.Run(overlay,new(live,live.Entries,"",false,false){SelectedGame=live.Game},settings);
                     overlay.Close();
                 }
-                Console.WriteLine($"PASS {total} WPF reading assertions: both themes, normal/capsule, scroll anchor, new arrivals, close, hover, resume and return latest.");app.Shutdown();
+                Console.WriteLine($"PASS {total} WPF assertions: reading, triple digit scores and collapse arrow alignment, both themes.");app.Shutdown();
             }
             catch(Exception ex){Console.Error.WriteLine(ex);exit=1;app.Shutdown(1);}
         };

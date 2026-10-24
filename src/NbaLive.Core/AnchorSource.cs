@@ -75,7 +75,7 @@ public static class AnchorParser
                 if (SameTeam(Str(item, "awayTeamName"), game.Away) && SameTeam(Str(item, "homeTeamName"), game.Home))
                 {
                     var id = Str(item, "matchId");
-                    if (id.Length == 0 || !id.All(char.IsAsciiDigit)) throw new SourceFormatException("比赛编号数据异常");
+                    if (id.Length == 0 || !id.All(RuntimeCompat.IsAsciiDigit)) throw new SourceFormatException("比赛编号数据异常");
                     candidates.Add(new(id, ReadGame(item, game)));
                 }
         }
@@ -121,7 +121,7 @@ public static class AnchorParser
         if (!Regex.IsMatch(key, @"^\d+:\d+:\d+$")) throw new SourceFormatException("直播间标识异常");
         var polling = Get(Get(item, "liveRoomMsgConfig"), "polling");
         if (Get(polling, "open").ValueKind == JsonValueKind.False) return null;
-        TimeSpan Interval(string name, int fallback) => TimeSpan.FromMilliseconds(Math.Clamp(Number(polling, name) ?? fallback, 1000, 60000));
+        TimeSpan Interval(string name, int fallback) => TimeSpan.FromMilliseconds(RuntimeCompat.Clamp(Number(polling, name) ?? fallback, 1000, 60000));
         return new(matchId, key, Str(item, "anchorName"), Str(item, "liveStatus") == "FINISH",
             Interval("inProgressIntervalInMillSeconds", 1000), Interval("notInProgressIntervalInMillSeconds", 5000));
     }

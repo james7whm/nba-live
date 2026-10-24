@@ -92,7 +92,13 @@ internal sealed class OverlayWindow : Window
         var header = new DockPanel();
         _historyToggle = Tool("⌃", ToggleInlineHistory, "展开文字记录");
         _historyToggle.Width = 22; _historyToggle.Height = 20;
-        _historyToggle.FontSize = 16; _historyToggle.Padding = new(0);
+        _historyToggle.VerticalAlignment = VerticalAlignment.Center;
+        _historyToggle.Padding = new(0);
+        var chevron = new System.Windows.Shapes.Path { Width = 8, Height = 5, Stretch = Stretch.Fill,
+            Stroke = Ui.Brush("MutedInk"), StrokeThickness = 1.4, StrokeStartLineCap = PenLineCap.Round, StrokeEndLineCap = PenLineCap.Round,
+            IsHitTestVisible = false };
+        _historyToggle.Content = chevron;
+        _historyToggle.ContentTemplate = null;
         System.Windows.Automation.AutomationProperties.SetName(_historyToggle, "展开文字记录");
         DockPanel.SetDock(_historyToggle, Dock.Right); header.Children.Add(_historyToggle);
         DockPanel.SetDock(_progress, Dock.Right);
@@ -428,7 +434,7 @@ internal sealed class OverlayWindow : Window
         _progress.Text = OverlayProgress.Format(game); _progress.ToolTip = _progress.Text;
         _score.ToolTip = game is null ? null : $"{game.Score} · {_progress.Text}";
         _historyToggle.Visibility = game is not null && _settings.ContentMode == OverlayContent.Text ? Visibility.Visible : Visibility.Collapsed;
-        _historyToggle.Content = _historyOpen ? "⌄" : "⌃";
+        ((System.Windows.Shapes.Path)_historyToggle.Content).Data = Geometry.Parse(_historyOpen ? "M0,0 L4,4 L8,0" : "M0,4 L4,0 L8,4");
         _historyToggle.ToolTip = _historyOpen ? "收起文字记录" : "向上展开，查看本次会话更早的消息";
         System.Windows.Automation.AutomationProperties.SetName(_historyToggle, _historyOpen ? "收起文字记录" : "展开文字记录");
         var progress = Regex.Replace(game?.Progress ?? "", "第([一二三四1234])节", m =>
@@ -554,7 +560,7 @@ internal sealed class OverlayWindow : Window
             {
                 var geometry = Native.GetGeometry(this);
                 if (_settings.CapsuleEnabled && _rest is { } capsuleRest)
-                    _rest = capsuleRest with { X = geometry.X + Math.Clamp(capsuleRest.X - rest.X, 0, Math.Max(0, geometry.Width - capsuleRest.Width)),
+                    _rest = capsuleRest with { X = geometry.X + RuntimeCompat.Clamp(capsuleRest.X - rest.X, 0, Math.Max(0, geometry.Width - capsuleRest.Width)),
                         Y = geometry.Y + geometry.Height - capsuleRest.Height };
                 _historyRest = rest with { X = geometry.X, Y = geometry.Y + geometry.Height - rest.Height };
             }

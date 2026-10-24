@@ -186,7 +186,7 @@ internal sealed class ScoreChart : FrameworkElement
             dc.DrawLine(new Pen(Brushes.Gray, .8) { DashStyle = DashStyles.Dot }, new(x, _plot.Top), new(x, _plot.Bottom));
             dc.DrawEllipse(_away, new Pen(Brushes.White, 1), new(x, Y(hover.Away)), 3.5, 3.5);
             dc.DrawEllipse(_home, new Pen(Brushes.White, 1), new(x, Y(hover.Home)), 3.5, 3.5);
-            var width = Math.Min(270, _plot.Width); var left = Math.Clamp(x + 12, _plot.Left, _plot.Right - width);
+            var width = Math.Min(270, _plot.Width); var left = RuntimeCompat.Clamp(x + 12, _plot.Left, _plot.Right - width);
             dc.DrawRoundedRectangle(Ui.Brush("CardBrush"), new Pen(Ui.Brush("LineBrush"), 1), new(left, _plot.Top + 8, width, 79), 8, 8);
             Text(dc, "记录时间：" + hover.TimeLabel, new(left + 9, _plot.Top + 14), width: width - 18);
             Logo(dc, data.Game.Away, new(left + 9, _plot.Top + 36, 17, 17));

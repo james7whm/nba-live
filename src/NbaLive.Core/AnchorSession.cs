@@ -37,7 +37,7 @@ public sealed class AnchorSession(IAnchorSource source, Func<TimeSpan, Cancellat
     private readonly SemaphoreSlim _selection = new(1, 1);
     private int _epoch;
     private bool _enabled = true;
-    private TaskCompletionSource _resume = new(TaskCreationOptions.RunContinuationsAsynchronously);
+    private TaskCompletionSource<bool> _resume = new(TaskCreationOptions.RunContinuationsAsynchronously);
     public SessionState State { get; private set; } = new(null, [], "正在查找主播…", false, true) { Origin = TextOrigin.Anchor, FeedKey = "anchor" };
     public bool HasRoom { get; private set; }
     public GameInfo? MobileGame { get; private set; }
@@ -50,7 +50,7 @@ public sealed class AnchorSession(IAnchorSource source, Func<TimeSpan, Cancellat
     {
         if (_enabled == enabled) return;
         _enabled = enabled;
-        if (enabled) _resume.TrySetResult();
+        if (enabled) _resume.TrySetResult(true);
         else _resume = new(TaskCreationOptions.RunContinuationsAsynchronously);
     }
     public async Task Select(GameInfo? game)
@@ -153,7 +153,7 @@ public sealed class AnchorSession(IAnchorSource source, Func<TimeSpan, Cancellat
                         // Every request releases the shared gate, letting live requests and secondary readers proceed.
                         await Task.Yield();
                     }
-                    while (Stopwatch.GetElapsedTime(budget) < TimeSpan.FromSeconds(60));
+                    while (RuntimeCompat.Elapsed(budget) < TimeSpan.FromSeconds(60));
                     var initialized = sync.IsInitialized;
                     var added = completed ? sync.Added : [];
                     if (added.Count > 0) lastEvent = _now();
@@ -163,7 +163,7 @@ public sealed class AnchorSession(IAnchorSource source, Func<TimeSpan, Cancellat
                     {
                         Origin = TextOrigin.Anchor, FeedKey = "anchor:" + room.Key, SourceLabel = string.IsNullOrWhiteSpace(room.Name) ? "主播解说" : "主播 · " + room.Name,
                         SelectedGame = game, ScoreFetchedAt = ScoreFetchedAt, ScoreMessage = ScoreMessage, HistoryRevision = sync.Revision,
-                        AddedEntryKeys = added, LastBatchSize = added.Count, LastEventObservedAt = lastEvent, FetchDuration = Stopwatch.GetElapsedTime(started)
+                        AddedEntryKeys = added, LastBatchSize = added.Count, LastEventObservedAt = lastEvent, FetchDuration = RuntimeCompat.Elapsed(started)
                     };
                     Changed?.Invoke();
                     // Finished rooms still return their latest historical page; quiet means no NEW identities.
@@ -180,7 +180,7 @@ public sealed class AnchorSession(IAnchorSource source, Func<TimeSpan, Cancellat
                 else wait = TimeSpan.FromSeconds(5);
                 failures = 0;
                 if (room?.Finished != true)
-                    wait = TimeSpan.FromTicks(Math.Max(0, wait.Ticks - Stopwatch.GetElapsedTime(started).Ticks));
+                    wait = TimeSpan.FromTicks(Math.Max(0, wait.Ticks - RuntimeCompat.Elapsed(started).Ticks));
             }
             catch (OperationCanceledException) when (ct.IsCancellationRequested) { return; }
             catch (Exception ex) when (Recoverable(ex))

@@ -153,7 +153,8 @@ internal static class AnchorTests
             var old = JsonSerializer.Deserialize<AppSettings>("{\"Width\":280,\"FontSize\":16}")!.Validate();
             Check(old.TextSource == TextSourcePreference.AnchorPreferred && old.TextDelivery == TextDelivery.Latest && old.Width == 280, "migration preserves appearance");
             var updated = old with { TextSource = TextSourcePreference.Structured, TextDelivery = TextDelivery.Paged };
-            Check(JsonSerializer.Deserialize<AppSettings>(JsonSerializer.Serialize(updated))!.Validate() == updated, "roundtrip");
+            var reloaded = JsonSerializer.Deserialize<AppSettings>(JsonSerializer.Serialize(updated))!.Validate();
+            Check(JsonSerializer.Serialize(reloaded) == JsonSerializer.Serialize(updated), "roundtrip preserves settings values");
             Check((updated with { TextSource = (TextSourcePreference)20, TextDelivery = (TextDelivery)20 }).Validate().TextDelivery == TextDelivery.Latest, "invalid enums default safely");
             Check(JsonSerializer.Deserialize<LiveEntry>("{\"SourceId\":\"1\",\"Text\":\"旧原文\",\"Clock\":\"\",\"Team\":\"\",\"Score\":\"\",\"Order\":1,\"Period\":0}")!.Origin == TextOrigin.Structured, "legacy bookmark origin");
         })),

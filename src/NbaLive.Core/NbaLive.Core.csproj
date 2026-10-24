@@ -1,4 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup>
+  <PropertyGroup><TargetFrameworks>net10.0;net48</TargetFrameworks></PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'">
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="all" />
+    <PackageReference Include="System.Text.Json" Version="10.0.13" />
+    <PackageReference Include="Portable.System.DateTimeOnly" Version="9.0.2" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
   <ItemGroup><PackageReference Include="AngleSharp" Version="1.8.5" /></ItemGroup>
 </Project>

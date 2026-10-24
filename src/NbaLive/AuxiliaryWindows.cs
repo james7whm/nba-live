@@ -148,12 +148,14 @@ internal sealed class GamePickerWindow : Window
         return (DataTemplate)System.Windows.Markup.XamlReader.Parse("""
             <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:local="clr-namespace:NbaLive;assembly=NbaLive">
               <Grid ToolTip="{Binding Display}" MinHeight="32">
-                <Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/><ColumnDefinition Width="110"/><ColumnDefinition Width="*"/><ColumnDefinition Width="36"/><ColumnDefinition Width="108"/></Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/><ColumnDefinition Width="148"/><ColumnDefinition Width="*"/><ColumnDefinition Width="36"/><ColumnDefinition Width="108"/></Grid.ColumnDefinitions>
                 <local:TeamLogo Team="{Binding Game.Away}" Width="30" Height="30"/>
                 <TextBlock Grid.Column="1" Text="{Binding Game.Away}" FontSize="16" Margin="4,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
-                <TextBlock Grid.Column="2" TextAlignment="Center" VerticalAlignment="Center" FontSize="27" Foreground="{Binding ScoreInk}">
+                <Viewbox Grid.Column="2" Margin="6,0" Stretch="Uniform" StretchDirection="DownOnly" VerticalAlignment="Center">
+                <TextBlock TextAlignment="Center" VerticalAlignment="Center" FontSize="27" Foreground="{Binding ScoreInk}">
                   <Run Text="{Binding AwayPoints, Mode=OneWay}" FontWeight="{Binding AwayWeight}"/><Run Text=" : "/><Run Text="{Binding HomePoints, Mode=OneWay}" FontWeight="{Binding HomeWeight}"/>
                 </TextBlock>
+                </Viewbox>
                 <TextBlock Grid.Column="3" Text="{Binding Game.Home}" FontSize="16" Margin="8,0,2,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
                 <local:TeamLogo Grid.Column="4" Team="{Binding Game.Home}" Width="30" Height="30"/>
                 <Border Grid.Column="5" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1,0,0,0" Margin="8,0,0,0" Padding="8,0,0,0">

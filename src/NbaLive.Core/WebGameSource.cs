@@ -1,4 +1,5 @@
 using System.Net;
+using System.Net.Http;
 using System.Security.Authentication;
 using System.Collections.Concurrent;
 
@@ -24,14 +25,25 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
     public WebGameSource(HttpMessageHandler? handler = null, bool loadRosters = false)
     {
         _loadRosters = loadRosters;
-        _client = new HttpClient(handler ?? new SocketsHttpHandler
+        _client = new HttpClient(handler ??
+#if NETFRAMEWORK
+        new HttpClientHandler
+        {
+            AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate,
+            UseCookies = false, AllowAutoRedirect = false,
+            SslProtocols = SslProtocols.Tls12
+        }
+#else
+        new SocketsHttpHandler
         {
             AutomaticDecompression = DecompressionMethods.All,
             UseCookies = false,
             AllowAutoRedirect = false,
             ConnectTimeout = TimeSpan.FromSeconds(6),
             PooledConnectionLifetime = TimeSpan.FromMinutes(5)
-        }) { Timeout = TimeSpan.FromSeconds(12) };
+        }
+#endif
+        ) { Timeout = TimeSpan.FromSeconds(12) };
         _client.DefaultRequestHeaders.UserAgent.ParseAdd("NbaLive/1.0.0 (+personal desktop reader)");
         _client.DefaultRequestHeaders.Accept.ParseAdd("text/html");
         _client.DefaultRequestHeaders.CacheControl = new() { NoCache = true };
@@ -87,11 +99,14 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
                 return ""; // Before tip-off the site redirects its unpublished live page to the preview.
             throw new SourceFormatException("数据响应异常，请稍后刷新。");
         }
-        response.EnsureSuccessStatusCode();
+        if(!response.IsSuccessStatusCode) throw new SourceHttpException(response.StatusCode);
         return await response.Content.ReadAsStringAsync(ct);
     }
     private static bool IsTlsFailure(Exception ex) => ex is AuthenticationException ||
+        ex is WebException { Status: WebExceptionStatus.TrustFailure or WebExceptionStatus.SecureChannelFailure } ||
+#if !NETFRAMEWORK
         ex is HttpRequestException { HttpRequestError: HttpRequestError.SecureConnectionError } ||
+#endif
         (ex.InnerException is not null && IsTlsFailure(ex.InnerException));
 
     public async Task<IReadOnlyList<GameInfo>> GetGames(DateOnly date, CancellationToken cancellationToken)
@@ -103,10 +118,10 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
 
     public async Task<LiveSnapshot> GetSnapshot(string gameId, CancellationToken cancellationToken)
     {
-        if (gameId.Length == 0 || !gameId.All(char.IsAsciiDigit)) throw new ArgumentException("比赛编号必须是数字。", nameof(gameId));
+        if (gameId.Length == 0 || !gameId.All(RuntimeCompat.IsAsciiDigit)) throw new ArgumentException("比赛编号必须是数字。", nameof(gameId));
         string html;
         try { html = await Read($"/games/playbyplay/{gameId}", cancellationToken); }
-        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound &&
+        catch (HttpRequestException ex) when (RuntimeCompat.StatusCode(ex) == HttpStatusCode.NotFound &&
             _knownGames.TryGetValue(gameId, out var waiting) && waiting.Status == GameStatus.Scheduled)
         { return new(waiting, [], DateTimeOffset.UtcNow); }
         // The legacy site returns a genuinely empty 200 response before publishing the live page.
@@ -123,10 +138,10 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
 
     public async Task<BoxScoreSnapshot> GetBoxScore(string gameId, CancellationToken cancellationToken)
     {
-        if (gameId.Length == 0 || !gameId.All(char.IsAsciiDigit)) throw new ArgumentException("比赛编号必须是数字。", nameof(gameId));
+        if (gameId.Length == 0 || !gameId.All(RuntimeCompat.IsAsciiDigit)) throw new ArgumentException("比赛编号必须是数字。", nameof(gameId));
         string html;
         try { html = await Read(SourcePages.BoxScore(gameId).AbsolutePath, cancellationToken); }
-        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound &&
+        catch (HttpRequestException ex) when (RuntimeCompat.StatusCode(ex) == HttpStatusCode.NotFound &&
             _knownGames.TryGetValue(gameId, out var waiting) && waiting.Status == GameStatus.Scheduled)
         { return BoxScoreSnapshot.Waiting(waiting, DateTimeOffset.UtcNow); }
         if (string.IsNullOrWhiteSpace(html) && _knownGames.TryGetValue(gameId, out var scheduled) && scheduled.Status == GameStatus.Scheduled)

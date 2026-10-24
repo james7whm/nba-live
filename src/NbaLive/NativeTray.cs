@@ -68,8 +68,10 @@ internal sealed class NativeTray : IDisposable
             file = key?.GetValue("SystemUsesLightTheme") switch { 0 => "TrayDark.ico", 1 => "TrayLight.ico", _ => file };
         }
         catch (Exception ex) when (ex is System.Security.SecurityException or UnauthorizedAccessException or IOException) { }
-        var size = GetSystemMetricsForDpi(49, GetDpiForWindow(_hwnd)); // SM_CYSMICON
-        return (file, Math.Clamp(size, 16, 256));
+        int size;
+        try { size = GetSystemMetricsForDpi(49, Native.WindowDpi(_hwnd)); }
+        catch (EntryPointNotFoundException) { size = GetSystemMetrics(49); }
+        return (file, RuntimeCompat.Clamp(size, 16, 256));
     }
     private void RefreshAppearance()
     {
@@ -146,7 +148,7 @@ internal sealed class NativeTray : IDisposable
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern IntPtr LoadImage(IntPtr instance, string name, uint type, int cx, int cy, uint flags);
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern uint RegisterWindowMessage(string message);
     [DllImport("user32.dll")] private static extern bool DestroyIcon(IntPtr icon);
-    [DllImport("user32.dll")] private static extern uint GetDpiForWindow(IntPtr hwnd);
+    [DllImport("user32.dll")] private static extern int GetSystemMetrics(int index);
     [DllImport("user32.dll")] private static extern int GetSystemMetricsForDpi(int index, uint dpi);
     [DllImport("user32.dll")] private static extern IntPtr CreatePopupMenu();
     [DllImport("user32.dll", CharSet = CharSet.Unicode)] private static extern bool AppendMenu(IntPtr menu, uint flags, uint id, string text);

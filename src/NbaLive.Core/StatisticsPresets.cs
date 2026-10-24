@@ -21,13 +21,13 @@ public static class StatisticsPresets
     private static readonly string[] Shooting = ["Star", "Name", "Minutes", "Points", "FieldGoals", "FieldGoalPercentage", "ThreePointers", "ThreePointPercentage", "FreeThrows", "FreeThrowPercentage"];
     public static IReadOnlyList<string> Columns(StatisticsPreset preset) => preset switch { StatisticsPreset.Compact => Compact, StatisticsPreset.Shooting => Shooting, _ => Full };
     public static StatisticsTableLayout[] Normalize(IEnumerable<StatisticsTableLayout?>? layouts) => (layouts ?? [])
-        .Where(l => l is not null && Enum.IsDefined(l.Preset)).Select(l =>
+        .Where(l => l is not null && RuntimeCompat.IsDefined(l.Preset)).Select(l =>
         {
             var valid = Columns(l!.Preset);
             return l with
             {
-                Columns = (l.Columns ?? []).Where(c => c is not null && valid.Contains(c.Key) && double.IsFinite(c.Width))
-                    .DistinctBy(c => c.Key).Select(c => c with { Width = Math.Clamp(c.Width, 30, 480) }).ToArray(),
+                Columns = (l.Columns ?? []).Where(c => c is not null && valid.Contains(c.Key) && RuntimeCompat.IsFinite(c.Width))
+                    .DistinctBy(c => c.Key).Select(c => c with { Width = RuntimeCompat.Clamp(c.Width, 30, 480) }).ToArray(),
                 SortColumn = l.SortColumn != "Star" && valid.Contains(l.SortColumn ?? "") ? l.SortColumn : null
             };
         }).DistinctBy(l => (l.Preset, l.Home)).Take(6).ToArray();

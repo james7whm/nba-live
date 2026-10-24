@@ -1,4 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup><OutputType>Exe</OutputType><TargetFramework>net10.0-windows</TargetFramework><UseWPF>true</UseWPF><EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition></PropertyGroup>
+  <PropertyGroup><OutputType>Exe</OutputType><TargetFrameworks>net10.0-windows;net48</TargetFrameworks><UseWPF>true</UseWPF><EnableDefaultApplicationDefinition>false</EnableDefaultApplicationDefinition></PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net48'"><AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects><GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType><PlatformTarget>x64</PlatformTarget></PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net48'"><PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all"/><PackageReference Include="PolySharp" Version="1.15.0" PrivateAssets="all"/></ItemGroup>
   <ItemGroup><ProjectReference Include="../src/NbaLive/NbaLive.csproj" /></ItemGroup>
 </Project>

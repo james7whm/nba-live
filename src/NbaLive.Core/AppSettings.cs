@@ -31,18 +31,18 @@ public sealed record AppSettings
     public StatisticsTableLayout[] StatisticsLayouts { get; init; } = [];
     public AppSettings Validate() => this with
     {
-        Width = double.IsFinite(Width) ? Math.Clamp(Width, 280, 480) : 360,
-        FontSize = double.IsFinite(FontSize) ? Math.Clamp(FontSize, 11, 16) : 12,
-        BackgroundOpacity = double.IsFinite(BackgroundOpacity) ? Math.Clamp(BackgroundOpacity, .2, 1) : .92,
-        Theme = Enum.IsDefined(Theme) ? Theme : AppTheme.Warm,
+        Width = RuntimeCompat.IsFinite(Width) ? RuntimeCompat.Clamp(Width, 280, 480) : 360,
+        FontSize = RuntimeCompat.IsFinite(FontSize) ? RuntimeCompat.Clamp(FontSize, 11, 16) : 12,
+        BackgroundOpacity = RuntimeCompat.IsFinite(BackgroundOpacity) ? RuntimeCompat.Clamp(BackgroundOpacity, .2, 1) : .92,
+        Theme = RuntimeCompat.IsDefined(Theme) ? Theme : AppTheme.Warm,
         HideHotkey = Hotkey.TryParse(HideHotkey, out _) ? HideHotkey : "Ctrl+Alt+H",
         LockHotkey = Hotkey.TryParse(LockHotkey, out _) ? LockHotkey : "Ctrl+Alt+L",
-        DisplayMode = Enum.IsDefined(DisplayMode) ? DisplayMode : OverlayMode.TwoEvents,
-        ContentMode = Enum.IsDefined(ContentMode) ? ContentMode : OverlayContent.Text,
-        TextSource = Enum.IsDefined(TextSource) ? TextSource : TextSourcePreference.AnchorPreferred,
-        TextDelivery = Enum.IsDefined(TextDelivery) ? TextDelivery : TextDelivery.Latest,
+        DisplayMode = RuntimeCompat.IsDefined(DisplayMode) ? DisplayMode : OverlayMode.TwoEvents,
+        ContentMode = RuntimeCompat.IsDefined(ContentMode) ? ContentMode : OverlayContent.Text,
+        TextSource = RuntimeCompat.IsDefined(TextSource) ? TextSource : TextSourcePreference.AnchorPreferred,
+        TextDelivery = RuntimeCompat.IsDefined(TextDelivery) ? TextDelivery : TextDelivery.Latest,
         FollowedPlayers = PlayerFavorites.Normalize(FollowedPlayers),
-        StatisticsPreset = Enum.IsDefined(StatisticsPreset) ? StatisticsPreset : StatisticsPreset.Full,
+        StatisticsPreset = RuntimeCompat.IsDefined(StatisticsPreset) ? StatisticsPreset : StatisticsPreset.Full,
         StatisticsLayouts = StatisticsPresets.Normalize(StatisticsLayouts),
         FavoriteTeam = (FavoriteTeam ?? "").Trim() is var team && team.Length <= 40 ? team : ""
     };
@@ -65,7 +65,7 @@ public sealed class SettingsStore(string? directory = null)
         {
             Directory.CreateDirectory(DirectoryPath);
             File.WriteAllText(FilePath + ".tmp", JsonSerializer.Serialize(settings, new JsonSerializerOptions { WriteIndented = true }));
-            File.Move(FilePath + ".tmp", FilePath, true);
+            RuntimeCompat.ReplaceFile(FilePath + ".tmp", FilePath);
             Error = null;
             return true;
         }
@@ -79,10 +79,10 @@ public readonly record struct Hotkey(uint Modifiers, uint VirtualKey)
     public static bool TryParse(string? text, out Hotkey hotkey)
     {
         hotkey = default;
-        var tokens = (text ?? "").Split('+', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        var tokens = (text ?? "").Split(new[]{'+'}, StringSplitOptions.RemoveEmptyEntries).Select(t=>t.Trim()).Where(t=>t.Length>0).ToArray();
         if (tokens.Length < 2) return false;
         uint modifiers = 0;
-        foreach (var token in tokens[..^1])
+        foreach (var token in tokens.Take(tokens.Length-1))
         {
             uint flag = token.ToLowerInvariant() switch { "ctrl" or "control" => 2, "alt" => 1, "shift" => 4, _ => 0 };
             if (flag == 0 || (modifiers & flag) != 0) return false;
@@ -90,7 +90,7 @@ public readonly record struct Hotkey(uint Modifiers, uint VirtualKey)
         }
         var key = tokens[^1].ToUpperInvariant();
         uint code;
-        if (key.Length == 1 && char.IsAsciiLetterOrDigit(key[0])) code = key[0];
+        if (key.Length == 1 && RuntimeCompat.IsAsciiLetterOrDigit(key[0])) code = key[0];
         else if (key.StartsWith('F') && int.TryParse(key[1..], out var f) && f is >= 1 and <= 24) code = (uint)(111 + f);
         else return false;
         hotkey = new(modifiers, code);

@@ -29,7 +29,7 @@ internal sealed class EmptyMatchView : Grid
 
     internal void Apply(double fontSize, bool compact)
     {
-        _heading.FontSize = Math.Clamp(fontSize + 1, 13, 16);
+        _heading.FontSize = RuntimeCompat.Clamp(fontSize + 1, 13, 16);
         _hint.Visibility = compact ? Visibility.Collapsed : Visibility.Visible;
         _icon.Width = _icon.Height = compact ? 20 : 32;
         ColumnDefinitions[0].Width = new(compact ? 28 : 42);

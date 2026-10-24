@@ -50,7 +50,7 @@ public sealed class PlayerEventFilter
                 var at = text.IndexOf(alias.Text, from, StringComparison.Ordinal);
                 if (at < 0) break;
                 var end = at + alias.Text.Length;
-                static bool Latin(char c) => char.IsAsciiLetter(c);
+                static bool Latin(char c) => RuntimeCompat.IsAsciiLetter(c);
                 var before = positions[at] - 1;
                 var after = positions[end - 1] + 1;
                 if ((!Latin(alias.Text[0]) || before < 0 || !Latin(original[before])) &&

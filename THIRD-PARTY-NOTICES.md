@@ -2,12 +2,15 @@
 
 - **AngleSharp 1.8.5** — MIT License. Copyright © Florian Rappl, AngleSharp contributors. https://github.com/AngleSharp/AngleSharp
 - **Microsoft .NET / WPF 10.0.13** — MIT License and included third-party notices. https://github.com/dotnet/runtime · https://github.com/dotnet/wpf
+- **Portable.System.DateTimeOnly 9.0.2**（仅兼容版）— MIT License. Copyright © 2021–2025 Oleg Rakhmatulin. https://github.com/OlegRa/System.DateTimeOnly
+- **PolySharp 1.15.0**（兼容版编译期生成辅助类型）— MIT License. Copyright © Sergio Pedri and contributors. https://github.com/Sergio0694/PolySharp
+- **System.Text.Json 10.0.13 及其 Microsoft 依赖组件**（仅兼容版）— MIT License；许可及第三方通知随包保留。系统预装的 .NET Framework 4.8 不随本项目重新分发，遵循 Microsoft 对应许可。
 
 发布目录包含 `DOTNET-LICENSE.txt` 与 `DOTNET-ThirdPartyNotices.txt`，请一同保留。
 
 球队 Logo 来自 NBA 官方 CDN（`https://cdn.nba.com/logos/nba/`），包含 30 支球队的浅色、深色背景版本，转换为 PNG 后内置，仅用于标识比赛双方。NBA 与各球队的名称、标志及相关商标归各自权利人所有，不属于本项目 MIT 许可范围，也不表示官方授权或合作。
 
-AngleSharp MIT License:
+MIT License（上述标注 MIT 的组件，各自版权归属见上文）：
 
 Copyright (c) 2013 - 2026 AngleSharp contributors
 

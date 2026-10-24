@@ -114,7 +114,7 @@ public static class GameScoring
             else if (complete.Contains(period - 1) && ends.TryGetValue(period - 1, out var previousEnd)) starts.TryAdd(period, previousEnd);
             Add(period, entry.Clock, PeriodStart(period) + PeriodLength(period) - remaining, score);
         }
-        var currentPeriod = Math.Clamp(Math.Max(Math.Max(seenPeriod, GamePageParser.Period(game.Progress)), game.Status == GameStatus.Finished ? 4 : 1), 1, 20);
+        var currentPeriod = RuntimeCompat.Clamp(Math.Max(Math.Max(seenPeriod, GamePageParser.Period(game.Progress)), game.Status == GameStatus.Finished ? 4 : 1), 1, 20);
         if (game.Status == GameStatus.Finished && points.Count > 0 && points[^1].Period == currentPeriod &&
             points[^1].Away == game.AwayScore && points[^1].Home == game.HomeScore && !uncertain.Contains(currentPeriod))
         {
