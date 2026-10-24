@@ -41,6 +41,7 @@ internal sealed class AppController : IDisposable
         _demo = demo;
         _store = new SettingsStore(demo || preview ? Path.Combine(Path.GetTempPath(), demo ? "NbaLive-Demo" : "NbaLive-Preview") : null);
         _settings = _store.Load();
+        ThemeManager.Apply(_settings.Theme);
         _bookmarks = new(_store.DirectoryPath);
         _error = _store.Error ?? "";
         _source = demo ? new DemoSource(demoOpening, demoFinished) : _webSource = new WebGameSource(loadRosters: true);
@@ -244,6 +245,7 @@ internal sealed class AppController : IDisposable
     {
         var oldSource = _settings.TextSource;
         _settings = settings.Validate();
+        ThemeManager.Apply(_settings.Theme);
         if (oldSource != _settings.TextSource) _ = _session.SetPreference(_settings.TextSource);
         Overlay.ApplyStyle(_settings);
         _statistics?.SetFavorites(_settings.FollowedPlayers);

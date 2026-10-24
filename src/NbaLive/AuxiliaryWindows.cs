@@ -7,7 +7,43 @@ namespace NbaLive;
 
 internal static class Ui
 {
-    internal static TextBlock Text(string value, double size = 13) => new() { Text = value, FontSize = size, TextWrapping = TextWrapping.Wrap, Margin = new(0, 0, 0, 12) };
+    internal static Brush Brush(string key) { ThemeManager.Ensure(); return (Brush)Application.Current.FindResource(key); }
+    internal static TextBlock Text(string value, double size = 13) => new()
+    {
+        Text = value, FontSize = size, TextWrapping = TextWrapping.Wrap, Margin = new(0, 0, 0, 12),
+        FontWeight = size >= 18 ? FontWeights.SemiBold : FontWeights.Normal,
+        Foreground = Brush(size <= 12 ? "MutedInk" : "Ink")
+    };
+    internal static Border Card(UIElement child, Thickness? padding = null) => new()
+    {
+        Child = child, Background = Brush("CardSurface"), BorderBrush = Brush("LineBrush"), BorderThickness = new(1),
+        CornerRadius = new(10), Padding = padding ?? new Thickness(18)
+    };
+    internal static StackPanel Section(Panel parent, string title)
+    {
+        var content = new StackPanel();
+        var heading = Text(title, 15); heading.FontWeight = FontWeights.SemiBold; heading.Margin = new(0, 0, 0, 18);
+        content.Children.Add(heading);
+        var card = Card(content); card.Margin = new(0, 0, 0, 14); parent.Children.Add(card);
+        return content;
+    }
+    internal static DockPanel TeamLabel(string team,string suffix = "")
+    {
+        var panel = new DockPanel { VerticalAlignment = VerticalAlignment.Center };
+        var logo = new TeamLogo { Team = team, Width = 20, Height = 20, Margin = new(0,0,7,0) };
+        DockPanel.SetDock(logo,Dock.Left); panel.Children.Add(logo);
+        panel.Children.Add(new TextBlock {Text = team+suffix, VerticalAlignment = VerticalAlignment.Center}); return panel;
+    }
+    internal static Button Primary(string label, Action action)
+    {
+        var button = Button(label, action); button.Style = (Style)Application.Current.FindResource("PrimaryButton"); return button;
+    }
+    internal static void Field(Panel parent, string label, Control input)
+    {
+        var text = Text(label, 12); text.Margin = new(0, 0, 0, 7); parent.Children.Add(text);
+        input.Margin = new(0, 0, 0, 14); parent.Children.Add(input);
+        System.Windows.Automation.AutomationProperties.SetName(input, label);
+    }
     internal static Button Button(string label, Action action)
     {
         var button = new Button { Content = label };
@@ -24,6 +60,7 @@ internal static class Ui
         window.MinHeight = Math.Min(window.Height, 300);
         window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
         window.ShowInTaskbar = true;
+        window.SourceInitialized += (_, _) => Native.SetThemeCaption(window);
     }
     internal static void Present(Window window)
     {
@@ -43,9 +80,10 @@ internal sealed class GamePickerWindow : Window
     private readonly IGameSource _source;
     private readonly ListBox _games = new() { BorderThickness = new(0), Background = Brushes.Transparent, HorizontalContentAlignment = HorizontalAlignment.Stretch, FontSize = 14 };
     private readonly TextBlock _message = Ui.Text("正在读取今日比赛…", 12);
+    private readonly Button _choose;
     private readonly CancellationTokenSource _cts = new();
     private readonly DispatcherTimer _refresh = new() { Interval = TimeSpan.FromSeconds(60) };
-    private readonly DatePicker _date = new() { SelectedDate = MatchTime.Today.ToDateTime(TimeOnly.MinValue), Width = 140, Margin = new(0, 0, 12, 0) };
+    private readonly PremiumDatePicker _date = new() { SelectedDate = MatchTime.Today.ToDateTime(TimeOnly.MinValue), Width = 140, Margin = new(0, 0, 12, 0) };
     private bool _busy;
     private bool _closed;
     private DateOnly? _loadedDate;
@@ -59,8 +97,8 @@ internal sealed class GamePickerWindow : Window
         public string HomePoints => Game.HomeScore?.ToString() ?? "—";
         public string ProgressText => Game.Status == GameStatus.Live ? GamePageParser.FormatLiveProgress(Game.Progress) : Game.Progress;
         public Brush ScoreInk => Game.Status == GameStatus.Live ? BasketballBadge.RedInk : (Brush)Application.Current.FindResource("Ink");
-        public FontWeight AwayWeight => Game.Status == GameStatus.Finished && Game.AwayScore is { } away && Game.HomeScore is { } home && away > home ? FontWeights.Bold : FontWeights.Normal;
-        public FontWeight HomeWeight => Game.Status == GameStatus.Finished && Game.AwayScore is { } away && Game.HomeScore is { } home && home > away ? FontWeights.Bold : FontWeights.Normal;
+        public FontWeight AwayWeight => Game.Status == GameStatus.Live ? FontWeights.SemiBold : Game.Status == GameStatus.Finished && Game.AwayScore is { } away && Game.HomeScore is { } home && away > home ? FontWeights.Bold : FontWeights.Normal;
+        public FontWeight HomeWeight => Game.Status == GameStatus.Live ? FontWeights.SemiBold : Game.Status == GameStatus.Finished && Game.AwayScore is { } away && Game.HomeScore is { } home && home > away ? FontWeights.Bold : FontWeights.Normal;
     }
     internal event Action<GameInfo>? Selected;
 
@@ -68,30 +106,36 @@ internal sealed class GamePickerWindow : Window
     {
         _source = source;
         _favoriteTeam = favoriteTeam;
-        Ui.Initialize(this, "选择 NBA 比赛 · NBA 直播条", 650, 430);
-        var root = new DockPanel { Margin = new(24) };
-        var heading = new StackPanel();
-        heading.Children.Add(Ui.Text("选择一场比赛", 21));
-        heading.Children.Add(Ui.Text("北京时间 · 关注球队优先 · 每 60 秒更新比赛列表", 12));
-        var filters = new StackPanel { Orientation = Orientation.Horizontal, Margin = new(0, 4, 0, 16) };
+        Ui.Initialize(this, "选择 NBA 比赛 · NBA 直播条", 600, 800);
+        Background = Ui.Brush("WindowSurface");
+        var root = new DockPanel { Margin = new(22, 24, 22, 22) };
+        var heading = new DockPanel { Margin = new(0, 0, 0, 24), Height = 40 };
+        var filters = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+        _date.Width = 128; _date.Margin = new(0, 0, 8, 0);
+        _date.ToolTip = "选择比赛日期 · 北京时间";
         filters.Children.Add(_date);
-        filters.Children.Add(Ui.Button("刷新", () => _ = Refresh()));
-        heading.Children.Add(filters);
+        var refresh = Ui.Button("", () => _ = Refresh()); refresh.Style = (Style)Application.Current.FindResource("IconButton");
+        refresh.Width = 36; refresh.Height = 40; refresh.Margin = new(0); refresh.Padding = new(7); refresh.ToolTip = "刷新比赛列表（每 60 秒自动更新）";
+        refresh.Content = new System.Windows.Shapes.Path { Data = Geometry.Parse("M 19,8 A 8,8 0 1 0 19,16 M 19,3 L 19,9 L 13,9"),
+            Stroke = Ui.Brush("MutedInk"), StrokeThickness = 1.5, Stretch = Stretch.Uniform, StrokeStartLineCap = PenLineCap.Round, StrokeEndLineCap = PenLineCap.Round };
+        System.Windows.Automation.AutomationProperties.SetName(refresh, "刷新比赛列表"); filters.Children.Add(refresh);
+        DockPanel.SetDock(filters, Dock.Right); heading.Children.Add(filters);
+        var title = Ui.Text("选择一场比赛", 24); title.Margin = new(0); title.VerticalAlignment = VerticalAlignment.Center; heading.Children.Add(title);
         DockPanel.SetDock(heading, Dock.Top);
         root.Children.Add(heading);
-        var footer = new StackPanel();
-        footer.Children.Add(_message);
-        var buttons = new StackPanel { Orientation = Orientation.Horizontal };
-        buttons.Children.Add(Ui.Button("查看文字直播", Choose));
-        footer.Children.Add(buttons);
-        DockPanel.SetDock(footer, Dock.Bottom);
-        root.Children.Add(footer);
-        var itemStyle = new Style(typeof(ListBoxItem));
-        itemStyle.Setters.Add(new Setter(PaddingProperty, new Thickness(12, 14, 12, 14)));
-        itemStyle.Setters.Add(new Setter(MarginProperty, new Thickness(0, 0, 0, 4)));
-        _games.ItemContainerStyle = itemStyle;
+        var footer = new DockPanel { LastChildFill = true };
+        _choose = Ui.Primary("查看文字直播", Choose); _choose.Margin = new(14, 0, 0, 0); _choose.IsDefault = true; _choose.IsEnabled = false;
+        _choose.MinWidth = 150; _choose.Height = 42; _choose.FontSize = 14;
+        DockPanel.SetDock(_choose, Dock.Right); footer.Children.Add(_choose);
+        _message.Margin = new(0); _message.VerticalAlignment = VerticalAlignment.Center; footer.Children.Add(_message);
+        var footerChrome = new Border { Child = footer, Margin = new(0, 18, 0, 0), Padding = new(0, 18, 0, 0), BorderThickness = new(0, 1, 0, 0), BorderBrush = Ui.Brush("LineBrush") };
+        DockPanel.SetDock(footerChrome, Dock.Bottom);
+        root.Children.Add(footerChrome);
+        _games.ItemContainerStyle = (Style)Application.Current.FindResource("GameCard");
+        ScrollViewer.SetHorizontalScrollBarVisibility(_games, ScrollBarVisibility.Disabled);
         _games.ItemTemplate = CreateGameTemplate();
         _games.MouseDoubleClick += (_, _) => Choose();
+        _games.SelectionChanged += (_, _) => _choose.IsEnabled = !_busy && _games.SelectedItem is GameChoice;
         root.Children.Add(_games);
         Content = root;
         _date.SelectedDateChanged += async (_, _) => { if (IsLoaded) await Refresh(); };
@@ -101,24 +145,23 @@ internal sealed class GamePickerWindow : Window
     }
     private static DataTemplate CreateGameTemplate()
     {
-        var text = new FrameworkElementFactory(typeof(TextBlock));
-        text.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
-        text.SetBinding(ToolTipProperty, new Binding(nameof(GameChoice.Display)));
-        void Add(string? path = null, string? value = null, string? weight = null, bool score = false)
-        {
-            var run = new FrameworkElementFactory(typeof(Run));
-            if (path is not null) run.SetBinding(Run.TextProperty, new Binding(path) { Mode = BindingMode.OneWay });
-            else run.SetValue(Run.TextProperty, value ?? "");
-            if (weight is not null) run.SetBinding(Run.FontWeightProperty, new Binding(weight));
-            if (score) run.SetBinding(Run.ForegroundProperty, new Binding(nameof(GameChoice.ScoreInk)));
-            text.AppendChild(run);
-        }
-        Add(nameof(GameChoice.FavoriteMark)); Add("Game.Away"); Add(value: " ");
-        Add(nameof(GameChoice.AwayPoints), weight: nameof(GameChoice.AwayWeight), score: true);
-        Add(value: " : ", score: true);
-        Add(nameof(GameChoice.HomePoints), weight: nameof(GameChoice.HomeWeight), score: true);
-        Add(value: " "); Add("Game.Home"); Add(value: "    "); Add(nameof(GameChoice.ProgressText), score: true);
-        return new DataTemplate { VisualTree = text };
+        return (DataTemplate)System.Windows.Markup.XamlReader.Parse("""
+            <DataTemplate xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:local="clr-namespace:NbaLive;assembly=NbaLive">
+              <Grid ToolTip="{Binding Display}" MinHeight="32">
+                <Grid.ColumnDefinitions><ColumnDefinition Width="36"/><ColumnDefinition Width="*"/><ColumnDefinition Width="110"/><ColumnDefinition Width="*"/><ColumnDefinition Width="36"/><ColumnDefinition Width="108"/></Grid.ColumnDefinitions>
+                <local:TeamLogo Team="{Binding Game.Away}" Width="30" Height="30"/>
+                <TextBlock Grid.Column="1" Text="{Binding Game.Away}" FontSize="16" Margin="4,0,0,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.Column="2" TextAlignment="Center" VerticalAlignment="Center" FontSize="27" Foreground="{Binding ScoreInk}">
+                  <Run Text="{Binding AwayPoints, Mode=OneWay}" FontWeight="{Binding AwayWeight}"/><Run Text=" : "/><Run Text="{Binding HomePoints, Mode=OneWay}" FontWeight="{Binding HomeWeight}"/>
+                </TextBlock>
+                <TextBlock Grid.Column="3" Text="{Binding Game.Home}" FontSize="16" Margin="8,0,2,0" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                <local:TeamLogo Grid.Column="4" Team="{Binding Game.Home}" Width="30" Height="30"/>
+                <Border Grid.Column="5" BorderBrush="{DynamicResource LineBrush}" BorderThickness="1,0,0,0" Margin="8,0,0,0" Padding="8,0,0,0">
+                  <TextBlock Text="{Binding ProgressText}" Foreground="{Binding ScoreInk}" FontSize="13" TextAlignment="Right" VerticalAlignment="Center" TextWrapping="Wrap"/>
+                </Border>
+              </Grid>
+            </DataTemplate>
+            """);
     }
     private void Choose() { if (!_busy && !_closed && _games.SelectedItem is GameChoice choice) Selected?.Invoke(choice.Game); }
     internal void SetFavorite(string team)
@@ -142,6 +185,7 @@ internal sealed class GamePickerWindow : Window
         var date = DateOnly.FromDateTime(_date.SelectedDate ?? MatchTime.Today.ToDateTime(TimeOnly.MinValue));
         if (_loadedDate != date) _games.ItemsSource = null;
         _games.IsEnabled = false;
+        _choose.IsEnabled = false;
         _message.Text = "正在读取比赛…";
         try
         {
@@ -164,6 +208,7 @@ internal sealed class GamePickerWindow : Window
         {
             _busy = false;
             _games.IsEnabled = true;
+            _choose.IsEnabled = !_closed && _games.SelectedItem is GameChoice;
             if (!_closed && date != DateOnly.FromDateTime(_date.SelectedDate ?? MatchTime.Today.ToDateTime(TimeOnly.MinValue))) _ = Refresh();
         }
     }
@@ -207,6 +252,7 @@ internal sealed class HistoryWindow : Window
         text.SetValue(TextBlock.FontSizeProperty, 13.0);
         var row = new FrameworkElementFactory(typeof(DockPanel));
         var bookmark = new FrameworkElementFactory(typeof(Button));
+        bookmark.SetValue(StyleProperty, (Style)Application.Current.FindResource("IconButton"));
         bookmark.SetBinding(ContentControl.ContentProperty, new Binding(nameof(HistoryRow.BookmarkMark)));
         bookmark.SetBinding(ToolTipProperty, new Binding(nameof(HistoryRow.BookmarkTip)));
         bookmark.SetValue(DockPanel.DockProperty, Dock.Left); bookmark.SetValue(WidthProperty, 32.0);
@@ -216,11 +262,11 @@ internal sealed class HistoryWindow : Window
         row.AppendChild(bookmark); row.AppendChild(text);
         var border = new FrameworkElementFactory(typeof(Border));
         border.SetValue(Border.PaddingProperty, new Thickness(0, 12, 8, 12));
-        border.SetValue(Border.BorderBrushProperty, new SolidColorBrush(Color.FromRgb(225, 228, 232)));
+        border.SetValue(Border.BorderBrushProperty, Ui.Brush("LineBrush"));
         border.SetValue(Border.BorderThicknessProperty, new Thickness(0, 0, 0, 1));
         border.AppendChild(row);
         _list.ItemTemplate = new DataTemplate { VisualTree = border };
-        root.Children.Add(_list);
+        root.Children.Add(Ui.Card(_list, new Thickness(8)));
         Content = root;
         _list.AddHandler(Button.ClickEvent, new RoutedEventHandler((_, e) =>
         {
@@ -314,63 +360,75 @@ internal sealed class SettingsWindow : Window
     private readonly CheckBox _capsule;
     private readonly ComboBox _content;
     private readonly ComboBox _source, _delivery;
+    private readonly ComboBox _theme;
     internal SettingsWindow(AppSettings settings, string error, string transport, Func<AppSettings, string?> apply)
     {
-        Ui.Initialize(this, "设置 · NBA 直播条", 520, 730);
-        var root = new StackPanel { Margin = new(28, 22, 28, 22) };
-        root.Children.Add(Ui.Text("让直播安静地待在角落", 20));
-        root.Children.Add(Ui.Text("浅灰便签 · 文字始终清晰 · 不播放声音", 12));
-        root.Children.Add(Ui.Text("文字来源", 12));
-        _source = new ComboBox { ItemsSource = new[] { "优先主播解说（无主播时自动回退）", "赛况实录" }, SelectedIndex = (int)settings.TextSource, Margin = new(0, 0, 0, 12), Padding = new(8, 6, 8, 6) };
-        root.Children.Add(_source);
-        root.Children.Add(Ui.Text("文字展示", 12));
-        _delivery = new ComboBox { ItemsSource = new[] { "实时最新 · 直接显示最近动态", "完整补播 · 每页停留 4 秒" }, SelectedIndex = (int)settings.TextDelivery, Margin = new(0, 0, 0, 12), Padding = new(8, 6, 8, 6) };
-        root.Children.Add(_delivery);
-        root.Children.Add(Ui.Text("主播保留全部原文，重要事件与球员筛选仅作用于赛况实录；统计与走势图使用独立赛况快照。主播实况对照验证待完成。", 11));
-        _capsule = new CheckBox { Content = "胶囊模式：280×30，悬停展开", IsChecked = settings.CapsuleEnabled, Margin = new(0, 0, 0, 12) };
-        root.Children.Add(_capsule);
-        root.Children.Add(Ui.Text("展开内容", 12));
-        _content = new ComboBox { ItemsSource = new[] { "文字直播", "关注球员卡片", "场上五人 · 双方迷你阵容" }, SelectedIndex = (int)settings.ContentMode, Padding = new(8, 6, 8, 6), Margin = new(0, 0, 0, 12) };
-        root.Children.Add(_content);
-        root.Children.Add(Ui.Text("在球员统计表点击 ☆，最多关注 3 人；卡片每 8 秒切换，悬停暂停。", 11));
-        root.Children.Add(Ui.Text("场上五人显示双方两排球衣，展开高度 154 DIP；名单未确认时明确提示。", 11));
-        root.Children.Add(Ui.Text("显示内容", 12));
-        _mode = new ComboBox { ItemsSource = new[] { "仅比分 · 58 DIP 高", "比分＋一条动态 · 84 DIP 高", "比分＋两条动态 · 110 DIP 高" },
-            SelectedIndex = (int)settings.DisplayMode, Padding = new(8, 6, 8, 6), Margin = new(0, 0, 0, 12) };
-        root.Children.Add(_mode);
-        _importantOnly = new CheckBox { Content = "只看得分、犯规、暂停和节次变化", IsChecked = settings.ImportantEventsOnly, Margin = new(0, 0, 0, 12),
-            ToolTip = "按关键词筛选，可能存在遗漏；历史窗口始终保留全部文字。" };
-        root.Children.Add(_importantOnly);
-        _followedOnly = new CheckBox { Content = "文字直播只看关注球员", IsChecked = settings.FollowedPlayersOnly, Margin = new(0, 0, 0, 12),
-            ToolTip = "按本场名单可靠匹配姓名；简称有歧义时不猜测。可与重要事件筛选叠加，历史和回顾仍保留全部。" };
-        root.Children.Add(_followedOnly);
-        _favorite = AddInput(root, "关注球队", settings.FavoriteTeam);
-        _favorite.ToolTip = "填写与赛程一致的球队名，例如：湖人。仅优先排列，不自动切场；留空表示不设置。";
-        _width = AddSlider(root, "窗口宽度", 280, 480, settings.Width, "0 DIP");
-        _font = AddSlider(root, "文字大小", 11, 16, settings.FontSize, "0 DIP");
-        _opacity = AddSlider(root, "背景不透明度", 20, 100, settings.BackgroundOpacity * 100, "0' %'");
-        _hide = AddInput(root, "隐藏／恢复", settings.HideHotkey);
-        _clickThrough = AddInput(root, "鼠标穿透开关", settings.LockHotkey);
-        root.Children.Add(Ui.Text("快捷键支持 Ctrl、Alt、Shift，加字母、数字或 F1～F24。\n鼠标穿透默认关闭，也可从托盘菜单恢复。", 11));
-        _error = Ui.Text(error, 11);
-        _error.MinHeight = 32;
-        root.Children.Add(_error);
-        var buttons = new StackPanel { Orientation = Orientation.Horizontal };
-        buttons.Children.Add(Ui.Button("保存设置", () =>
+        Ui.Initialize(this, "设置 · NBA 直播条", 560, 760);
+        var root = new DockPanel { Margin = new(24, 20, 24, 20) };
+        var heading = new StackPanel();
+        heading.Children.Add(Ui.Text("设置", 24));
+        heading.Children.Add(Ui.Text("按你的习惯，把直播安静地放在角落", 12));
+        DockPanel.SetDock(heading, Dock.Top); root.Children.Add(heading);
+
+        var footer = new StackPanel { Margin = new(0, 12, 0, 0) };
+        _error = Ui.Text(error, 11); _error.Foreground = BasketballBadge.RedInk;
+        _error.Margin = new(0, 0, 0, 8); footer.Children.Add(_error);
+        var buttons = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+        var cancel = Ui.Button("取消", Close); cancel.IsCancel = true; cancel.MinWidth = 80; buttons.Children.Add(cancel);
+        footer.Children.Add(buttons); DockPanel.SetDock(footer, Dock.Bottom); root.Children.Add(footer);
+
+        var sections = new StackPanel { Margin = new(0, 4, 6, 0) };
+        var appearance = Ui.Section(sections, "外观");
+        _theme = new ComboBox { ItemsSource = new[] { "暖白 · 默认", "暗黑 · 炭灰" }, SelectedIndex = (int)settings.Theme };
+        Ui.Field(appearance, "界面主题", _theme);
+        _capsule = new CheckBox { Content = "胶囊模式 · 悬停展开", IsChecked = settings.CapsuleEnabled, Margin = new(0, 0, 0, 18) };
+        appearance.Children.Add(_capsule);
+        _content = new ComboBox { ItemsSource = new[] { "文字直播", "关注球员卡片", "场上五人 · 双方迷你阵容" }, SelectedIndex = (int)settings.ContentMode };
+
+        _mode = new ComboBox { ItemsSource = new[] { "仅比分 · 58 DIP 高", "比分＋一条动态 · 84 DIP 高", "比分＋两条动态 · 110 DIP 高" }, SelectedIndex = (int)settings.DisplayMode };
+
+        _width = AddSlider(appearance, "窗口宽度", 280, 480, settings.Width, "0 DIP");
+        _font = AddSlider(appearance, "文字大小", 11, 16, settings.FontSize, "0 DIP");
+        _opacity = AddSlider(appearance, "背景不透明度", 20, 100, settings.BackgroundOpacity * 100, "0' %'");
+        appearance.Children.Add(Ui.Text("仅调整背景透明度，文字始终清晰；胶囊固定为 280×30 DIP。", 11));
+
+        var reading = Ui.Section(sections, "直播与阅读");
+        Ui.Field(reading, "展开内容", _content);
+        Ui.Field(reading, "文字显示密度", _mode);
+        _source = new ComboBox { ItemsSource = new[] { "优先主播解说（无主播时自动回退）", "赛况实录" }, SelectedIndex = (int)settings.TextSource };
+        Ui.Field(reading, "文字来源", _source);
+        _delivery = new ComboBox { ItemsSource = new[] { "实时最新 · 直接显示最近动态", "完整补播 · 每页停留 4 秒" }, SelectedIndex = (int)settings.TextDelivery };
+        Ui.Field(reading, "文字展示", _delivery);
+        _importantOnly = new CheckBox { Content = "只看重要事件", IsChecked = settings.ImportantEventsOnly, Margin = new(0, 0, 0, 16),
+            ToolTip = "仅对赛况实录按得分、犯规、暂停和节次关键词筛选；历史保留全部文字。" };
+        reading.Children.Add(_importantOnly);
+        _followedOnly = new CheckBox { Content = "文字只看关注球员", IsChecked = settings.FollowedPlayersOnly, Margin = new(0, 0, 0, 16),
+            ToolTip = "仅对赛况实录按本场名单匹配姓名；简称有歧义时不猜测。历史和回顾保留全部。" };
+        reading.Children.Add(_followedOnly);
+        _favorite = AddInput(reading, "关注球队", settings.FavoriteTeam);
+        _favorite.ToolTip = "填写赛程中的球队名，例如：湖人。仅优先排列，不自动切场；留空表示不设置。";
+        reading.Children.Add(Ui.Text("统计表点击 ☆，最多关注 3 人；球员卡每 8 秒切换，悬停暂停。场上五人为双方迷你阵容，名单未确认时会提示。", 11));
+        reading.Children.Add(Ui.Text("主播保留全部原文，筛选仅作用于赛况实录；统计与走势图独立采样。主播实况对照验证待完成。", 11));
+
+        var shortcuts = Ui.Section(sections, "快捷键");
+        _hide = AddInput(shortcuts, "隐藏／恢复", settings.HideHotkey);
+        _clickThrough = AddInput(shortcuts, "鼠标穿透", settings.LockHotkey);
+        shortcuts.Children.Add(Ui.Text("支持 Ctrl、Alt、Shift，加字母、数字或 F1～F24。开启穿透后，也可从系统托盘恢复操作。", 11));
+        var save = Ui.Primary("保存设置", () =>
         {
-            var candidate = settings with { Width = _width.Value, FontSize = _font.Value,
+            var candidate = settings with { Theme = (AppTheme)_theme.SelectedIndex, Width = _width.Value, FontSize = _font.Value,
                 BackgroundOpacity = _opacity.Value / 100, HideHotkey = _hide.Text.Trim(), LockHotkey = _clickThrough.Text.Trim(),
                 DisplayMode = (OverlayMode)_mode.SelectedIndex, ImportantEventsOnly = _importantOnly.IsChecked == true,
-                FollowedPlayersOnly = _followedOnly.IsChecked == true, FavoriteTeam = _favorite.Text.Trim() };
-            candidate = candidate with { CapsuleEnabled = _capsule.IsChecked == true, ContentMode = (OverlayContent)_content.SelectedIndex,
+                FollowedPlayersOnly = _followedOnly.IsChecked == true, FavoriteTeam = _favorite.Text.Trim(),
+                CapsuleEnabled = _capsule.IsChecked == true, ContentMode = (OverlayContent)_content.SelectedIndex,
                 TextSource = (TextSourcePreference)_source.SelectedIndex, TextDelivery = (TextDelivery)_delivery.SelectedIndex };
             var result = apply(candidate);
             if (result is null) Close(); else _error.Text = result;
-        }));
-        buttons.Children.Add(Ui.Button("取消", Close));
-        root.Children.Add(buttons);
-        root.Children.Add(new TextBlock { Text = $"数据连接：{transport}", FontSize = 10, Foreground = Brushes.Gray, Margin = new(0, 18, 0, 0) });
-        Content = new ScrollViewer { Content = root, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
+        });
+        save.IsDefault = true; save.MinWidth = 110; save.Margin = new(0); buttons.Children.Add(save);
+        sections.Children.Add(Ui.Text($"数据连接：{transport}", 10));
+        root.Children.Add(new ScrollViewer { Content = sections, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled });
+        Content = root;
     }
     private static Slider AddSlider(Panel parent, string label, double min, double max, double value, string format)
     {
@@ -381,6 +439,7 @@ internal sealed class SettingsWindow : Window
         row.Children.Add(new TextBlock { Text = label, FontSize = 12 });
         parent.Children.Add(row);
         var slider = new Slider { Minimum = min, Maximum = max, Value = value, TickFrequency = 1, IsSnapToTickEnabled = true, Margin = new(0, 5, 0, 12) };
+        System.Windows.Automation.AutomationProperties.SetName(slider, label);
         void Update() => readout.Text = slider.Value.ToString(format);
         slider.ValueChanged += (_, _) => Update();
         Update();
@@ -392,6 +451,7 @@ internal sealed class SettingsWindow : Window
         var row = new DockPanel { Margin = new(0, 0, 0, 12) };
         row.Children.Add(new TextBlock { Text = label, Width = 120, VerticalAlignment = VerticalAlignment.Center, FontSize = 12 });
         var input = new TextBox { Text = value, FontSize = 13, MaxLength = 40 };
+        System.Windows.Automation.AutomationProperties.SetName(input, label);
         row.Children.Add(input);
         parent.Children.Add(row);
         return input;

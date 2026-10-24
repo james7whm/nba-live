@@ -5,6 +5,8 @@
 
 发布目录包含 `DOTNET-LICENSE.txt` 与 `DOTNET-ThirdPartyNotices.txt`，请一同保留。
 
+球队 Logo 来自 NBA 官方 CDN（`https://cdn.nba.com/logos/nba/`），包含 30 支球队的浅色、深色背景版本，转换为 PNG 后内置，仅用于标识比赛双方。NBA 与各球队的名称、标志及相关商标归各自权利人所有，不属于本项目 MIT 许可范围，也不表示官方授权或合作。
+
 AngleSharp MIT License:
 
 Copyright (c) 2013 - 2026 AngleSharp contributors

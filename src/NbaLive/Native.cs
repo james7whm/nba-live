@@ -26,6 +26,19 @@ internal static class Native
     [DllImport("user32.dll")] private static extern bool IsIconic(IntPtr hwnd);
     [DllImport("user32.dll")] private static extern bool ShowWindow(IntPtr hwnd, int command);
     [DllImport("user32.dll")] private static extern bool SetForegroundWindow(IntPtr hwnd);
+    [DllImport("dwmapi.dll")] private static extern int DwmSetWindowAttribute(IntPtr hwnd, int attribute, ref int value, int size);
+
+    internal static void SetThemeCaption(Window window)
+    {
+        var hwnd = new WindowInteropHelper(window).Handle;
+        if (hwnd == IntPtr.Zero) return;
+        var darkCaption = ThemeManager.IsDark ? 1 : 0;
+        DwmSetWindowAttribute(hwnd, 20, ref darkCaption, sizeof(int));
+        var background = ThemeManager.IsDark ? 0x002A2218 : 0x00F6F9FA;
+        var foreground = ThemeManager.IsDark ? 0x00F6F4F1 : 0x00403830; // COLORREF: 0x00BBGGRR.
+        DwmSetWindowAttribute(hwnd, 35, ref background, sizeof(int));
+        DwmSetWindowAttribute(hwnd, 36, ref foreground, sizeof(int));
+    }
 
     internal static void ActivateDialog(Window window)
     {

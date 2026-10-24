@@ -3,12 +3,11 @@ namespace NbaLive;
 /// <summary>A small native vector mark; no emoji, font glyph or external image dependency.</summary>
 internal sealed class BasketballBadge : FrameworkElement
 {
-    internal static readonly Brush RedInk = CreateInk();
+    internal static Brush RedInk => Ui.Brush("RedInk");
     private static readonly Pen Seam = CreateSeam();
     private static readonly Geometry Curves = CreateCurves();
     private static readonly Geometry Circle = CreateCircle();
     public BasketballBadge() { Width = Height = 14; IsHitTestVisible = false; }
-    private static Brush CreateInk() { var brush = new SolidColorBrush(Color.FromRgb(200, 16, 46)); brush.Freeze(); return brush; }
     private static Pen CreateSeam() { var pen = new Pen(Brushes.White, 1.15); pen.Freeze(); return pen; }
     private static Geometry CreateCurves()
     {

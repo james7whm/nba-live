@@ -7,7 +7,7 @@ internal sealed class EmptyMatchView : Grid
 {
     private readonly Viewbox _icon = new() { Width = 32, Height = 32, VerticalAlignment = VerticalAlignment.Center, Child = new MatchGlyph() };
     private readonly TextBlock _heading = new() { Text = "还未选择比赛", FontWeight = FontWeights.SemiBold, TextTrimming = TextTrimming.CharacterEllipsis };
-    private readonly TextBlock _hint = new() { Text = "比分与文字动态，随时看", FontSize = 10.5, Foreground = Ink(126, 135, 146), Margin = new(0, 3, 0, 0), TextTrimming = TextTrimming.CharacterEllipsis };
+    private readonly TextBlock _hint = new() { Text = "比分与文字动态，随时看", FontSize = 10.5, Foreground = Ui.Brush("MutedInk"), Margin = new(0, 3, 0, 0), TextTrimming = TextTrimming.CharacterEllipsis };
     private readonly Button _choose;
 
     internal EmptyMatchView(Action choose)
@@ -58,9 +58,9 @@ internal sealed class EmptyMatchView : Grid
     {
         var button = new Button
         {
-            Content = content, Padding = new(12, 0, 12, 0), Margin = new(0), Height = 30,
-            Background = Ink(230, 234, 239), BorderBrush = Ink(207, 214, 223), BorderThickness = new(1),
-            Foreground = Ink(75, 80, 88), VerticalAlignment = VerticalAlignment.Center,
+            Content = content, Padding = new(12, 0, 12, 0), Margin = new(0), Height = 30, MinHeight = 0,
+            Background = Ui.Brush("AccentTint"), BorderBrush = Ui.Brush("LineBrush"), BorderThickness = new(1),
+            Foreground = Ui.Brush("Ink"), VerticalAlignment = VerticalAlignment.Center,
             HorizontalContentAlignment = HorizontalAlignment.Center, VerticalContentAlignment = VerticalAlignment.Center,
             Focusable = false, IsTabStop = false, FocusVisualStyle = null, Cursor = Cursors.Hand
         };
@@ -77,10 +77,10 @@ internal sealed class EmptyMatchView : Grid
         chrome.AppendChild(presenter);
         var template = new ControlTemplate(typeof(Button)) { VisualTree = chrome };
         var hover = new Trigger { Property = IsMouseOverProperty, Value = true };
-        hover.Setters.Add(new Setter(Border.BackgroundProperty, Ink(220, 226, 233), "Chrome"));
-        hover.Setters.Add(new Setter(Border.BorderBrushProperty, Ink(182, 194, 207), "Chrome"));
+        hover.Setters.Add(new Setter(Border.BackgroundProperty, Ui.Brush("AccentTint"), "Chrome"));
+        hover.Setters.Add(new Setter(Border.BorderBrushProperty, Ui.Brush("AccentBrush"), "Chrome"));
         var pressed = new Trigger { Property = Button.IsPressedProperty, Value = true };
-        pressed.Setters.Add(new Setter(Border.BackgroundProperty, Ink(208, 217, 228), "Chrome"));
+        pressed.Setters.Add(new Setter(Border.BackgroundProperty, Ui.Brush("LineBrush"), "Chrome"));
         template.Triggers.Add(hover); template.Triggers.Add(pressed);
         button.Template = template;
         button.Click += (_, _) => choose();
@@ -92,8 +92,8 @@ internal sealed class EmptyMatchView : Grid
     }
     private sealed class MatchGlyph : FrameworkElement
     {
-        private static readonly Brush Fill = Ink(226, 231, 237);
-        private static readonly Pen Stroke = new(Ink(136, 148, 163), 1.25);
+        private static readonly Brush Fill = Ui.Brush("SoftBrush");
+        private static readonly Pen Stroke = new(Ui.Brush("MutedInk"), 1.25);
         internal MatchGlyph() { Width = Height = 32; }
         protected override void OnRender(DrawingContext context)
         {

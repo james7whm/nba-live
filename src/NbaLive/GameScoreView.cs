@@ -68,8 +68,9 @@ internal sealed class GameScoreView : Grid
         for (var i = 0; i <= data.Periods.Count; i++) _table.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
         for (var row = 0; row < 3; row++)
         {
-            _table.RowDefinitions.Add(new() { Height = new(32) });
-            var background = new Border { Background = new SolidColorBrush(row % 2 == 0 ? Color.FromRgb(237, 241, 245) : Colors.White) };
+            _table.RowDefinitions.Add(new() { Height = new(36) });
+            var background = new Border { Background = Ui.Brush(row == 0 ? "SoftBrush" : row == 2 ? "CanvasBrush" : "CardBrush"),
+                BorderBrush = Ui.Brush("LineBrush"), BorderThickness = new(0, 0, 0, 1), CornerRadius = new(row == 0 ? 6 : 0) };
             SetRow(background, row); SetColumnSpan(background, data.Periods.Count + 2); _table.Children.Add(background);
         }
         Cell("球队", 0, 0);
@@ -91,13 +92,14 @@ internal sealed class GameScoreView : Grid
         var label = Ui.Text(text, 12); label.HorizontalAlignment = HorizontalAlignment.Center; label.VerticalAlignment = VerticalAlignment.Center;
         label.Margin = new(0); label.TextWrapping = TextWrapping.NoWrap; label.TextAlignment = TextAlignment.Center;
         label.TextTrimming = TextTrimming.CharacterEllipsis; label.ToolTip = tip ?? text;
+        if (row > 0) label.Foreground = Ui.Brush("Ink");
         if (bold) label.FontWeight = FontWeights.SemiBold;
         SetRow(label, row); SetColumn(label, column); _table.Children.Add(label);
     }
     private void Team(string name, TeamJerseyColor color, int row)
     {
         var panel = new DockPanel { Margin = new(6, 0, 6, 0), MaxWidth = 128, HorizontalAlignment = HorizontalAlignment.Center, VerticalAlignment = VerticalAlignment.Center, ToolTip = name };
-        var dot = new System.Windows.Shapes.Ellipse { Width = 9, Height = 9, Fill = ScoreChart.Brush(color), Margin = new(0, 0, 8, 0), VerticalAlignment = VerticalAlignment.Center };
+        var dot = new TeamLogo { Team = name, Width = 22, Height = 22, Margin = new(0, 0, 8, 0), VerticalAlignment = VerticalAlignment.Center };
         DockPanel.SetDock(dot, Dock.Left); panel.Children.Add(dot);
         var label = Ui.Text(name, 12); label.Margin = new(0); label.VerticalAlignment = VerticalAlignment.Center;
         label.TextWrapping = TextWrapping.NoWrap; label.TextTrimming = TextTrimming.CharacterEllipsis; panel.Children.Add(label);
@@ -114,13 +116,21 @@ internal sealed class ScoreChart : FrameworkElement
     private Brush _away = Brushes.Gray, _home = Brushes.Gray;
     private Pen _awayPen = new(Brushes.Gray, 2), _homePen = new(Brushes.Gray, 2);
     private double _ceiling = 20;
+    private TeamJerseyColor _awayColor = TeamPalette.Unknown, _homeColor = TeamPalette.Unknown;
     private static readonly Typeface Face = new(new FontFamily("Microsoft YaHei UI, Segoe UI"), FontStyles.Normal, FontWeights.Normal, FontStretches.Normal);
-    internal ScoreChart() { Focusable = true; SizeChanged += (_, _) => { _awayLine = _homeLine = null; InvalidateVisual(); }; }
+    internal ScoreChart()
+    {
+        Focusable = true; SizeChanged += (_, _) => { _awayLine = _homeLine = null; InvalidateVisual(); };
+        Loaded += (_,_) => ThemeManager.Changed += RefreshTheme;
+        Unloaded += (_,_) => ThemeManager.Changed -= RefreshTheme;
+    }
+    private void RefreshTheme() => SetData(_data,_awayColor,_homeColor);
     internal static Brush Brush(TeamJerseyColor color) { var brush = new SolidColorBrush(Color.FromRgb((byte)(color.Rgb >> 16), (byte)(color.Rgb >> 8), (byte)color.Rgb)); brush.Freeze(); return brush; }
     internal void SetData(GameScoringSnapshot? data, TeamJerseyColor away, TeamJerseyColor home)
     {
         _data = data; _hover = _hover is null ? null : data?.AtOrBefore(_hover.ElapsedSeconds);
-        _away = Brush(away); _home = Brush(home);
+        _awayColor = away; _homeColor = home;
+        _away = new SolidColorBrush(ThemeManager.ChartColor(away)); _home = new SolidColorBrush(ThemeManager.ChartColor(home));
         _awayPen = new(_away, 2); _awayPen.Freeze();
         _homePen = new(_home, 2) { DashStyle = new DashStyle(new double[] { 4, 2 }, 0) }; _homePen.Freeze();
         _awayLine = _homeLine = null;
@@ -129,7 +139,7 @@ internal sealed class ScoreChart : FrameworkElement
     }
     private void Text(DrawingContext dc, string value, Point at, Brush? ink = null, double width = 260, double size = 11)
     {
-        var text = new FormattedText(value, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Face, size, ink ?? Brushes.DimGray, VisualTreeHelper.GetDpi(this).PixelsPerDip)
+        var text = new FormattedText(value, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, Face, size, ink ?? Ui.Brush("MutedInk"), VisualTreeHelper.GetDpi(this).PixelsPerDip)
         { MaxTextWidth = Math.Max(1, width), MaxLineCount = 1, Trimming = TextTrimming.CharacterEllipsis };
         dc.DrawText(text, at);
     }
@@ -146,11 +156,11 @@ internal sealed class ScoreChart : FrameworkElement
         var maximum = Math.Max(data.Game.AwayScore ?? 0, data.Game.HomeScore ?? 0);
         maximum = Math.Max(maximum, data.Points.Max(p => Math.Max(p.Away, p.Home)));
         _ceiling = Math.Max(20, Math.Ceiling(maximum / 20d) * 20);
-        var grid = new Pen(new SolidColorBrush(Color.FromRgb(222, 228, 235)), .6);
+        var grid = new Pen(Ui.Brush("LineBrush"), .6);
         for (var period = 1; period <= data.Periods.Count; period++)
         {
             var left = X(GameScoring.PeriodStart(period)); var right = X(GameScoring.PeriodStart(period) + GameScoring.PeriodLength(period));
-            if (period % 2 == 0) dc.DrawRectangle(new SolidColorBrush(Color.FromRgb(239, 242, 246)), null, new(left, _plot.Top, right - left, _plot.Height));
+            if (period % 2 == 0) dc.DrawRectangle(Ui.Brush("ChartBand"), null, new(left, _plot.Top, right - left, _plot.Height));
             dc.DrawLine(grid, new(left, _plot.Top), new(left, _plot.Bottom));
             var labelWidth = Math.Min(56, right - left);
             Text(dc, GameScoring.PeriodLabel(period), new((left + right - labelWidth) / 2, _plot.Bottom + 8), width: labelWidth);
@@ -160,9 +170,11 @@ internal sealed class ScoreChart : FrameworkElement
             var score = _ceiling * i / 4; var y = Y(score);
             dc.DrawLine(grid, new(_plot.Left, y), new(_plot.Right, y)); Text(dc, score.ToString("0", CultureInfo.CurrentCulture), new(2, y - 8), width: 35);
         }
-        dc.DrawLine(_awayPen, new(44, 15), new(64, 15)); Text(dc, data.Game.Away + "（客）", new(71, 6), width: Math.Min(180, (ActualWidth - 100) / 2));
-        var legend = Math.Min(290, ActualWidth / 2); dc.DrawLine(_homePen, new(legend, 15), new(legend + 20, 15));
-        Text(dc, data.Game.Home + "（主）", new(legend + 27, 6), width: ActualWidth - legend - 32);
+        Logo(dc, data.Game.Away, new(44, 6, 18, 18));
+        dc.DrawLine(_awayPen, new(69, 15), new(89, 15)); Text(dc, data.Game.Away + "（客）", new(96, 6), width: Math.Min(165, (ActualWidth - 150) / 2));
+        var legend = Math.Min(290, ActualWidth / 2); Logo(dc, data.Game.Home, new(legend, 6, 18, 18));
+        dc.DrawLine(_homePen, new(legend + 25, 15), new(legend + 45, 15));
+        Text(dc, data.Game.Home + "（主）", new(legend + 52, 6), width: ActualWidth - legend - 57);
         _awayLine ??= Line(data, away: true); _homeLine ??= Line(data, away: false);
         dc.PushClip(new RectangleGeometry(_plot)); dc.DrawGeometry(null, _awayPen, _awayLine); dc.DrawGeometry(null, _homePen, _homeLine); dc.Pop();
         var last = data.Points[^1];
@@ -175,10 +187,17 @@ internal sealed class ScoreChart : FrameworkElement
             dc.DrawEllipse(_away, new Pen(Brushes.White, 1), new(x, Y(hover.Away)), 3.5, 3.5);
             dc.DrawEllipse(_home, new Pen(Brushes.White, 1), new(x, Y(hover.Home)), 3.5, 3.5);
             var width = Math.Min(270, _plot.Width); var left = Math.Clamp(x + 12, _plot.Left, _plot.Right - width);
-            dc.DrawRoundedRectangle(Brushes.White, new Pen(Brushes.LightGray, 1), new(left, _plot.Top + 8, width, 53), 4, 4);
+            dc.DrawRoundedRectangle(Ui.Brush("CardBrush"), new Pen(Ui.Brush("LineBrush"), 1), new(left, _plot.Top + 8, width, 79), 8, 8);
             Text(dc, "记录时间：" + hover.TimeLabel, new(left + 9, _plot.Top + 14), width: width - 18);
-            Text(dc, $"{data.Game.Away} {hover.Away} : {hover.Home} {data.Game.Home}", new(left + 9, _plot.Top + 34), Brushes.Black, width - 18, 12);
+            Logo(dc, data.Game.Away, new(left + 9, _plot.Top + 36, 17, 17));
+            Text(dc, $"{data.Game.Away}   {hover.Away}", new(left + 33, _plot.Top + 35), Ui.Brush("Ink"), width - 42, 12);
+            Logo(dc, data.Game.Home, new(left + 9, _plot.Top + 59, 17, 17));
+            Text(dc, $"{data.Game.Home}   {hover.Home}", new(left + 33, _plot.Top + 58), Ui.Brush("Ink"), width - 42, 12);
         }
+    }
+    private static void Logo(DrawingContext dc, string team, Rect at)
+    {
+        if(TeamLogo.Get(team) is { } image) dc.DrawImage(image, at);
     }
     private double X(double elapsed) => _plot.Left + elapsed / _data!.DurationSeconds * _plot.Width;
     private double Y(double score) => _plot.Bottom - score / _ceiling * _plot.Height;

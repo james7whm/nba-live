@@ -37,10 +37,10 @@ internal sealed class BookmarksWindow : Window
         text.SetBinding(TextBlock.TextProperty, new Binding(nameof(BookmarkedEvent.Display)));
         text.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap); text.SetValue(MarginProperty, new Thickness(0, 10, 8, 10));
         _entries.ItemTemplate = new DataTemplate { VisualTree = text };
-        var itemStyle = new Style(typeof(ListBoxItem));
+        var itemStyle = new Style(typeof(ListBoxItem), (Style)Application.Current.FindResource(typeof(ListBoxItem)));
         itemStyle.Setters.Add(new Setter(System.Windows.Automation.AutomationProperties.NameProperty, new Binding(nameof(BookmarkedEvent.Display))));
         _entries.ItemContainerStyle = itemStyle;
-        root.Children.Add(_entries); Content = root;
+        root.Children.Add(Ui.Card(_entries, new Thickness(8))); Content = root;
         _games.SelectionChanged += (_, _) =>
         {
             if (_refreshing) return;

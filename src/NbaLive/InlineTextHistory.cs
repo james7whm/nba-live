@@ -5,7 +5,9 @@ namespace NbaLive;
 
 internal sealed class InlineTextHistory : DockPanel
 {
-    private readonly TextBlock _heading = new() { FontSize = 10, Foreground = Brushes.Gray, Margin = new(0, 2, 0, 4), TextTrimming = TextTrimming.CharacterEllipsis };
+    private readonly TextBlock _heading = new() { FontSize = 10, Foreground = Ui.Brush("MutedInk"), Margin = new(0, 5, 0, 6), TextTrimming = TextTrimming.CharacterEllipsis };
+    private readonly Button _latest = new() { Content = "返回最新", Style = (Style)Application.Current.FindResource("OverlayButton"), FontSize = 10, Margin = new(4,0,0,3), ToolTip = "回到顶部并显示最新直播，后台取数不会因阅读历史暂停" };
+    internal event Action? LatestRequested;
     private readonly ListBox _list = new() { Background = Brushes.Transparent, BorderThickness = new(0), Padding = new(0), Focusable = false };
     private readonly ObservableCollection<LiveEntry> _rows = [];
     private IReadOnlyList<LiveEntry>? _shown;
@@ -14,7 +16,9 @@ internal sealed class InlineTextHistory : DockPanel
     private int _updateVersion;
     internal InlineTextHistory()
     {
-        SetDock(_heading, Dock.Top); Children.Add(_heading); Children.Add(_list);
+        var header = new DockPanel(); SetDock(_latest,Dock.Right); header.Children.Add(_latest); header.Children.Add(_heading);
+        SetDock(header, Dock.Top); Children.Add(header); Children.Add(_list);
+        _latest.Click += (_,_) => { Open(); LatestRequested?.Invoke(); };
         _list.ItemsSource = _rows;
         VirtualizingPanel.SetIsVirtualizing(_list, true);
         VirtualizingPanel.SetVirtualizationMode(_list, VirtualizationMode.Recycling);
@@ -22,14 +26,24 @@ internal sealed class InlineTextHistory : DockPanel
         ScrollViewer.SetCanContentScroll(_list, true);
         ScrollViewer.SetHorizontalScrollBarVisibility(_list, ScrollBarVisibility.Disabled);
         var text = new FrameworkElementFactory(typeof(TextBlock));
-        text.SetBinding(TextBlock.TextProperty, new Binding(nameof(LiveEntry.Display)) { Mode = BindingMode.OneWay });
+        text.SetBinding(TextBlock.TextProperty, new Binding(nameof(LiveEntry.Text)) { Mode = BindingMode.OneWay });
+        text.SetBinding(ToolTipProperty, new Binding(nameof(LiveEntry.Display)));
         text.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
+        var rowContent = new FrameworkElementFactory(typeof(DockPanel));
+        var clock = new FrameworkElementFactory(typeof(TextBlock));
+        clock.SetBinding(TextBlock.TextProperty, new Binding(nameof(LiveEntry.Clock)) { Mode = BindingMode.OneWay });
+        clock.SetValue(DockProperty, Dock.Left); clock.SetValue(WidthProperty, 44.0);
+        clock.SetValue(MarginProperty, new Thickness(0, 0, 8, 0)); clock.SetValue(TextBlock.ForegroundProperty, Ui.Brush("MutedInk"));
+        var clockStyle = new Style(typeof(TextBlock));
+        var noClock = new DataTrigger { Binding = new Binding(nameof(LiveEntry.Clock)), Value = "" };
+        noClock.Setters.Add(new Setter(VisibilityProperty, Visibility.Collapsed)); clockStyle.Triggers.Add(noClock);
+        clock.SetValue(StyleProperty, clockStyle); rowContent.AppendChild(clock); rowContent.AppendChild(text);
         var border = new FrameworkElementFactory(typeof(Border));
         border.SetValue(Border.PaddingProperty, new Thickness(0, 6, 5, 6));
         border.SetValue(Border.BorderThicknessProperty, new Thickness(0, 0, 0, 1));
-        border.SetValue(Border.BorderBrushProperty, new SolidColorBrush(Color.FromArgb(30, 110, 120, 132)));
-        border.AppendChild(text); _list.ItemTemplate = new DataTemplate { VisualTree = border };
-        var row = new Style(typeof(ListBoxItem));
+        border.SetValue(Border.BorderBrushProperty, Ui.Brush("LineBrush"));
+        border.AppendChild(rowContent); _list.ItemTemplate = new DataTemplate { VisualTree = border };
+        var row = new Style(typeof(ListBoxItem), (Style)Application.Current.FindResource(typeof(ListBoxItem)));
         row.Setters.Add(new Setter(Control.HorizontalContentAlignmentProperty, HorizontalAlignment.Stretch));
         row.Setters.Add(new Setter(Control.PaddingProperty, new Thickness(0)));
         row.Setters.Add(new Setter(FocusableProperty, false));

@@ -4,6 +4,7 @@ namespace NbaLive.Core;
 
 public enum OverlayMode { ScoreOnly, OneEvent, TwoEvents }
 public enum OverlayContent { Text, Players, Lineup }
+public enum AppTheme { Warm, Dark }
 public sealed record FavoritePlayer(string Id, string Name);
 
 public sealed record AppSettings
@@ -11,6 +12,7 @@ public sealed record AppSettings
     public double Width { get; init; } = 360;
     public double FontSize { get; init; } = 12;
     public double BackgroundOpacity { get; init; } = .92;
+    public AppTheme Theme { get; init; } = AppTheme.Warm;
     public int? X { get; init; }
     public int? Y { get; init; }
     public string HideHotkey { get; init; } = "Ctrl+Alt+H";
@@ -32,6 +34,7 @@ public sealed record AppSettings
         Width = double.IsFinite(Width) ? Math.Clamp(Width, 280, 480) : 360,
         FontSize = double.IsFinite(FontSize) ? Math.Clamp(FontSize, 11, 16) : 12,
         BackgroundOpacity = double.IsFinite(BackgroundOpacity) ? Math.Clamp(BackgroundOpacity, .2, 1) : .92,
+        Theme = Enum.IsDefined(Theme) ? Theme : AppTheme.Warm,
         HideHotkey = Hotkey.TryParse(HideHotkey, out _) ? HideHotkey : "Ctrl+Alt+H",
         LockHotkey = Hotkey.TryParse(LockHotkey, out _) ? LockHotkey : "Ctrl+Alt+L",
         DisplayMode = Enum.IsDefined(DisplayMode) ? DisplayMode : OverlayMode.TwoEvents,

@@ -326,6 +326,23 @@ var tests = new (string Name, Func<Task> Run)[]
         }
         finally { Directory.Delete(dir, true); }
     })),
+    ("Theme migrates old configurations to warm and persists dark without changing live preferences", () => Sync(() =>
+    {
+        var dir = Path.Combine(Path.GetTempPath(), "NbaLive-Theme-" + Guid.NewGuid());
+        try
+        {
+            Directory.CreateDirectory(dir);
+            File.WriteAllText(Path.Combine(dir, "settings.json"), "{\"Width\":400,\"LastGameId\":\"123\",\"CapsuleEnabled\":true}");
+            var store = new SettingsStore(dir);
+            var old = store.Load();
+            Check(old.Theme == AppTheme.Warm, "old configuration opens in warm theme");
+            Check(store.Save(old with { Theme = AppTheme.Dark }), "dark theme saves");
+            var updated = store.Load();
+            Check(updated.Theme == AppTheme.Dark && updated.Width == 400 && updated.LastGameId == "123" && updated.CapsuleEnabled, "theme roundtrip preserves live preferences");
+            Check((updated with { Theme = (AppTheme)999 }).Validate().Theme == AppTheme.Warm, "invalid theme safely falls back");
+        }
+        finally { Directory.Delete(dir, true); }
+    })),
     ("Settings clamp invalid numbers, survive roundtrip and reject malformed hotkeys", () => Sync(() =>
     {
         var dir = Path.Combine(Path.GetTempPath(), "NbaLive-Test-" + Guid.NewGuid());

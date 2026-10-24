@@ -1,4 +1,4 @@
-param([switch]$SkipTests, [string]$Version = '1.0.0', [string]$ArtifactSuffix = '')
+param([switch]$SkipTests, [string]$Version = '1.1.0', [string]$ArtifactSuffix = '')
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path -Parent $PSScriptRoot
 if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw 'Version must be a numeric major.minor.patch value.' }
@@ -30,6 +30,8 @@ try {
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\VERIFICATION.md') -Destination (Join-Path $taskOutput 'docs\VERIFICATION.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\TEAM-COLORS.md') -Destination (Join-Path $taskOutput 'docs\TEAM-COLORS.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\app-icon.png') -Destination (Join-Path $taskOutput 'docs\app-icon.png')
+    Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\screenshots') -Destination (Join-Path $taskOutput 'docs') -Recurse
+    Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\releases') -Destination (Join-Path $taskOutput 'docs') -Recurse
     $taskDotnetRoot = Split-Path -Parent $taskDotnet
     Copy-Item -LiteralPath (Join-Path $taskDotnetRoot 'LICENSE.txt') -Destination (Join-Path $taskOutput 'DOTNET-LICENSE.txt')
     Copy-Item -LiteralPath (Join-Path $taskDotnetRoot 'ThirdPartyNotices.txt') -Destination (Join-Path $taskOutput 'DOTNET-ThirdPartyNotices.txt')

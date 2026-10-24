@@ -24,7 +24,7 @@ internal sealed class RecapWindow : Window
         var root = new DockPanel { Margin = new(24) };
         var top = new StackPanel(); top.Children.Add(_heading);
         var actions = new WrapPanel { Margin = new(0, 0, 0, 12) };
-        _new = Ui.Button("查看新增", () => ShowCapture(false)); actions.Children.Add(_new);
+        _new = Ui.Primary("查看新增", () => ShowCapture(false)); actions.Children.Add(_new);
         actions.Children.Add(Ui.Button("重看最近 10 条", () => ShowCapture(true)));
         _bookmark = Ui.Button("收藏所选", () =>
         {
@@ -36,7 +36,8 @@ internal sealed class RecapWindow : Window
         });
         actions.Children.Add(_bookmark); actions.Children.Add(Ui.Button("精彩收藏", openBookmarks)); top.Children.Add(actions);
         top.Children.Add(_summary);
-        top.Children.Add(new ScrollViewer { Content = _highlights, MaxHeight = 170, VerticalScrollBarVisibility = ScrollBarVisibility.Auto });
+        var highlights = Ui.Card(new ScrollViewer { Content = _highlights, MaxHeight = 150, VerticalScrollBarVisibility = ScrollBarVisibility.Auto });
+        highlights.Margin = new(0, 0, 0, 14); top.Children.Add(highlights);
         top.Children.Add(Ui.Text("本次范围内的全部原文 · 由早到晚", 11));
         DockPanel.SetDock(top, Dock.Top); root.Children.Add(top);
         _status.Margin = new(0, 12, 0, 0); DockPanel.SetDock(_status, Dock.Bottom); root.Children.Add(_status);
@@ -48,10 +49,10 @@ internal sealed class RecapWindow : Window
         text.SetValue(TextBlock.TextWrappingProperty, TextWrapping.Wrap);
         text.SetValue(MarginProperty, new Thickness(0, 8, 0, 8));
         _entries.ItemTemplate = new DataTemplate { VisualTree = text };
-        var rowStyle = new Style(typeof(ListBoxItem));
+        var rowStyle = new Style(typeof(ListBoxItem), (Style)Application.Current.FindResource(typeof(ListBoxItem)));
         rowStyle.Setters.Add(new Setter(System.Windows.Automation.AutomationProperties.NameProperty, new Binding(nameof(LiveEntry.Display))));
         _entries.ItemContainerStyle = rowStyle;
-        root.Children.Add(_entries); Content = root;
+        root.Children.Add(Ui.Card(_entries, new Thickness(8))); Content = root;
         Loaded += (_, _) => ShowCapture(false);
         _entries.SelectionChanged += (_, _) => UpdateBookmark();
         _bookmarks.Changed += UpdateBookmark;

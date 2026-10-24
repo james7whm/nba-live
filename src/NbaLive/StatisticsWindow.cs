@@ -11,6 +11,7 @@ internal sealed class StatisticsWindow : Window
     private readonly Func<FavoritePlayer, string?> _toggleFavorite;
     private readonly bool _demo;
     private readonly TextBlock _heading = Ui.Text("球员技术统计", 20);
+    private readonly MatchScoreLine _matchHeading = new(22,30);
     private readonly TextBlock _progress = Ui.Text("", 12);
     private readonly TextBlock _status = Ui.Text("请选择比赛后查看球员统计", 11);
     private readonly Button _refresh;
@@ -36,7 +37,7 @@ internal sealed class StatisticsWindow : Window
         _savePreferences = savePreferences; _preset = settings.StatisticsPreset;
         _layouts = StatisticsPresets.Normalize(settings.StatisticsLayouts).ToList();
         Ui.Initialize(this, "球员技术统计 · NBA 直播条", 1100, 650);
-        var root = new DockPanel { Margin = new(22) };
+        var root = new DockPanel { Margin = new(24, 20, 24, 20) };
         var top = new DockPanel();
         var actions = new StackPanel { Orientation = Orientation.Horizontal, VerticalAlignment = VerticalAlignment.Top };
         _presetPicker = new() { ItemsSource = new[] { "完整 · 全部统计", "精简 · 时间／分板助", "投篮 · 命中率" },
@@ -49,7 +50,7 @@ internal sealed class StatisticsWindow : Window
         DockPanel.SetDock(actions, Dock.Right);
         top.Children.Add(actions);
         var title = new StackPanel();
-        title.Children.Add(_heading);
+        title.Children.Add(_matchHeading); _matchHeading.Margin = new(0,0,0,10);
         title.Children.Add(_progress);
         top.Children.Add(title);
         DockPanel.SetDock(top, Dock.Top);
@@ -57,7 +58,23 @@ internal sealed class StatisticsWindow : Window
         _status.Margin = new(0, 12, 0, 0);
         DockPanel.SetDock(_status, Dock.Bottom);
         root.Children.Add(_status);
-        var tabs = new TabControl { Background = Brushes.Transparent, BorderBrush = new SolidColorBrush(Color.FromRgb(220, 225, 230)) };
+        var filters = new DockPanel { Margin = new(0, 4, 0, 2) };
+        var switches = new StackPanel { Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Right };
+        var courtOnly = new CheckBox { Content = "场上五人", Margin = new(0, 0, 20, 0), ToolTip = "赛前和赛后使用首发参考；在场状态未知时不猜测。" };
+        var followedOnly = new CheckBox { Content = "只看关注", Margin = new(0) };
+        switches.Children.Add(courtOnly); switches.Children.Add(followedOnly);
+        DockPanel.SetDock(switches, Dock.Right); filters.Children.Add(switches);
+        var note = Ui.Text("球衣标首发 · 红球与红字标在场", 11); note.Margin = new(0); note.VerticalAlignment = VerticalAlignment.Center;
+        filters.Children.Add(note); DockPanel.SetDock(filters, Dock.Top); root.Children.Add(filters);
+        void Filter()
+        {
+            _away.SetFilters(courtOnly.IsChecked == true, followedOnly.IsChecked == true);
+            _home.SetFilters(courtOnly.IsChecked == true, followedOnly.IsChecked == true);
+        }
+        courtOnly.Checked += (_, _) => Filter(); courtOnly.Unchecked += (_, _) => Filter();
+        followedOnly.Checked += (_, _) => Filter(); followedOnly.Unchecked += (_, _) => Filter();
+        var tabs = new TabControl();
+        tabs.SelectionChanged += (_, _) => switches.IsEnabled = tabs.SelectedIndex != 2;
         _awayTab = new() { Header = "客队", Content = _away, Padding = new(18, 8, 18, 8) };
         _homeTab = new() { Header = "主队", Content = _home, Padding = new(18, 8, 18, 8) };
         tabs.Items.Add(_awayTab);
@@ -132,11 +149,12 @@ internal sealed class StatisticsWindow : Window
         if (!ReferenceEquals(state, _coordinator.State)) return;
         var game = state.Snapshot?.Game ?? state.SelectedGame;
         _heading.Text = game?.Score ?? "球员技术统计";
+        _matchHeading.Update(game);
         _progress.Text = game is null ? "选择比赛后，此窗口随当前场次更新" :
             $"{game.Progress} · 统计与文字直播分别采样，时间可能略有差异";
         _refresh.IsEnabled = game is not null && !state.IsLoading;
-        _awayTab.Header = $"{game?.Away ?? "客队"}（客队）";
-        _homeTab.Header = $"{game?.Home ?? "主队"}（主队）";
+        _awayTab.Header = Ui.TeamLabel(game?.Away ?? "客队", "（客队）");
+        _homeTab.Header = Ui.TeamLabel(game?.Home ?? "主队", "（主队）");
         _away.Update(state.Snapshot?.Away);
         _home.Update(state.Snapshot?.Home);
         _away.SetChanges(state.Changes);
@@ -160,7 +178,8 @@ internal sealed class StatisticsWindow : Window
             EnableColumnVirtualization = true, FrozenColumnCount = 2, RowHeight = 34, FontSize = 12,
             HeadersVisibility = DataGridHeadersVisibility.Column, SelectionMode = DataGridSelectionMode.Single,
             GridLinesVisibility = DataGridGridLinesVisibility.Horizontal, Background = Brushes.Transparent,
-            BorderThickness = new(0), AlternatingRowBackground = new SolidColorBrush(Color.FromRgb(242, 245, 247))
+            BorderThickness = new(0), AlternatingRowBackground = Ui.Brush("CanvasBrush"),
+            RowBackground = Ui.Brush("CardBrush"), HorizontalGridLinesBrush = Ui.Brush("LineBrush")
         };
         private readonly DataGrid _total = new()
         {
@@ -168,9 +187,9 @@ internal sealed class StatisticsWindow : Window
             CanUserReorderColumns = false, CanUserResizeColumns = false, CanUserResizeRows = false, CanUserSortColumns = false,
             HeadersVisibility = DataGridHeadersVisibility.None, FrozenColumnCount = 2, RowHeight = 34, Height = 35,
             FontSize = 12, FontWeight = FontWeights.SemiBold, Focusable = false, IsHitTestVisible = false,
-            BorderThickness = new(0, 1, 0, 0), BorderBrush = new SolidColorBrush(Color.FromRgb(198, 205, 212)),
-            Background = new SolidColorBrush(Color.FromRgb(230, 235, 240)),
-            RowBackground = new SolidColorBrush(Color.FromRgb(230, 235, 240)),
+            BorderThickness = new(0, 1, 0, 0), BorderBrush = Ui.Brush("LineBrush"),
+            Background = Ui.Brush("SoftBrush"), RowBackground = Ui.Brush("SoftBrush"),
+            GridLinesVisibility = DataGridGridLinesVisibility.Horizontal, HorizontalGridLinesBrush = Ui.Brush("LineBrush"),
             HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden, VerticalScrollBarVisibility = ScrollBarVisibility.Disabled
         };
         private static readonly PlayerStatistics EmptyTotal = new("total", "球队合计", false, "-", "-", "-", "-", "-",
@@ -188,6 +207,8 @@ internal sealed class StatisticsWindow : Window
         private readonly List<(DataGridColumn Column, DependencyPropertyDescriptor Descriptor, EventHandler Handler)> _widthObservers = [];
         private StatisticsPreset _preset;
         private bool _restoringLayout;
+        private bool _courtOnly, _followedOnly;
+        private string _filteredKeys = "";
         internal event Action<FavoritePlayer>? FollowRequested;
         internal event Action<StatisticsTableLayout>? LayoutChanged;
         internal TeamSheet()
@@ -198,22 +219,25 @@ internal sealed class StatisticsWindow : Window
             hint.Margin = new(0, 8, 0, 0);
             SetDock(hint, Dock.Bottom); Children.Add(hint);
             _grid.ItemsSource = _rows;
-            var cellStyle = new Style(typeof(DataGridCell));
+            CollectionViewSource.GetDefaultView(_rows).Filter = item => item is PlayerRow row &&
+                (!_courtOnly || row.IsInFive) && (!_followedOnly || _favorites.Contains(row.Id));
+            var cellStyle = new Style(typeof(DataGridCell), (Style)Application.Current.FindResource(typeof(DataGridCell)));
             var active = new DataTrigger { Binding = new Binding(nameof(PlayerRow.IsOnCourt)), Value = true };
             active.Setters.Add(new Setter(ForegroundProperty, BasketballBadge.RedInk));
             cellStyle.Triggers.Add(active);
             var selectedActive = new MultiDataTrigger();
             selectedActive.Conditions.Add(new Condition(new Binding(nameof(PlayerRow.IsOnCourt)), true));
             selectedActive.Conditions.Add(new Condition(new Binding(nameof(DataGridCell.IsSelected)) { RelativeSource = new(RelativeSourceMode.Self) }, true));
-            selectedActive.Setters.Add(new Setter(BackgroundProperty, new SolidColorBrush(Color.FromRgb(255, 237, 240))));
+            selectedActive.Setters.Add(new Setter(BackgroundProperty, Ui.Brush("RedTint")));
             selectedActive.Setters.Add(new Setter(ForegroundProperty, BasketballBadge.RedInk));
-            selectedActive.Setters.Add(new Setter(BorderBrushProperty, new SolidColorBrush(Color.FromRgb(231, 171, 183))));
+            selectedActive.Setters.Add(new Setter(BorderBrushProperty, Ui.Brush("RedBorder")));
             cellStyle.Triggers.Add(selectedActive);
             _grid.CellStyle = cellStyle;
             _grid.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
             _total.ItemsSource = new[] { _totalRow };
             System.Windows.Automation.AutomationProperties.SetName(_total, "固定球队合计");
             var star = new FrameworkElementFactory(typeof(Button));
+            star.SetValue(StyleProperty, (Style)Application.Current.FindResource("IconButton"));
             star.SetBinding(ContentControl.ContentProperty, new Binding(nameof(PlayerRow.Star)));
             star.SetBinding(ToolTipProperty, new Binding(nameof(PlayerRow.StarTip)));
             star.SetBinding(ForegroundProperty, new Binding(nameof(PlayerRow.StarInk)));
@@ -380,6 +404,9 @@ internal sealed class StatisticsWindow : Window
                     column.Width = saved.FirstOrDefault(c => c.Key == Key(column))?.Width ?? _defaultWidths[Key(column)];
                     column.SortDirection = null;
                 }
+                if (preset == StatisticsPreset.Compact && saved.Length == 0)
+                    foreach (var column in _grid.Columns.Where(c => Key(c) is "Points" or "Rebounds" or "Assists"))
+                        column.Width = new DataGridLength(1, DataGridLengthUnitType.Star);
                 foreach (var key in order) _grid.Columns.First(c => Key(c) == key).DisplayIndex = Array.IndexOf(order, key);
                 foreach (var column in _grid.Columns.OrderBy(c => c.DisplayIndex)) _total.Columns[_grid.Columns.IndexOf(column)].DisplayIndex = column.DisplayIndex;
                 _grid.Items.SortDescriptions.Clear();
@@ -420,10 +447,25 @@ internal sealed class StatisticsWindow : Window
         {
             _favorites = favorites.Select(p => p.Id).ToHashSet();
             foreach (var row in _rows) row.SetFollowed(_favorites.Contains(row.Id));
+            RefreshFilter();
         }
         internal void SetCourtStates(IReadOnlyDictionary<string, PlayerCourtState> states)
         {
             foreach (var row in _rows) row.SetCourt(states.GetValueOrDefault(row.Id) ?? new(CourtPresence.Unknown, "状态尚未确认"));
+            RefreshFilter();
+        }
+        internal void SetFilters(bool courtOnly, bool followedOnly)
+        {
+            _courtOnly = courtOnly; _followedOnly = followedOnly;
+            _filteredKeys = ""; RefreshFilter(force: true);
+        }
+        private void RefreshFilter(bool force = false)
+        {
+            var keys = string.Join("|", _rows.Where(row => (!_courtOnly || row.IsInFive) && (!_followedOnly || _favorites.Contains(row.Id))).Select(row => row.Id));
+            if (force || keys != _filteredKeys) { _filteredKeys = keys; CollectionViewSource.GetDefaultView(_rows).Refresh(); }
+            _empty.Visibility = _grid.Items.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            _empty.Text = _rows.Count == 0 ? (_shown is null ? "等待球员统计" : "该队暂无球员统计") :
+                _courtOnly ? "暂无匹配的五人名单，可关闭筛选查看全部球员" : "本队暂无关注球员，可关闭筛选后点击 ☆";
         }
         internal void SetChanges(StatisticsDeltaSnapshot? changes)
         {
@@ -434,6 +476,7 @@ internal sealed class StatisticsWindow : Window
             var style = new Style(typeof(TextBlock));
             style.Setters.Add(new Setter(TextBlock.TextTrimmingProperty, TextTrimming.CharacterEllipsis));
             style.Setters.Add(new Setter(VerticalAlignmentProperty, VerticalAlignment.Center));
+            style.Setters.Add(new Setter(TextBlock.TextAlignmentProperty, TextAlignment.Center));
             style.Setters.Add(new Setter(ToolTipProperty, new Binding(path) { TargetNullValue = "-" }));
             _grid.Columns.Add(new DataGridTextColumn
             {
@@ -466,6 +509,7 @@ internal sealed class StatisticsWindow : Window
             _empty.Text = team is null ? "等待球员统计" : "该队暂无球员统计";
             _totalRow.Update(team?.Total ?? EmptyTotal);
             _total.ToolTip = team?.Total is null ? "球队合计尚未发布，缺失值显示 -。" : "球队合计固定在底部；时间、位置和 +/- 不作汇总。";
+            RefreshFilter();
             if (changed) Dispatcher.BeginInvoke(() =>
             {
                 _scroll?.ScrollToVerticalOffset(offset);
@@ -490,7 +534,8 @@ internal sealed class StatisticsWindow : Window
         public string JerseyNumber => _value.JerseyNumber ?? "-";
         public CourtPresence JerseyAppearance => _value.IsStarter ? CourtPresence.Starter : CourtPresence.OffCourt;
         public bool IsOnCourt => !isTotal && _court.Presence == CourtPresence.OnCourt;
-        public Brush StarInk => IsOnCourt ? BasketballBadge.RedInk : (Brush)Application.Current.FindResource("Ink");
+        internal bool IsInFive => !isTotal && _court.Presence is CourtPresence.OnCourt or CourtPresence.Starter;
+        public Brush StarInk => IsOnCourt ? BasketballBadge.RedInk : Ui.Brush(_followed ? "AccentInk" : "MutedInk");
         public TeamJerseyColor TeamColor { get; private set; } = TeamPalette.Unknown;
         public string JerseyTip => $"{Name} · {(_value.JerseyNumber is { } number ? number + " 号（当前球队名单）" : "号码尚未提供")}\n本场身份：{_value.Role}{(_value.Status.Length == 0 ? "" : " · " + _value.Status)}\n球衣配色：{(_value.IsStarter ? $"首发 · {TeamColor.Name} {TeamColor.Hex}" : "替补 · 灰色")}\n{_court.Detail}" +
             (_deltaPeriod is null ? "" : $"\n{_deltaPeriod}\n{_delta?.Description ?? "暂无可比较的上次统计"}");
@@ -525,6 +570,7 @@ internal sealed class StatisticsWindow : Window
             if (_followed == followed) return;
             _followed = followed;
             PropertyChanged?.Invoke(this, new(nameof(Star))); PropertyChanged?.Invoke(this, new(nameof(StarTip)));
+            PropertyChanged?.Invoke(this, new(nameof(StarInk)));
         }
         public string Id => _value.Id;
         public string Name => isTotal ? "球队合计" : _value.Name;
