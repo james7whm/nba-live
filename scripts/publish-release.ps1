@@ -1,4 +1,4 @@
-param([Parameter(Mandatory)][ValidateSet('Inspect','Draft','Upload','Publish','Verify')][string]$Action,[string]$Commit='', [string]$Version='1.2.4')
+param([Parameter(Mandatory)][ValidateSet('Inspect','Draft','Upload','Publish','Verify')][string]$Action,[string]$Commit='', [string]$Version='1.2.4', [long]$ReleaseId=0)
 $ErrorActionPreference='Stop'
 $taskRoot=Split-Path -Parent $PSScriptRoot
 if($env:GITHUB_ACTIONS -ne 'true' -or !$env:GH_TOKEN){throw 'Run this publisher through GitHub Actions'}
@@ -26,6 +26,10 @@ try{
     $taskMatches=@($taskReleases | Where-Object tag_name -eq $taskTag)
     if($taskMatches.Count -gt 1){throw 'More than one matching release'}
     $taskRelease=if($taskMatches.Count){$taskMatches[0]}else{$null}
+    if($ReleaseId){
+        $taskRelease=Api ('/releases/'+$ReleaseId)
+        if($taskRelease.tag_name -ne $taskTag){throw 'Release ID belongs to another version'}
+    }
     switch($Action){
         'Inspect'{
             $taskRepo=Api '';[pscustomobject]@{Permissions=$taskRepo.permissions;ExistingRelease=if($taskRelease){@{Id=$taskRelease.id;Draft=$taskRelease.draft;URL=$taskRelease.html_url}}else{$null};OldReleasePreserved=(@($taskReleases | Where-Object tag_name -eq 'v1.0.0').Count -eq 1)} | ConvertTo-Json -Depth 4

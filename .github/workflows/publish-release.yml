@@ -83,10 +83,13 @@ jobs:
           $release=gh api "repos/$env:GITHUB_REPOSITORY/releases/tags/v$env:RELEASE_VERSION" 2>$null | ConvertFrom-Json
           if($release.tag_name -ne "v$env:RELEASE_VERSION"){$release=$null}
           $LASTEXITCODE=0
-          if(!$release){scripts/publish-release.ps1 -Action Draft -Version $env:RELEASE_VERSION -Commit $env:RELEASE_COMMIT}
-          if(!$release -or $release.draft){
-            scripts/publish-release.ps1 -Action Upload -Version $env:RELEASE_VERSION
-            scripts/publish-release.ps1 -Action Publish -Version $env:RELEASE_VERSION
+          if(!$release){
+            $release=gh api "repos/$env:GITHUB_REPOSITORY/releases?per_page=100" | ConvertFrom-Json | Where-Object tag_name -eq "v$env:RELEASE_VERSION"
+            if(!$release){$created=scripts/publish-release.ps1 -Action Draft -Version $env:RELEASE_VERSION -Commit $env:RELEASE_COMMIT | ConvertFrom-Json; $release=@{id=$created.Id;draft=$true}}
+          }
+          if($release.draft){
+            scripts/publish-release.ps1 -Action Upload -Version $env:RELEASE_VERSION -ReleaseId $release.id
+            scripts/publish-release.ps1 -Action Publish -Version $env:RELEASE_VERSION -ReleaseId $release.id
           }
           scripts/publish-release.ps1 -Action Verify -Version $env:RELEASE_VERSION
   gitee:
