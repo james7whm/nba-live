@@ -1,0 +1,47 @@
+name: Sync release to Gitee
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gitee-release-${{ github.event.release.tag_name }}
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: ${{ !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Download GitHub release packages
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          gh release download "$TAG" \
+            --repo "$GITHUB_REPOSITORY" \
+            --pattern 'NbaLive-*.zip' \
+            --pattern 'NbaLive-*.zip.sha256' \
+            --dir packages
+          cd packages
+          sha256sum --check *.sha256
+
+      - name: Upload release to Gitee
+        uses: YuZhiYuanOrg/release-sync@v1
+        with:
+          platforms: gitee
+          tag: ${{ github.event.release.tag_name }}
+          release-name: ${{ github.event.release.name }}
+          release-body: ${{ github.event.release.body }}
+          gitee-token: ${{ secrets.GITEE_TOKEN }}
+          gitee-owner: james7whm
+          gitee-repo: nba-live
+          gitee-target-commitish: main
+          asset-files: |
+            packages/*.zip
+            packages/*.sha256
