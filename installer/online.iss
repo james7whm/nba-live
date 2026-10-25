@@ -49,11 +49,16 @@ var
 
 function RuntimeMatches(Version: String): Boolean;
 var
-  Patch: Integer;
+  Patch, Index: Integer;
+  Suffix: String;
 begin
   Result := False;
   if Copy(Version, 1, 5) <> '10.0.' then Exit;
-  if not TryStrToInt(Copy(Version, 6, Length(Version)), Patch) then Exit;
+  Suffix := Copy(Version, 6, Length(Version));
+  if Length(Suffix) = 0 then Exit;
+  for Index := 1 to Length(Suffix) do
+    if (Suffix[Index] < '0') or (Suffix[Index] > '9') then Exit;
+  Patch := StrToIntDef(Suffix, -1);
   Result := Patch >= {#RuntimePatch};
 end;
 
