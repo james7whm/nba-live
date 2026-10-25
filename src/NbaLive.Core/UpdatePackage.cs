@@ -34,7 +34,7 @@ public static class UpdatePackage
         var path = SafePath(root, ManifestName);
         if (!File.Exists(path) || new FileInfo(path).Length > 2097152) throw new SourceFormatException("此安装包不支持一键升级，请使用完整新版发行包");
         var manifest = JsonSerializer.Deserialize<UpdateManifest>(File.ReadAllText(path)) ?? throw new SourceFormatException("更新清单缺失");
-        if (manifest.Product != "NbaLive" || !UpdateVersion.TryParse(manifest.Version, out _) || manifest.Variant is not ("modern" or "net48") ||
+        if (manifest.Product != "NbaLive" || !UpdateVersion.TryParse(manifest.Version, out _) || manifest.Variant is not ("modern" or "modern-lite" or "net48") ||
             version is not null && manifest.Version != version || variant is not null && manifest.Variant != variant || manifest.Files is null || manifest.Files.Count is < 3 or > 10000)
             throw new SourceFormatException("安装包版本或类型不符");
         var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -44,7 +44,7 @@ public static class UpdatePackage
             var file = SafePath(root, item.Key);
             if (verifyFiles && (!File.Exists(file) || !string.Equals(Hash(file), item.Value, StringComparison.OrdinalIgnoreCase))) throw new SourceFormatException("程序文件校验失败：" + item.Key);
         }
-        var required = manifest.Variant == "modern" ? new[] { "NbaLive.exe", "NbaLive.dll", "NbaLive.Core.dll", "NbaLive.runtimeconfig.json", "NbaLive.deps.json" } : new[] { "NbaLive.exe", "NbaLive.Core.dll", "NbaLive.exe.config" };
+        var required = manifest.Variant != "net48" ? new[] { "NbaLive.exe", "NbaLive.dll", "NbaLive.Core.dll", "NbaLive.runtimeconfig.json", "NbaLive.deps.json" } : new[] { "NbaLive.exe", "NbaLive.Core.dll", "NbaLive.exe.config" };
         if (required.Any(r => !names.Contains(r))) throw new SourceFormatException("安装包缺少运行文件");
         return manifest;
     }

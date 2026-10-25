@@ -4,14 +4,13 @@ namespace NbaLive;
 
 internal sealed class LineupView : StackPanel
 {
-    private readonly TeamRow _away = new();
-    private readonly TeamRow _home = new();
-    internal LineupView() { Children.Add(_away); Children.Add(_home); }
+    private TeamRow? _away, _home;
     internal void Render(GameInfo? game, SessionState live, StatisticsState? statistics, DateTimeOffset now)
     {
+        if (_away is null) { _away = new(); _home = new(); Children.Add(_away); Children.Add(_home); }
         var snapshot = statistics?.Snapshot is { } current && current.Game.Id == game?.Id ? current : null;
         _away.Render(LineupCards.Create(snapshot?.Away, game, live, now) with { Team = game?.Away ?? "客队" }, statistics, game?.Id);
-        _home.Render(LineupCards.Create(snapshot?.Home, game, live, now) with { Team = game?.Home ?? "主队" }, statistics, game?.Id);
+        _home!.Render(LineupCards.Create(snapshot?.Home, game, live, now) with { Team = game?.Home ?? "主队" }, statistics, game?.Id);
     }
     private sealed class TeamRow : Grid
     {

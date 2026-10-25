@@ -23,6 +23,7 @@ internal static class Program
         {
             try
             {
+                if(Environment.GetCommandLineArgs().Contains("--resource-probe")) { await ResourceProbe.Run(); app.Shutdown(); return; }
                 var total=0;
                 foreach(var theme in new[]{AppTheme.Warm,AppTheme.Dark})
                 {

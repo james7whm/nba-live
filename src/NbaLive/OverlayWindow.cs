@@ -212,7 +212,7 @@ internal sealed class OverlayWindow : Window
         if (!_historyOpen) { _historyRest = Native.GetGeometry(this); _historyOpen = true; _inlineHistory.Open(); }
         else
         {
-            _historyOpen = false; if (_settings.CapsuleEnabled) _expanded = true;
+            _historyOpen = false; _inlineHistory.Reset(); if (_settings.CapsuleEnabled) _expanded = true;
             // Closing history is a deliberate return to the current snapshot, even while hovered.
             _reading.Resume(); _visibleStatistics = _latestStatistics; _structuredVisible = _structuredLatest;
         }

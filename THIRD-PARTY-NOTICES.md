@@ -1,5 +1,7 @@
 # 第三方组件
 
+- **Inno Setup 6**（仅在线安装器）— Inno Setup License，Jordan Russell、Martijn Laan；简体中文翻译由 Zhenghan Yang 等贡献。https://github.com/jrsoftware/issrc · https://jrsoftware.org/files/is/license.txt 。翻译文件取自官方仓库 `is-6_7_2`，保留原文件作者说明；微软运行组件不嵌入应用安装包，安装时从微软下载并适用其许可。
+
 - **AngleSharp 1.8.5** — MIT License. Copyright © Florian Rappl, AngleSharp contributors. https://github.com/AngleSharp/AngleSharp
 - **Microsoft .NET / WPF 10.0.13** — MIT License and included third-party notices. https://github.com/dotnet/runtime · https://github.com/dotnet/wpf
 - **Portable.System.DateTimeOnly 9.0.2**（仅兼容版）— MIT License. Copyright © 2021–2025 Oleg Rakhmatulin. https://github.com/OlegRa/System.DateTimeOnly

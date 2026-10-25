@@ -2,22 +2,33 @@
   <img src="docs/app-icon.png" alt="NBA 直播条：聊天气泡与篮球 Logo" width="112" height="112">
   <h1>NBA 桌面直播条</h1>
   <p>把比分和文字直播，安静地放在桌面一角。</p>
-  <p>Windows 10 / 11 x64 · Win7 SP1 兼容预览 · 暖白与炭灰双主题</p>
+  <p>Windows 10 / 11 x64 · 在线安装与轻量版 · Win7 SP1 兼容预览 · 暖白与炭灰双主题</p>
   <p><a href="https://github.com/james7whm/nba-live/releases">GitHub 下载</a> · <a href="https://gitee.com/james7whm/nba-live/releases">Gitee 国内下载</a> · <a href="#界面预览">界面预览</a> · <a href="#使用说明">使用说明</a> · <a href="docs/VERIFICATION.md">验证记录</a></p>
 </div>
 
 原生 Windows NBA 悬浮文字直播工具。默认 **360×110 DIP**，提供置顶、胶囊收展、球员统计和比赛回顾；没有声音、闪烁或滚动动画，直播更新不会抢走键盘焦点。
 
-当前版本 **1.2.2**。[查看更新说明](docs/releases/1.2.2.md)。旧版用户退出应用后解压到新目录即可使用，原有本地配置与收藏继续保留。
+当前版本 **1.2.3**。[查看更新说明](docs/releases/1.2.3.md)。新用户建议选择在线安装包，原有本地配置与收藏继续保留。
 
-| 下载渠道 | Win10／11 x64 现代版 | Win7 SP1 x64 兼容预览版 |
-| --- | --- | --- |
-| GitHub | [下载 v1.2.2 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.2.2/NbaLive-1.2.2-win-x64.zip) | [下载 v1.2.2 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.2.2/NbaLive-1.2.2-compatibility-preview-net48-win-x64.zip) |
-| Gitee 国内源 | [打开发行列表](https://gitee.com/james7whm/nba-live/releases) | [打开发行列表](https://gitee.com/james7whm/nba-live/releases) |
+| 形态 | 适用场景 | GitHub | Gitee 国内源 |
+| --- | --- | --- | --- |
+| **在线安装包（推荐）** | Win10／11 x64；检测组件，缺少时经确认从微软下载 | [下载 EXE](https://github.com/james7whm/nba-live/releases/download/v1.2.3/NbaLive-1.2.3-online-setup-win-x64.exe) | [下载 EXE](https://gitee.com/james7whm/nba-live/releases/download/v1.2.3/NbaLive-1.2.3-online-setup-win-x64.exe) |
+| 现代轻量 ZIP | Win10／11 x64；须先安装 .NET 10 Desktop Runtime x64 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.2.3/NbaLive-1.2.3-lite-win-x64.zip) | [下载 ZIP](https://gitee.com/james7whm/nba-live/releases/download/v1.2.3/NbaLive-1.2.3-lite-win-x64.zip) |
+| 现代免安装完整版 ZIP | Win10／11 x64；包含运行环境，解压即用、适合离线或不便安装组件 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.2.3/NbaLive-1.2.3-win-x64.zip) | 不上传带环境的完整版，节约容量 |
+| Win7 兼容预览 ZIP | Win7 SP1／Win10／Win11 x64；需预装 .NET Framework 4.8 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.2.3/NbaLive-1.2.3-compatibility-preview-net48-win-x64.zip) | [下载 ZIP](https://gitee.com/james7whm/nba-live/releases/download/v1.2.3/NbaLive-1.2.3-compatibility-preview-net48-win-x64.zip) |
 
-Gitee 代码由 GitHub 镜像同步，发行附件需另外上传；若国内发行列表暂无 v1.2.2，请先使用 GitHub 或等待国内附件补齐。两个渠道同版本的正式包应有相同 SHA256，不要将平台自动生成的源码 ZIP 当作应用包。
+Gitee 代码由 GitHub 镜像同步；发行附件由 GitHub Actions 单独复制，**从 v1.2.3 起只同步在线安装包、轻量 ZIP、兼容 ZIP 和各自校验文件，不上传带环境的免安装完整版**，既有历史附件不自动删除。刚发布时可能有同步延迟，可查看 [Gitee 发行列表](https://gitee.com/james7whm/nba-live/releases)。两个渠道同名附件应有相同 SHA256，不要将平台生成的源码 ZIP 当作应用包。
 
-**本版新增：** 设置与托盘提供更新提醒和一键升级，国内优先 Gitee、备用 GitHub；只有点击「下载并更新」才下载、校验并重启，支持失败回滚。v1.2.1 及更早版本不包含此功能，首次需手动安装 v1.2.2。使用方式与恢复说明见 [应用更新](docs/UPDATES.md)。
+### 首次安装与版本选择
+
+- **在线安装包**自身不依赖 .NET。双击后检测 x64 的 .NET 10 桌面运行环境，最低组件版本为 10.0.13；已有合适组件时不下载，缺少时明确确认后从微软 HTTPS 地址下载、校验并打开安装器。运行组件的系统安装可能要求管理员授权；安装取消、失败或需要重启时停止后续应用安装，并提供重试或安装帮助，不自动重启电脑。
+- 应用安装到当前用户的 `%LocalAppData%\Programs\NbaLive`，提供开始菜单入口和可选桌面快捷方式，可从 Windows 应用列表卸载；设置和收藏位于独立的 `%LocalAppData%\NbaLive`，卸载时保留。安装／卸载前请通过托盘退出应用。
+- Windows 不自带 .NET 10 Desktop Runtime；已有 .NET Framework、普通 .NET Runtime、ASP.NET Runtime 或仅其他大版本不能代替它。轻量 ZIP 的组件可从 [微软 .NET 10 下载页](https://dotnet.microsoft.com/download/dotnet/10.0) 选择 **Desktop Runtime → Windows x64 Installer** 安装，无需 SDK。在线安装器面向 Windows 10 1809 及以后／Windows 11 x64，Win7 使用独立兼容 ZIP。
+- 从旧完整版切换为轻量安装版：退出旧程序后运行在线安装器，原配置和收藏自动沿用；确认新版可用后再自行删除旧解压目录。不要将轻量 ZIP 直接覆盖到完整版目录。
+- 轻量版／在线安装版的一键更新只获取轻量 ZIP；完整版只获取完整版 ZIP；兼容版只获取兼容 ZIP。组件版本不够时轻量更新会保留当前程序，提示使用在线安装器补齐组件。完整版在 Gitee 不提供新版附件，会尝试 GitHub。
+- 在线安装器和主程序目前尚无可信代码签名，可能出现 SmartScreen「发布者未知」提示；安装包不会自动消除该提示。核对来源及 SHA256 后自行决定是否运行，无需关闭系统防护。
+
+**本版新增：** 在线安装器、现代轻量 ZIP 和按形态匹配的更新通道；减少完整版语言资源及部分界面缓存。设置与托盘继续提供更新提醒和一键升级，只有点击「下载并更新」才下载、校验并重启。v1.2.1 及更早版本需手动升级一次，使用方式与恢复说明见 [应用更新](docs/UPDATES.md)。
 
 ## 功能概览
 
@@ -38,7 +49,7 @@ Gitee 代码由 GitHub 镜像同步，发行附件需另外上传；若国内发
 
 ### 快速开始
 
-1. 从 [GitHub Releases](https://github.com/james7whm/nba-live/releases) 或 [Gitee 国内发行列表](https://gitee.com/james7whm/nba-live/releases) 下载适合系统的 x64 应用 ZIP，解压后运行 `NbaLive.exe`。保留整个解压目录；现代版无需安装 .NET，兼容预览版需预装 .NET Framework 4.8。应用本身无需管理员权限。
+1. 从 [GitHub Releases](https://github.com/james7whm/nba-live/releases) 或 [Gitee 国内发行列表](https://gitee.com/james7whm/nba-live/releases) 下载适合系统的安装包／ZIP。在线版双击 EXE 按提示安装；ZIP 保留整个解压目录后运行 `NbaLive.exe`。完整版无需安装组件，轻量版需 .NET 10 Desktop Runtime x64，兼容版需 .NET Framework 4.8。应用本身按普通用户运行。
 2. 选择一场比赛，点击「查看文字直播」。鼠标移入卡片即可使用文字／球员／阵容切换、回顾和更多菜单。
 3. 在「更多 → 设置 → 外观」切换主题、字号、宽度、不透明度或胶囊模式，保存后生效。
 

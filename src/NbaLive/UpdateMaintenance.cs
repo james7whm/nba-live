@@ -9,6 +9,8 @@ internal static class UpdateMaintenance
 {
 #if NETFRAMEWORK
     internal const string Variant = "net48";
+#elif LITE_PACKAGE
+    internal const string Variant = "modern-lite";
 #else
     internal const string Variant = "modern";
 #endif
@@ -30,6 +32,11 @@ internal static class UpdateMaintenance
         var target = Path.GetFullPath(AppContext.BaseDirectory);
         var before = UpdatePackage.ReadManifest(target, CurrentVersion, Variant);
         var after = UpdatePackage.ReadManifest(stage, variant: Variant);
+#if LITE_PACKAGE
+        var requirements = DesktopRuntimeRequirement.Read(Path.Combine(stage, "NbaLive.runtimeconfig.json"));
+        if (!requirements.All(r => DesktopRuntimeRequirement.IsSatisfied(r, DesktopRuntimeRequirement.InstalledVersions(r.Name))))
+            throw new SourceFormatException("新版需要更新 .NET 10 桌面运行环境。请使用在线安装包完成升级；当前程序尚未退出。");
+#endif
         UpdateVersion.TryParse(before.Version, out var old); UpdateVersion.TryParse(after.Version, out var next);
         if (next.CompareTo(old) <= 0) throw new SourceFormatException("新版本必须高于当前版本");
         if (Path.GetFullPath(stage) != Path.Combine(Path.GetFullPath(workspace), "next")) throw new SourceFormatException("更新暂存路径不符");

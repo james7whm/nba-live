@@ -13,7 +13,7 @@ internal sealed class UpdateWindow : Window
         _updates = updates; Ui.Initialize(this, "应用更新 · NBA 直播条", 580, 680);
         MinWidth = Math.Min(420, Width); MinHeight = Math.Min(540, Height);
         var root = new DockPanel { Margin = new(24) };
-        var head = new StackPanel(); head.Children.Add(Ui.Text("应用更新", 24)); head.Children.Add(Ui.Text($"当前 v{UpdateMaintenance.CurrentVersion} · {(UpdateMaintenance.Variant == "net48" ? "兼容版" : "现代版")}", 12));
+        var head = new StackPanel(); head.Children.Add(Ui.Text("应用更新", 24)); head.Children.Add(Ui.Text($"当前 v{UpdateMaintenance.CurrentVersion} · {(UpdateMaintenance.Variant == "net48" ? "兼容版" : UpdateMaintenance.Variant == "modern-lite" ? "轻量版" : "现代完整版")}", 12));
         head.Children.Add(_version); DockPanel.SetDock(head, Dock.Top); root.Children.Add(head);
         var footer = new StackPanel { Margin = new(0, 18, 0, 0) };
         _status.Margin = new(0, 0, 0, 12); footer.Children.Add(_status); footer.Children.Add(_progress);

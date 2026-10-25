@@ -39,6 +39,8 @@ internal static class UpdateRegression
             var texts = Find<TextBlock>(window).Select(t => t.Text).ToArray();
             var currentVersion = Assembly.GetName().Version!;
             Check(texts.Any(t => t.Contains("1.3.0")) && texts.Any(t => t.Contains($"当前 v{currentVersion.Major}.{currentVersion.Minor}.{currentVersion.Build}")), "both versions shown");
+            var variant=(string)Assembly.GetType("NbaLive.UpdateMaintenance")!.GetField("Variant",BindingFlags.Static|BindingFlags.NonPublic)!.GetRawConstantValue()!;
+            Check(texts.Any(t=>t.Contains(variant=="modern-lite"?"轻量版":variant=="net48"?"兼容版":"现代完整版")),"package kind is shown accurately");
             Check(texts.Any(t => t.Contains("Gitee") && t.Contains("修复直播")), "source and plain text release notes");
             Check(Find<ScrollViewer>(window).Any(), "release notes scroll");
             var button = Find<Button>(window).Single(b => Equals(b.Content, "下载并更新")); button.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));

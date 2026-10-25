@@ -6,11 +6,15 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AssemblyName>NbaLive</AssemblyName>
-    <Version>1.2.2</Version>
+    <Version>1.2.3</Version>
+    <SatelliteResourceLanguages>zh-Hans;zh-Hant;en;en-US</SatelliteResourceLanguages>
     <Product>NBA 直播条</Product>
     <Title>NBA 直播条</Title>
     <Description>桌面 NBA 文字直播条</Description>
     <ApplicationIcon>Assets/Tray.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(LitePackage)' == 'true'">
+    <DefineConstants>$(DefineConstants);LITE_PACKAGE</DefineConstants>
   </PropertyGroup>
   <ItemGroup><ProjectReference Include="../NbaLive.Core/NbaLive.Core.csproj" /></ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net48'">

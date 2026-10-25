@@ -35,6 +35,7 @@ internal static class ReadingRegression
             var retained=list.ItemContainerGenerator.ContainerFromItem(list.Items.Cast<LiveEntry>().Single(e=>e.Key==anchor)) as ListBoxItem;
             Check(retained is not null && Math.Abs(retained.TranslatePoint(new Point(),list).Y-top)<4,"arrival retains reading anchor");
             Call(overlay,"ToggleInlineHistory");await Pump();var lines=(TextBlock[])Field(overlay,"_lines");
+            Check(list.Items.Count==0,"closing history releases its presentation rows without deleting session history");
             Check(lines[0].Text=="阅读回归消息 1040","closing while hovered immediately restores latest compact text");
             Call(overlay,"Render",Burst(1080),true);await Pump();Check(lines[0].Text=="阅读回归消息 1080","closing history resumes ongoing updates even while cursor stays inside");
             Call(overlay,"EnterReading");Call(overlay,"Render",Burst(1120),true);await Pump();Check(lines[0].Text=="阅读回归消息 1080","a new ordinary compact hover still freezes");

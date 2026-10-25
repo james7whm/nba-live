@@ -24,8 +24,12 @@
 
 ## 发布者流程
 
-使用构建脚本生成两种完整包和校验文件，文件清单由脚本生成。两个平台上传同一份 ZIP，不在镜像端重新打包。同一标签下不替换附件，修订应增加版本号。
+使用构建脚本生成现代完整版、轻量版、兼容版 ZIP 和在线安装 EXE，各附同名校验文件；在线安装器内置与轻量 ZIP 相同的应用文件，不内置运行环境。两个平台上传相同附件，不在镜像端重新打包。同一标签下不替换附件，修订应增加版本号。
 
-正式附件命名：`NbaLive-X.Y.Z-win-x64.zip` 和 `NbaLive-X.Y.Z-compatibility-preview-net48-win-x64.zip`，分别附同名 `.sha256`。先完成附件上传和匿名下载校验，再公开正式版，避免客户端发现半成品。GitHub 使用草稿流程；Gitee 暂存为预览版，附件完整后改为正式版。
+正式附件命名：`NbaLive-X.Y.Z-win-x64.zip`、`NbaLive-X.Y.Z-lite-win-x64.zip`、`NbaLive-X.Y.Z-compatibility-preview-net48-win-x64.zip`、`NbaLive-X.Y.Z-online-setup-win-x64.exe`，各附同名 `.sha256`。GitHub 草稿上传全部八个附件并校验后转正式；发布事件触发 Gitee 同步，明确仅复制在线安装 EXE、轻量 ZIP、兼容 ZIP 及校验文件，共六个，不上传现代完整版 ZIP，不删除历史附件。
+
+轻量／在线安装版使用独立的 `modern-lite` 更新类型和文件清单。升级前检查新包运行要求；系统缺少合适组件时保留正在运行的旧版，引导使用在线安装器。在线安装目录属于当前用户，一键更新不需提升应用权限。完整版保持原 `modern` 类型，兼容版保持 `net48`，不自动跨类型升级。
+
+仓库 Actions 的「Build release packages」可输入项目当前版本构建全部形态并下载构建产物。Gitee 同步使用 `scripts/sync_gitee_release.py` 和仓库 Secret `GITEE_TOKEN`；仅从环境读取令牌，不打印响应正文。先核对 Gitee 标签与 GitHub 提交相同，再校验附件并上传；新建为预览，全部匿名下载 SHA256 验证后才转正式。上传或校验失败时保留预览，可在「Sync release to Gitee → Run workflow」输入标签重试；同名内容不同会拒绝覆盖，已有正式发行版不自动补写或替换附件。
 
 v1.2.1 及更早版本没有更新代码，需手动升级至 v1.2.2 一次；此后可通过应用检查后续新版。Gitee 仓库镜像仅同步代码与标签，不自动复制发行附件；仅推送 GitHub 时，国内源可能滞后，应用会继续查询 GitHub。Win7 SP1＋.NET Framework 4.8 和 Win10 实机更新验证仍需完成。

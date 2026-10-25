@@ -1,10 +1,12 @@
-param([switch]$SkipTests, [string]$Version = '1.2.2', [string]$ArtifactSuffix = '', [switch]$Compatible)
+param([switch]$SkipTests, [string]$Version = '1.2.3', [string]$ArtifactSuffix = '', [switch]$Compatible, [switch]$Lite)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path -Parent $PSScriptRoot
 if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw 'Version must be a numeric major.minor.patch value.' }
 if ($ArtifactSuffix -notmatch '^[a-z0-9-]*$') { throw 'ArtifactSuffix must use lowercase letters, numbers and hyphens.' }
-$taskPackage = "NbaLive-$Version" + $(if ($ArtifactSuffix) { "-$ArtifactSuffix" } elseif ($Compatible) { '-compatibility-preview' } else { '' }) + $(if($Compatible){'-net48'}else{''}) + '-win-x64'
+if ($Compatible -and $Lite) { throw 'Choose either Lite or Compatible.' }
+$taskPackage = "NbaLive-$Version" + $(if ($ArtifactSuffix) { "-$ArtifactSuffix" } elseif ($Compatible) { '-compatibility-preview' } else { '' }) + $(if($Compatible){'-net48'}elseif($Lite){'-lite'}else{''}) + '-win-x64'
 $taskDotnet = Join-Path $taskRoot '.tools\dotnet\dotnet.exe'
+$taskRuntimeVersion = (Get-Content -LiteralPath (Join-Path $taskRoot 'installer/runtime.json') -Raw | ConvertFrom-Json).version
 if (-not (Test-Path -LiteralPath $taskDotnet)) { $taskDotnet = (Get-Command dotnet -ErrorAction Stop).Source }
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 Push-Location $taskRoot
@@ -30,8 +32,10 @@ try {
     }
     if($Compatible){
         & $taskDotnet publish src\NbaLive\NbaLive.csproj -f net48 -c Release -p:Version=$Version -p:DebugType=None -p:DebugSymbols=false -o $taskOutput
+    }elseif($Lite){
+        & $taskDotnet publish src\NbaLive\NbaLive.csproj -f net10.0-windows -c Release -r win-x64 --self-contained false -p:LitePackage=true -p:RuntimeFrameworkVersion=$taskRuntimeVersion -p:Version=$Version -p:DebugType=None -p:DebugSymbols=false -o $taskOutput
     }else{
-        & $taskDotnet publish src\NbaLive\NbaLive.csproj -f net10.0-windows -c Release -r win-x64 --self-contained true -p:Version=$Version -p:DebugType=None -p:DebugSymbols=false -o $taskOutput
+        & $taskDotnet publish src\NbaLive\NbaLive.csproj -f net10.0-windows -c Release -r win-x64 --self-contained true -p:LitePackage=false -p:RuntimeFrameworkVersion=$taskRuntimeVersion -p:Version=$Version -p:DebugType=None -p:DebugSymbols=false -o $taskOutput
     }
     if ($LASTEXITCODE -ne 0) { throw 'Publish failed.' }
     Copy-Item -LiteralPath (Join-Path $taskRoot 'README.md') -Destination (Join-Path $taskOutput '使用说明.md')
@@ -53,7 +57,7 @@ try {
         $taskRelative = $_.FullName.Substring($taskOutput.Length + 1).Replace('\','/')
         $taskManifestFiles[$taskRelative] = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
     }
-    $taskManifest = [ordered]@{ Product='NbaLive'; Version=$Version; Variant=$(if($Compatible){'net48'}else{'modern'}); Files=$taskManifestFiles }
+    $taskManifest = [ordered]@{ Product='NbaLive'; Version=$Version; Variant=$(if($Compatible){'net48'}elseif($Lite){'modern-lite'}else{'modern'}); Files=$taskManifestFiles }
     [IO.File]::WriteAllText((Join-Path $taskOutput 'NbaLive.package.json'),($taskManifest | ConvertTo-Json -Depth 4),[Text.UTF8Encoding]::new($false))
     $taskZip = Join-Path $taskRoot ("artifacts\$taskPackage.zip")
     Compress-Archive -LiteralPath $taskOutput -DestinationPath $taskZip -Force

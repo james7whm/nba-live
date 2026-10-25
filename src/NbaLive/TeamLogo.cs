@@ -22,7 +22,8 @@ public sealed class TeamLogo : FrameworkElement
         if(Images.TryGetValue(key,out var cached)) return cached;
         try
         {
-            var image=new BitmapImage(); image.BeginInit(); image.CacheOption=BitmapCacheOption.OnLoad;
+            // Current marks are at most 30 DIP; 64 pixels also covers 200% scaling.
+            var image=new BitmapImage(); image.BeginInit(); image.CacheOption=BitmapCacheOption.OnLoad; image.DecodePixelWidth=64;
             image.UriSource=new Uri("pack://application:,,,/NbaLive;component/Assets/Teams/"+key+".png"); image.EndInit(); image.Freeze();
             Images[key]=image; return image;
         }

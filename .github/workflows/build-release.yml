@@ -1,0 +1,68 @@
+name: Build release packages
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version already recorded in the project
+        required: true
+        default: '1.2.3'
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Validate version and run core tests
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          $ErrorActionPreference='Stop'
+          if($env:RELEASE_VERSION -notmatch '^\d+\.\d+\.\d+$'){throw 'Invalid version'}
+          [xml]$project=Get-Content src/NbaLive/NbaLive.csproj
+          if($project.Project.PropertyGroup[0].Version -ne $env:RELEASE_VERSION){throw 'Project version differs'}
+          dotnet run --project tests -c Release
+          if($LASTEXITCODE -ne 0){throw 'Core tests failed'}
+          dotnet build tests-compat -c Release
+          if($LASTEXITCODE -ne 0){throw 'Compatibility test build failed'}
+          & tests-compat/bin/Release/net48/NbaLive.CompatTests.exe
+          if($LASTEXITCODE -ne 0){throw 'Compatibility tests failed'}
+      - name: Build all distributions
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          $ErrorActionPreference='Stop'
+          & scripts/build.ps1 -SkipTests -Version $env:RELEASE_VERSION
+          & scripts/build.ps1 -SkipTests -Version $env:RELEASE_VERSION -Lite
+          & scripts/build.ps1 -SkipTests -Version $env:RELEASE_VERSION -Compatible
+          & scripts/build-installer.ps1 -Version $env:RELEASE_VERSION
+      - name: Native installer dependency self-test
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          $installer=Join-Path $pwd "artifacts/NbaLive-$env:RELEASE_VERSION-online-setup-win-x64.exe"
+          $log=Join-Path $pwd 'artifacts/installer-selftest.log'
+          $process=Start-Process -FilePath $installer -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/RUNTIMESELFTEST=1',('/LOG="'+$log+'"')) -WindowStyle Hidden -PassThru -Wait
+          if(!(Select-String -LiteralPath $log -SimpleMatch 'NBA_RUNTIME_TEST_PASS')){Get-Content $log; throw 'Native runtime self-test failed'}
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: release-${{ inputs.version }}
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 0
+          path: |
+            artifacts/NbaLive-*.zip
+            artifacts/NbaLive-*.zip.sha256
+            artifacts/NbaLive-*-online-setup-win-x64.exe
+            artifacts/NbaLive-*-online-setup-win-x64.exe.sha256
+            artifacts/installer-selftest.log

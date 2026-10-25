@@ -22,7 +22,7 @@ internal static class UpdateTests
     static UpdateManifest Package(string root, string version, string variant = "net48")
     {
         Directory.CreateDirectory(root); var files = new[] { "NbaLive.exe", "NbaLive.Core.dll", "NbaLive.exe.config" };
-        if (variant == "modern") files = ["NbaLive.exe", "NbaLive.dll", "NbaLive.Core.dll", "NbaLive.runtimeconfig.json", "NbaLive.deps.json"];
+        if (variant != "net48") files = ["NbaLive.exe", "NbaLive.dll", "NbaLive.Core.dll", "NbaLive.runtimeconfig.json", "NbaLive.deps.json"];
         foreach (var file in files) File.WriteAllText(Path.Combine(root, file), version + file);
         var manifest = new UpdateManifest("NbaLive", version, variant, files.ToDictionary(f => f, f => UpdatePackage.Hash(Path.Combine(root, f))));
         File.WriteAllText(Path.Combine(root, UpdatePackage.ManifestName), JsonSerializer.Serialize(manifest)); return manifest;
@@ -45,6 +45,27 @@ internal static class UpdateTests
     }
     internal static readonly (string Name, Func<Task> Run)[] Cases =
     [
+        ("Lite updates remain separate from full and compatibility packages", () => Sync(() =>
+        {
+            Check(UpdateSource.AssetName("1.2.3", "modern-lite") == "NbaLive-1.2.3-lite-win-x64.zip", "lite name");
+            Check(UpdateSource.Parse(Json(variant: "modern-lite"), "Gitee", "modern-lite") is not null, "domestic lite source");
+            Check(UpdateSource.Parse(Json(variant: "modern"), "Gitee", "modern-lite") is null && UpdateSource.Parse(Json(variant: "modern-lite"), "GitHub", "modern") is null, "never replace runtime model");
+            var root = Scratch(); var files = Path.Combine(root, "lite"); Package(files, "1.2.3", "modern-lite");
+            Check(UpdatePackage.Extract(Zip(root, files), Path.Combine(root, "next"), "1.2.3", "modern-lite", _ => "1.2.3").Variant == "modern-lite", "lite extraction");
+            Reject(() => UpdatePackage.ReadManifest(files, variant: "modern"));
+        })),
+        ("Lite updates check desktop and core runtime versions before shutdown", () => Sync(() =>
+        {
+            var required = new DesktopRuntimeRequirement("Microsoft.WindowsDesktop.App", new Version(10, 0, 13));
+            Check(DesktopRuntimeRequirement.IsSatisfied(required, ["10.0.13", "garbage"]), "exact runtime");
+            Check(DesktopRuntimeRequirement.IsSatisfied(required, ["10.0.14"]), "new patch");
+            Check(!DesktopRuntimeRequirement.IsSatisfied(required, ["9.0.99", "11.0.0", "10.0.12", "10.0.13-preview"]), "wrong major old patch and preview");
+            var file = Path.Combine(Scratch(), "runtime.json");
+            File.WriteAllText(file, "{\"runtimeOptions\":{\"frameworks\":[{\"name\":\"Microsoft.NETCore.App\",\"version\":\"10.0.13\"},{\"name\":\"Microsoft.WindowsDesktop.App\",\"version\":\"10.0.13\"}]}}");
+            Check(DesktopRuntimeRequirement.Read(file).Count == 2, "both frameworks required");
+            File.WriteAllText(file, "{\"runtimeOptions\":{\"frameworks\":[{\"name\":\"Microsoft.NETCore.App\",\"version\":\"10.0.13\"}]}}");
+            Reject(() => DesktopRuntimeRequirement.Read(file));
+        })),
         ("Updates compare numeric versions and reject preview or malformed tags", () => Sync(() =>
         {
             Check(UpdateVersion.TryParse("v1.10.0", out var a) && UpdateVersion.TryParse("1.9.9", out var b) && a.CompareTo(b) > 0, "numeric order");

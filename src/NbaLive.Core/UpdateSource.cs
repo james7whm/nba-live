@@ -45,7 +45,7 @@ public sealed class UpdateSource : IUpdateSource, IDisposable
         _http = new(handler ?? new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false }) { Timeout = Timeout.InfiniteTimeSpan };
         _http.DefaultRequestHeaders.UserAgent.ParseAdd("NbaLive-Desktop-Updates/1.0");
     }
-    public static string AssetName(string version, string variant) => $"NbaLive-{version}" + (variant == "net48" ? "-compatibility-preview-net48" : "") + "-win-x64.zip";
+    public static string AssetName(string version, string variant) => $"NbaLive-{version}" + (variant switch { "net48" => "-compatibility-preview-net48", "modern-lite" => "-lite", "modern" => "", _ => throw new ArgumentException("Unknown package variant", nameof(variant)) }) + "-win-x64.zip";
     public static bool TrustedDownload(Uri uri) => uri.Scheme == "https" && uri.IsDefaultPort && string.IsNullOrEmpty(uri.UserInfo) &&
         (uri.Host is "gitee.com" or "foruda.gitee.com" or "github.com" or "api.github.com" || uri.Host.EndsWith(".githubusercontent.com", StringComparison.OrdinalIgnoreCase));
     private static string S(JsonElement e, string key) => e.ValueKind == JsonValueKind.Object && e.TryGetProperty(key, out var v) && v.ValueKind == JsonValueKind.String ? v.GetString() ?? "" : "";

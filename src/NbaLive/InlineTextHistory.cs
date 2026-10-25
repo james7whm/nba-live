@@ -63,17 +63,17 @@ internal sealed class InlineTextHistory : DockPanel
         var anchor = offset > 0 ? FindVisibleRow(_list) : null;
         var version = ++_updateVersion;
         // Reverse only this view. Session history, recap and playback retain chronological order.
-        var history = state.History.Reverse().ToArray();
+        var history = state.History;
         var keys = _rows.Select(entry => entry.Key).ToHashSet();
-        for (var index = 0; index < history.Length; index++)
+        for (var index = 0; index < history.Count; index++)
         {
-            var entry = history[index];
+            var entry = history[history.Count - 1 - index];
             if (index < _rows.Count && _rows[index].Key == entry.Key) { if (_rows[index] != entry) _rows[index] = entry; continue; }
             var existing = keys.Contains(entry.Key) ? _rows.FirstOrDefault(row => row.Key == entry.Key) : null;
             if (existing is null) _rows.Insert(index, entry);
             else { var old = _rows.IndexOf(existing); if (old != index) _rows.Move(old, index); if (_rows[index] != entry) _rows[index] = entry; }
         }
-        while (_rows.Count > history.Length) _rows.RemoveAt(_rows.Count - 1);
+        while (_rows.Count > history.Count) _rows.RemoveAt(_rows.Count - 1);
         Dispatcher.BeginInvoke(() =>
         {
             if (version != _updateVersion) return;

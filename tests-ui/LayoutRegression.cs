@@ -22,6 +22,13 @@ internal static class LayoutRegression
     internal static async Task<int> Run(Window overlay,SessionState state,AppSettings settings)
     {
         var count=0;void Check(bool ok,string text){if(!ok)throw new Exception("Layout: "+text);count++;}
+        var lineup=(Panel)Field(overlay,"_lineup");
+        Check(lineup.Children.Count==0,"text mode defers unused lineup controls");
+        Call(overlay,"ApplyStyle",settings with {ContentMode=OverlayContent.Lineup}); Call(overlay,"Render",state,true); await Pump();
+        Check(lineup.Children.Count==2,"lineup initializes both teams on first use");
+        Call(overlay,"ApplyStyle",settings); Call(overlay,"Render",state,true);
+        var logo=(BitmapSource)typeof(NbaLive.TeamLogo).GetMethod("Get",BindingFlags.Static|BindingFlags.NonPublic)!.Invoke(null,["湖人"])!;
+        Check(logo.PixelWidth==64&&logo.PixelHeight==64&&logo.IsFrozen,"logo decode remains sufficient for 30 DIP at 200 percent scaling");
         var game=state.Snapshot!.Game with {Away="火箭",Home="马刺",AwayScore=114,HomeScore=110,Status=GameStatus.Finished,Progress="已结束"};
         foreach(var points in new[]{(114,110),(199,188),(999,999)})
         {
