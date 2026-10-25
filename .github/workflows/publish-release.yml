@@ -1,0 +1,102 @@
+name: Publish verified release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version with an existing tag and successful build
+        required: true
+        default: '1.2.4'
+      build_run:
+        description: Successful Build release packages run ID
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ inputs.version }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: windows-2022
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Verify build provenance and download exact artifacts
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+          BUILD_RUN: ${{ inputs.build_run }}
+        run: |
+          $ErrorActionPreference='Stop'
+          if($env:RELEASE_VERSION -notmatch '^\d+\.\d+\.\d+$' -or $env:BUILD_RUN -notmatch '^\d+$'){throw 'Invalid release inputs'}
+          $run=gh api "repos/$env:GITHUB_REPOSITORY/actions/runs/$env:BUILD_RUN" | ConvertFrom-Json
+          if($LASTEXITCODE -ne 0 -or $run.conclusion -ne 'success' -or $run.path -ne '.github/workflows/build-release.yml' -or $run.head_branch -ne 'main'){throw 'Expected a successful main release build'}
+          $tag=git rev-parse "v$env:RELEASE_VERSION^{}"
+          if($LASTEXITCODE -ne 0 -or $tag -ne $run.head_sha){throw 'Tag must point to the tested build commit'}
+          git merge-base --is-ancestor $tag HEAD
+          if($LASTEXITCODE -ne 0){throw 'Release is not part of this branch'}
+          $jobs=gh api "repos/$env:GITHUB_REPOSITORY/actions/runs/$env:BUILD_RUN/jobs" | ConvertFrom-Json
+          if(!@($jobs.jobs.steps|Where-Object {$_.name -eq 'Real install, launch and uninstall before publishing' -and $_.conclusion -eq 'success'}).Count){throw 'Real installation check must pass'}
+          gh run download $env:BUILD_RUN --repo $env:GITHUB_REPOSITORY --name "release-$env:RELEASE_VERSION" --dir artifacts
+          if($LASTEXITCODE -ne 0){throw 'Artifact download failed'}
+          "RELEASE_COMMIT=$tag" >> $env:GITHUB_ENV
+      - name: Verify package contents, checksums and versions
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          $ErrorActionPreference='Stop'
+          dotnet build tests -c Release
+          if($LASTEXITCODE -ne 0){throw 'Package verifier build failed'}
+          foreach($item in @(@{Suffix='win-x64.zip';Variant='modern'},@{Suffix='lite-win-x64.zip';Variant='modern-lite'},@{Suffix='compatibility-preview-net48-win-x64.zip';Variant='net48'},@{Suffix='online-setup-win-x64.exe';Variant='installer'})){
+            $path="artifacts/NbaLive-$env:RELEASE_VERSION-$($item.Suffix)"
+            if([IO.File]::ReadAllText($path+'.sha256').Trim() -ne ((Get-FileHash -LiteralPath $path).Hash.ToLowerInvariant()+'  '+[IO.Path]::GetFileName($path))){throw 'Checksum mismatch'}
+            if($item.Variant -ne 'installer'){
+              $result=dotnet tests/bin/Release/net10.0/NbaLive.Tests.dll --verify-update-package $path --version $env:RELEASE_VERSION --variant $item.Variant
+              if($LASTEXITCODE -ne 0){throw 'Package verification failed'}
+              $directory=($result|ConvertFrom-Json).Directory
+              $exe=Join-Path $directory 'NbaLive.exe'
+              if((Get-Item $exe).VersionInfo.ProductVersion -ne $env:RELEASE_VERSION){throw 'Wrong app version'}
+              if(@(Get-ChildItem -LiteralPath $directory -File -Recurse|Where-Object {$_.Extension -in '.pdb','.log' -or $_.Name -in 'settings.json','bookmarks.json','update-cache.json' -or $_.Name -like '*Tests*'}).Count){throw 'Unexpected package files'}
+              if($item.Variant -eq 'modern-lite' -and (Test-Path (Join-Path $directory 'coreclr.dll'))){throw 'Lite package includes runtime'}
+            }elseif((Get-Item $path).VersionInfo.FileVersion.Trim() -ne ($env:RELEASE_VERSION+'.0')){throw 'Wrong installer version'}
+          }
+      - name: Create draft, upload, verify and publish
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: |
+          $ErrorActionPreference='Stop'
+          $release=gh api "repos/$env:GITHUB_REPOSITORY/releases/tags/v$env:RELEASE_VERSION" 2>$null | ConvertFrom-Json
+          $LASTEXITCODE=0
+          if(!$release){scripts/publish-release.ps1 -Action Draft -Version $env:RELEASE_VERSION -Commit $env:RELEASE_COMMIT}
+          if(!$release -or $release.draft){
+            scripts/publish-release.ps1 -Action Upload -Version $env:RELEASE_VERSION
+            scripts/publish-release.ps1 -Action Publish -Version $env:RELEASE_VERSION
+          }
+          scripts/publish-release.ps1 -Action Verify -Version $env:RELEASE_VERSION
+  gitee:
+    needs: publish
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Sync selected attachments and verify Gitee downloads
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
+          RELEASE_TAG: v${{ inputs.version }}
+        run: python3 scripts/sync_gitee_release.py --tag "$RELEASE_TAG"
