@@ -81,6 +81,7 @@ jobs:
         run: |
           $ErrorActionPreference='Stop'
           $release=gh api "repos/$env:GITHUB_REPOSITORY/releases/tags/v$env:RELEASE_VERSION" 2>$null | ConvertFrom-Json
+          if($release.tag_name -ne "v$env:RELEASE_VERSION"){$release=$null}
           $LASTEXITCODE=0
           if(!$release){scripts/publish-release.ps1 -Action Draft -Version $env:RELEASE_VERSION -Commit $env:RELEASE_COMMIT}
           if(!$release -or $release.draft){
