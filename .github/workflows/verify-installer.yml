@@ -1,0 +1,25 @@
+name: Verify published online installer
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Published stable version
+        required: true
+        default: '1.2.3'
+
+permissions:
+  contents: read
+
+jobs:
+  install:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install runtime and test published installer in disposable runner
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: scripts/test-installer.ps1 -Version $env:RELEASE_VERSION
