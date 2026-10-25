@@ -39,6 +39,7 @@ try {
     }
     if ($LASTEXITCODE -ne 0) { throw 'Publish failed.' }
     Copy-Item -LiteralPath (Join-Path $taskRoot 'README.md') -Destination (Join-Path $taskOutput '使用说明.md')
+    Copy-Item -LiteralPath (Join-Path $taskRoot 'LICENSE') -Destination $taskOutput
     Copy-Item -LiteralPath (Join-Path $taskRoot 'THIRD-PARTY-NOTICES.md') -Destination $taskOutput
     New-Item -ItemType Directory -Force (Join-Path $taskOutput 'docs') | Out-Null
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\VERIFICATION.md') -Destination (Join-Path $taskOutput 'docs\VERIFICATION.md')

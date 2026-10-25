@@ -288,6 +288,14 @@ pwsh -File scripts/measure-resources.ps1 -Seconds 3600
 - `tests-ui`：Windows WPF 阅读回归测试，覆盖双主题、普通／胶囊、千条历史滚动、批量新增、收起和返回最新；使用隔离演示数据，不改写用户配置。
 - `scripts`：构建压缩包、直播观测与资源采样。
 
-第三方依赖与许可见 `THIRD-PARTY-NOTICES.md`。
+## 开源许可
+
+本项目原创代码使用 [MIT License](LICENSE)，版权归 james7whm 所有。允许使用、修改、分发及商业使用，分发时须保留版权声明与许可证全文；软件按原样提供，不提供担保。
+
+**球队 Logo 与商标不包含在 MIT 授权范围内。** NBA 与各球队的名称、Logo 及相关商标归各自权利人所有，随应用展示仅用于标识比赛双方，不表示本项目获得官方授权、认可或合作。
+
+第三方组件遵循各自许可，球队 Logo 与商标的详细说明见 [第三方声明](THIRD-PARTY-NOTICES.md)。
+
+后续发行包会附带 `LICENSE` 与 `THIRD-PARTY-NOTICES.md`，重新分发时请一并保留。
 
 应用图标使用已确认的聊天气泡与篮球球纹设计：浅色圆角底座、深灰轮廓和暖橙色球纹。源文件为 `src/NbaLive/Assets/AppIcon.xaml`，程序与窗口使用完整图标，系统托盘使用透明背景的简化图形，并根据任务栏深浅色主题和 DPI 选取配色与尺寸；主题信息不可用时使用带底座的图标。修改后运行 `pwsh -STA -File scripts/build-icons.ps1`，可重新生成 16～256 像素的 9 档 ICO 和说明中的预览图；加 `-PreviewPath artifacts/icon-preview.png` 可生成实际尺寸的深浅背景对照图。随程序保留 `Tray.ico`、`TrayLight.ico`、`TrayDark.ico`。
