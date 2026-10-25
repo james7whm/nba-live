@@ -6,6 +6,8 @@
     <PackageReference Include="System.Text.Json" Version="10.0.13" />
     <PackageReference Include="Portable.System.DateTimeOnly" Version="9.0.2" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
   </ItemGroup>
   <ItemGroup><PackageReference Include="AngleSharp" Version="1.8.5" /></ItemGroup>
 </Project>

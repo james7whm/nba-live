@@ -21,6 +21,7 @@ internal sealed class NativeTray : IDisposable
     internal bool FollowedPlayersOnly { get; set; }
     internal TextSourcePreference TextSource { get; set; }
     internal TextDelivery TextDelivery { get; set; }
+    internal string? UpdateVersion { get; set; }
     internal event Action<int>? Command;
 
     internal NativeTray(Window window)
@@ -106,7 +107,8 @@ internal sealed class NativeTray : IDisposable
             AppendMenu(menu, TextDelivery == TextDelivery.Latest ? 8u : 0u, 19, "实时最新");
             AppendMenu(menu, TextDelivery == TextDelivery.Paged ? 8u : 0u, 20, "完整补播（每页 4 秒）");
             AppendMenu(menu, ClickThrough ? 8u : 0u, 4, "鼠标穿透");
-            AppendMenu(menu, 0, 5, "设置");
+            AppendMenu(menu, 0, 5, UpdateVersion is null ? "设置" : "设置 ●");
+            AppendMenu(menu, 0, 21, UpdateVersion is null ? "检查应用更新" : "发现新版本 v" + UpdateVersion);
             AppendMenu(menu, 0, 8, "回到当前屏幕右下角");
             AppendMenu(menu, 0x800, 0, "");
             AppendMenu(menu, 0, 7, "退出");

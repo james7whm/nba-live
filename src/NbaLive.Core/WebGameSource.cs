@@ -20,7 +20,7 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
     private readonly bool _loadRosters;
     private sealed record RosterCache(DateTimeOffset RetryAfter, IReadOnlyDictionary<string, string> Numbers);
     private readonly ConcurrentDictionary<string, RosterCache> _rosters = new();
-    public string Transport => (_useHttp ? "HTTP（只读公开比赛数据）" : "HTTPS") + (_mobileHttp ? " · 比分接口 HTTP（匿名只读）" : "");
+    public string Transport => (_useHttp ? "HTTP（只读公开比赛数据）" : "HTTPS") + (_mobileHttp ? " · 移动接口 HTTP（匿名只读）" : "");
 
     public WebGameSource(HttpMessageHandler? handler = null, bool loadRosters = false)
     {
@@ -82,6 +82,23 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
             _mobileHttp = true;
             return json;
         }
+    }
+    internal async Task<byte[]> ReadPlayerPortrait(Uri uri, CancellationToken ct)
+    {
+        if (uri.Scheme != "https" || !uri.Host.EndsWith(".hoopchina.com.cn", StringComparison.OrdinalIgnoreCase)) throw new IOException("头像地址不可用");
+        using var lease = await _requests.Enter(false, ct);
+        using var deadline = CancellationTokenSource.CreateLinkedTokenSource(ct); deadline.CancelAfter(TimeSpan.FromSeconds(2));
+        using var request = new HttpRequestMessage(HttpMethod.Get, uri);
+        using var response = await _client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, deadline.Token);
+        if (!response.IsSuccessStatusCode) throw new SourceHttpException(response.StatusCode);
+        if (response.Content.Headers.ContentLength > 2 * 1024 * 1024) throw new IOException("头像文件过大");
+        using var input = await response.Content.ReadAsStreamAsync(); using var output = new MemoryStream(); var buffer = new byte[8192]; int read;
+        while ((read = await input.ReadAsync(buffer, 0, buffer.Length, deadline.Token)) > 0)
+        {
+            if (output.Length + read > 2 * 1024 * 1024) throw new IOException("头像文件过大");
+            output.Write(buffer, 0, read);
+        }
+        return output.ToArray();
     }
     private async Task<string> ReadPage(string url, CancellationToken ct, bool json = false)
     {

@@ -30,14 +30,21 @@ internal static class Program
                     var source=(IGameSource)Activator.CreateInstance(assembly.GetType("NbaLive.DemoSource")!,BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance,null,[false,false],null)!;
                     var live=await source.GetSnapshot("0",CancellationToken.None);
                     var settings=new AppSettings {Theme=theme};
+                    if(Environment.GetCommandLineArgs().Contains("--updates-only")) { total+=await UpdateRegression.Run(settings); continue; }
+                    if(Environment.GetCommandLineArgs().Contains("--real-player-detail")) { total+=await PlayerDetailRegression.RunLive(settings); continue; }
+                    if(!Environment.GetCommandLineArgs().Contains("--player-detail-only"))
+                    {
                     var overlay=(Window)Activator.CreateInstance(assembly.GetType("NbaLive.OverlayWindow")!,BindingFlags.NonPublic|BindingFlags.Instance,null,[settings],null)!;
                     overlay.Show();
                     total+=await ReadingRegression.Run(overlay,new(live,live.Entries,"",false,false){SelectedGame=live.Game},settings);
                     total+=await LayoutRegression.Run(overlay,new(live,live.Entries,"",false,false){SelectedGame=live.Game},settings);
                     overlay.Close();
                     total+=await VisibilityRegression.Run(settings);
+                    }
+                    total+=await PlayerDetailRegression.Run(settings);
+                    total+=await UpdateRegression.Run(settings);
                 }
-                Console.WriteLine($"PASS {total} WPF assertions: reading, score and calendar alignment, whole-app hide and restore, both themes.");app.Shutdown();
+                Console.WriteLine($"PASS {total} WPF assertions: reading, layout, whole-app visibility and player detail, both themes.");app.Shutdown();
             }
             catch(Exception ex){Console.Error.WriteLine(ex);exit=1;app.Shutdown(1);}
         };

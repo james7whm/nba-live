@@ -13,6 +13,8 @@ public sealed record AppSettings
     public double FontSize { get; init; } = 12;
     public double BackgroundOpacity { get; init; } = .92;
     public AppTheme Theme { get; init; } = AppTheme.Warm;
+    public bool CheckForUpdates { get; init; } = true;
+    public string SkippedUpdateVersion { get; init; } = "";
     public int? X { get; init; }
     public int? Y { get; init; }
     public string HideHotkey { get; init; } = "Ctrl+Alt+H";
@@ -35,6 +37,7 @@ public sealed record AppSettings
         FontSize = RuntimeCompat.IsFinite(FontSize) ? RuntimeCompat.Clamp(FontSize, 11, 16) : 12,
         BackgroundOpacity = RuntimeCompat.IsFinite(BackgroundOpacity) ? RuntimeCompat.Clamp(BackgroundOpacity, .2, 1) : .92,
         Theme = RuntimeCompat.IsDefined(Theme) ? Theme : AppTheme.Warm,
+        SkippedUpdateVersion = UpdateVersion.TryParse(SkippedUpdateVersion, out var skipped) ? skipped.ToString() : "",
         HideHotkey = Hotkey.TryParse(HideHotkey, out _) ? HideHotkey : "Ctrl+Alt+H",
         LockHotkey = Hotkey.TryParse(LockHotkey, out _) ? LockHotkey : "Ctrl+Alt+L",
         DisplayMode = RuntimeCompat.IsDefined(DisplayMode) ? DisplayMode : OverlayMode.TwoEvents,

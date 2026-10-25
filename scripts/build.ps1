@@ -1,9 +1,9 @@
-param([switch]$SkipTests, [string]$Version = '1.2.1', [string]$ArtifactSuffix = '', [switch]$Compatible)
+param([switch]$SkipTests, [string]$Version = '1.2.2', [string]$ArtifactSuffix = '', [switch]$Compatible)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path -Parent $PSScriptRoot
 if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw 'Version must be a numeric major.minor.patch value.' }
 if ($ArtifactSuffix -notmatch '^[a-z0-9-]*$') { throw 'ArtifactSuffix must use lowercase letters, numbers and hyphens.' }
-$taskPackage = "NbaLive-$Version" + $(if ($ArtifactSuffix) { "-$ArtifactSuffix" } else { '' }) + $(if($Compatible){'-net48'}else{''}) + '-win-x64'
+$taskPackage = "NbaLive-$Version" + $(if ($ArtifactSuffix) { "-$ArtifactSuffix" } elseif ($Compatible) { '-compatibility-preview' } else { '' }) + $(if($Compatible){'-net48'}else{''}) + '-win-x64'
 $taskDotnet = Join-Path $taskRoot '.tools\dotnet\dotnet.exe'
 if (-not (Test-Path -LiteralPath $taskDotnet)) { $taskDotnet = (Get-Command dotnet -ErrorAction Stop).Source }
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
@@ -40,12 +40,21 @@ try {
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\VERIFICATION.md') -Destination (Join-Path $taskOutput 'docs\VERIFICATION.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\TEAM-COLORS.md') -Destination (Join-Path $taskOutput 'docs\TEAM-COLORS.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\COMPATIBILITY.md') -Destination (Join-Path $taskOutput 'docs\COMPATIBILITY.md')
+    Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\PLAYER-DETAIL.md') -Destination (Join-Path $taskOutput 'docs\PLAYER-DETAIL.md')
+    Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\UPDATES.md') -Destination (Join-Path $taskOutput 'docs\UPDATES.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\app-icon.png') -Destination (Join-Path $taskOutput 'docs\app-icon.png')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\screenshots') -Destination (Join-Path $taskOutput 'docs') -Recurse
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\releases') -Destination (Join-Path $taskOutput 'docs') -Recurse
     $taskDotnetRoot = Split-Path -Parent $taskDotnet
     Copy-Item -LiteralPath (Join-Path $taskDotnetRoot 'LICENSE.txt') -Destination (Join-Path $taskOutput 'DOTNET-LICENSE.txt')
     Copy-Item -LiteralPath (Join-Path $taskDotnetRoot 'ThirdPartyNotices.txt') -Destination (Join-Path $taskOutput 'DOTNET-ThirdPartyNotices.txt')
+    $taskManifestFiles = [ordered]@{}
+    Get-ChildItem -LiteralPath $taskOutput -File -Recurse | Sort-Object FullName | ForEach-Object {
+        $taskRelative = $_.FullName.Substring($taskOutput.Length + 1).Replace('\','/')
+        $taskManifestFiles[$taskRelative] = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+    }
+    $taskManifest = [ordered]@{ Product='NbaLive'; Version=$Version; Variant=$(if($Compatible){'net48'}else{'modern'}); Files=$taskManifestFiles }
+    [IO.File]::WriteAllText((Join-Path $taskOutput 'NbaLive.package.json'),($taskManifest | ConvertTo-Json -Depth 4),[Text.UTF8Encoding]::new($false))
     $taskZip = Join-Path $taskRoot ("artifacts\$taskPackage.zip")
     Compress-Archive -LiteralPath $taskOutput -DestinationPath $taskZip -Force
     $taskHash = Get-FileHash -LiteralPath $taskZip -Algorithm SHA256

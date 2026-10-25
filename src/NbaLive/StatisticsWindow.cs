@@ -24,6 +24,10 @@ internal sealed class StatisticsWindow : Window
     private readonly GameScoreView _scores = new();
     private readonly TabItem _awayTab;
     private readonly TabItem _homeTab;
+    private readonly Grid _body = new();
+    private readonly PlayerDetailPanel _detail = new();
+    private readonly TabControl _tabs;
+    private PlayerDetailCoordinator? _detailCoordinator;
     private bool _closed;
     private SessionState? _liveState;
     private string _notice = "";
@@ -73,8 +77,8 @@ internal sealed class StatisticsWindow : Window
         }
         courtOnly.Checked += (_, _) => Filter(); courtOnly.Unchecked += (_, _) => Filter();
         followedOnly.Checked += (_, _) => Filter(); followedOnly.Unchecked += (_, _) => Filter();
-        var tabs = new TabControl();
-        tabs.SelectionChanged += (_, _) => switches.IsEnabled = tabs.SelectedIndex != 2;
+        var tabs = _tabs = new TabControl();
+        tabs.SelectionChanged += (_, e) => { if (!ReferenceEquals(e.Source, tabs)) return; switches.IsEnabled = tabs.SelectedIndex != 2; CloseDetail(); };
         _awayTab = new() { Header = "客队", Content = _away, Padding = new(18, 8, 18, 8) };
         _homeTab = new() { Header = "主队", Content = _home, Padding = new(18, 8, 18, 8) };
         tabs.Items.Add(_awayTab);
@@ -82,7 +86,14 @@ internal sealed class StatisticsWindow : Window
         var scoreHost = new ScrollViewer { Content = _scores, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled, VerticalScrollBarVisibility = ScrollBarVisibility.Auto };
         scoreHost.SizeChanged += (_, _) => _scores.Height = Math.Max(280, scoreHost.ActualHeight - _scores.Margin.Top - _scores.Margin.Bottom);
         tabs.Items.Add(new TabItem { Header = "球队得分", Content = scoreHost, Padding = new(18, 8, 18, 8) });
-        root.Children.Add(tabs);
+        _body.ColumnDefinitions.Add(new()); _body.ColumnDefinitions.Add(new() { Width = GridLength.Auto });
+        _body.Children.Add(tabs); Grid.SetColumn(_detail, 1); _body.Children.Add(_detail); root.Children.Add(_body);
+        _body.SizeChanged += (_, _) => ArrangeDetail();
+        _away.PlayerRequested += player => OpenDetail(_coordinator.State.Snapshot?.Away.Team, player);
+        _home.PlayerRequested += player => OpenDetail(_coordinator.State.Snapshot?.Home.Team, player);
+        _detail.CloseRequested += CloseDetail; _detail.RefreshRequested += () => _detailCoordinator?.Refresh(); _detail.FollowRequested += ToggleFavorite;
+        PreviewKeyDown += (_, e) => { if (e.Key == Key.Escape && _detail.Visibility == Visibility.Visible) { CloseDetail(); e.Handled = true; } };
+        IsVisibleChanged += (_, _) => _detailCoordinator?.SetVisible(IsVisible && _detail.Visibility == Visibility.Visible);
         Content = root;
         _away.FollowRequested += ToggleFavorite;
         _home.FollowRequested += ToggleFavorite;
@@ -97,7 +108,7 @@ internal sealed class StatisticsWindow : Window
             ApplyPreset(); SavePreferences();
         };
         _coordinator.Changed += OnState;
-        Closed += (_, _) => { _away.Stop(); _home.Stop(); _closed = true; _coordinator.Changed -= OnState; };
+        Closed += (_, _) => { _away.Stop(); _home.Stop(); _closed = true; _detailCoordinator?.Dispose(); _coordinator.Changed -= OnState; };
         OnState(_coordinator.State);
     }
     private void ApplyPreset()
@@ -123,6 +134,40 @@ internal sealed class StatisticsWindow : Window
     internal void SetFavorites(IReadOnlyList<FavoritePlayer> favorites)
     {
         _away.SetFavorites(favorites); _home.SetFavorites(favorites);
+        _detail.SetFavorites(favorites);
+    }
+    internal void ConfigureDetails(IPlayerGameDetailSource source)
+    {
+        _detailCoordinator?.Dispose(); _detailCoordinator = new(source);
+        _detailCoordinator.Changed += state =>
+        {
+            if (_closed) return;
+            if (!Dispatcher.CheckAccess()) { Dispatcher.BeginInvoke(() => RenderDetail(state)); return; }
+            RenderDetail(state);
+        };
+    }
+    private void RenderDetail(PlayerDetailState state)
+    {
+        if (!_closed && ReferenceEquals(state, _detailCoordinator?.State)) _detail.Render(state, _demo);
+    }
+    private void OpenDetail(string? team, PlayerStatistics player)
+    {
+        if (team is null || _coordinator.State.Snapshot is not { } snapshot || _detailCoordinator is null) return;
+        var query = new PlayerDetailQuery(snapshot.Game, team, player) { StatisticsFetchedAt = snapshot.FetchedAt };
+        if (_detail.Visibility == Visibility.Visible && _detailCoordinator.State.Query?.Key == query.Key) return;
+        _detail.Visibility = Visibility.Visible; ArrangeDetail(); _detailCoordinator.Select(query);
+    }
+    private void CloseDetail()
+    {
+        _detail.Visibility = Visibility.Collapsed; _tabs.Visibility = Visibility.Visible; _detailCoordinator?.Close(); ArrangeDetail();
+    }
+    private void ArrangeDetail()
+    {
+        if (_body.ColumnDefinitions.Count < 2) return;
+        var open = _detail.Visibility == Visibility.Visible; var narrow = _body.ActualWidth < 900;
+        _detail.Width = narrow ? double.NaN : 440; _detail.SetNarrow(narrow);
+        Grid.SetColumn(_detail, narrow ? 0 : 1); _tabs.Visibility = open && narrow ? Visibility.Collapsed : Visibility.Visible;
+        _body.ColumnDefinitions[1].Width = open && !narrow ? GridLength.Auto : new(0);
     }
     internal void SetLiveState(SessionState state)
     {
@@ -148,6 +193,16 @@ internal sealed class StatisticsWindow : Window
         if (!Dispatcher.CheckAccess()) { Dispatcher.BeginInvoke(() => OnState(state)); return; }
         if (!ReferenceEquals(state, _coordinator.State)) return;
         var game = state.Snapshot?.Game ?? state.SelectedGame;
+        if (_detailCoordinator?.State.Query is { } selected)
+        {
+            if (game is null || game.Id != selected.Game.Id) CloseDetail();
+            else
+            {
+                _detailCoordinator.UpdateGame(game);
+                var updatedPlayer = (state.Snapshot?.Away.Team == selected.Team ? state.Snapshot.Away : state.Snapshot?.Home)?.Players.FirstOrDefault(p => p.Id == selected.Player.Id);
+                if (updatedPlayer is not null) _detailCoordinator.UpdatePlayer(selected with { Game = game, Player = updatedPlayer, StatisticsFetchedAt = state.Snapshot?.FetchedAt });
+            }
+        }
         _heading.Text = game?.Score ?? "球员技术统计";
         _matchHeading.Update(game);
         _progress.Text = game is null ? "选择比赛后，此窗口随当前场次更新" :
@@ -210,11 +265,12 @@ internal sealed class StatisticsWindow : Window
         private bool _courtOnly, _followedOnly;
         private string _filteredKeys = "";
         internal event Action<FavoritePlayer>? FollowRequested;
+        internal event Action<PlayerStatistics>? PlayerRequested;
         internal event Action<StatisticsTableLayout>? LayoutChanged;
         internal TeamSheet()
         {
             Margin = new(12);
-            var hint = Ui.Text("球衣：球队色＝首发，灰色＝替补 · 红球／红字：确认在场　｜　点击列标题排序", 10);
+            var hint = Ui.Text("点击球员行查看本场详情 · 列标题排序 · 球衣标首发，红球／红字标在场", 10);
             hint.ToolTip = "球衣按本场首发身份固定配色，与实时在场无关。红色篮球和红字表示依据本场最新五人换人名单确认在场，可能存在刷新延迟；没有有效名单、赛前或赛后不显示实时在场标记。号码来自当前球队名单，历史比赛号码可能不同。\n得分／篮板／助攻括号为最近两次成功统计的变化；首次不标增量，数据下调标为修正。悬停球衣可查看首发／替补身份、在场依据和比较时间。\n投篮／三分／罚球为命中数-出手数，命中率由对应命中数／出手数计算，未出手显示 —；+/- 为在场净胜分。";
             hint.Margin = new(0, 8, 0, 0);
             SetDock(hint, Dock.Bottom); Children.Add(hint);
@@ -233,6 +289,23 @@ internal sealed class StatisticsWindow : Window
             selectedActive.Setters.Add(new Setter(BorderBrushProperty, Ui.Brush("RedBorder")));
             cellStyle.Triggers.Add(selectedActive);
             _grid.CellStyle = cellStyle;
+            PlayerRow? pressedRow = null; Point press = default;
+            _grid.PreviewMouseLeftButtonDown += (_, e) =>
+            {
+                pressedRow = Ancestor<ButtonBase>(e.OriginalSource as DependencyObject) is null && Ancestor<DataGridRow>(e.OriginalSource as DependencyObject)?.DataContext is PlayerRow row ? row : null;
+                press = e.GetPosition(_grid);
+            };
+            _grid.PreviewMouseLeftButtonUp += (_, e) =>
+            {
+                var row = Ancestor<DataGridRow>(e.OriginalSource as DependencyObject)?.DataContext as PlayerRow;
+                if (row is not null && ReferenceEquals(row, pressedRow) && (e.GetPosition(_grid) - press).Length < 4 && Ancestor<ButtonBase>(e.OriginalSource as DependencyObject) is null) PlayerRequested?.Invoke(row.Value);
+                pressedRow = null;
+            };
+            _grid.PreviewKeyDown += (_, e) =>
+            {
+                if (e.Key == System.Windows.Input.Key.Enter && _grid.SelectedItem is PlayerRow row && Ancestor<ButtonBase>(Keyboard.FocusedElement as DependencyObject) is null)
+                { PlayerRequested?.Invoke(row.Value); e.Handled = true; }
+            };
             _grid.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
             _total.ItemsSource = new[] { _totalRow };
             System.Windows.Automation.AutomationProperties.SetName(_total, "固定球队合计");
@@ -367,6 +440,15 @@ internal sealed class StatisticsWindow : Window
             _grid.SizeChanged += (_, _) => SyncHorizontal();
             _grid.Sorting += (_, _) => QueueLayoutSave();
             _layoutSave.Tick += (_, _) => FlushLayout();
+        }
+        private static T? Ancestor<T>(DependencyObject? node) where T : DependencyObject
+        {
+            while (node is not null)
+            {
+                if (node is T found) return found;
+                node = node is FrameworkContentElement content ? content.Parent : VisualTreeHelper.GetParent(node);
+            }
+            return null;
         }
         private static string Key(DataGridColumn column) => string.IsNullOrEmpty(column.SortMemberPath) ? "Star" : column.SortMemberPath;
         private void QueueLayoutSave() { if (!_restoringLayout) { _layoutSave.Stop(); _layoutSave.Start(); } }
@@ -527,6 +609,7 @@ internal sealed class StatisticsWindow : Window
     private sealed class PlayerRow(PlayerStatistics value, bool isTotal = false) : INotifyPropertyChanged
     {
         private PlayerStatistics _value = value;
+        internal PlayerStatistics Value => _value;
         private bool _followed;
         private PlayerCourtState _court = new(CourtPresence.Unknown, "状态尚未确认");
         private PlayerStatDelta? _delta;

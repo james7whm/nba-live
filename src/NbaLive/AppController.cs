@@ -31,6 +31,12 @@ internal sealed class AppController : IDisposable
     private StatisticsWindow? _statistics;
     private RecapWindow? _recapWindow;
     private BookmarksWindow? _bookmarksWindow;
+    private UpdateWindow? _updateWindow;
+    private readonly UpdateSource _updateSource;
+    private readonly UpdateCoordinator _updates;
+    private readonly bool _preview;
+    private bool _installing;
+    internal event Action? Ready;
     private readonly HashSet<Window> _hiddenWindows = [];
     private bool _allHidden;
     private bool _clickThrough;
@@ -41,8 +47,14 @@ internal sealed class AppController : IDisposable
     internal AppController(bool demo, bool demoOpening = false, bool demoFinished = false, bool preview = false)
     {
         _demo = demo;
+        _preview = preview;
         _store = new SettingsStore(demo || preview ? Path.Combine(Path.GetTempPath(), demo ? "NbaLive-Demo" : "NbaLive-Preview") : null);
         _settings = _store.Load();
+        _updateSource = new();
+        UpdateVersion.TryParse(UpdateMaintenance.CurrentVersion, out var currentVersion);
+        _updates = new(_updateSource, currentVersion, UpdateMaintenance.Variant, _store.DirectoryPath)
+        { Automatic = _settings.CheckForUpdates, SkippedVersion = _settings.SkippedUpdateVersion };
+        _updates.Changed += OnUpdateState;
         ThemeManager.Apply(_settings.Theme);
         _bookmarks = new(_store.DirectoryPath);
         _error = _store.Error ?? "";
@@ -73,7 +85,8 @@ internal sealed class AppController : IDisposable
 
     internal async Task Start(bool demoPicker = false, string? previewGame = null)
     {
-        Overlay.Show();
+        if (_allHidden) { new WindowInteropHelper(Overlay).EnsureHandle(); _hiddenWindows.Add(Overlay); }
+        else Overlay.Show();
         _tray = new(Overlay);
         UpdateTray();
         _tray.Command += id =>
@@ -99,10 +112,13 @@ internal sealed class AppController : IDisposable
                 case 18: ApplyPreferences(_settings with { TextSource = TextSourcePreference.Structured }); Save(); break;
                 case 19: ApplyPreferences(_settings with { TextDelivery = TextDelivery.Latest }); Save(); break;
                 case 20: ApplyPreferences(_settings with { TextDelivery = TextDelivery.Paged }); Save(); break;
+                case 21: OpenUpdates(); break;
             }
         };
         _hotkeys = new(new WindowInteropHelper(Overlay).Handle);
         if (!_hotkeys.Apply(_settings.HideHotkey, _settings.LockHotkey)) _error = _hotkeys.Error;
+        Ready?.Invoke();
+        if (!_demo && !_preview) _ = _updates.Schedule();
         await UpdateStatisticsDemand();
         if (_demo)
         {
@@ -202,15 +218,57 @@ internal sealed class AppController : IDisposable
                 if (_hotkeys is null || !_hotkeys.Apply(candidate.HideHotkey, candidate.LockHotkey)) return _hotkeys?.Error ?? "快捷键服务未就绪";
                 // Preserve the current match and position if they changed while settings were open.
                 ApplyPreferences(candidate with { X = _settings.X, Y = _settings.Y, LastGameId = _settings.LastGameId,
-                    FollowedPlayers = _settings.FollowedPlayers, StatisticsPreset = _settings.StatisticsPreset, StatisticsLayouts = _settings.StatisticsLayouts });
+                    FollowedPlayers = _settings.FollowedPlayers, StatisticsPreset = _settings.StatisticsPreset, StatisticsLayouts = _settings.StatisticsLayouts,
+                    SkippedUpdateVersion = _settings.SkippedUpdateVersion });
                 _picker?.SetFavorite(_settings.FavoriteTeam);
                 _error = "";
                 return _store.Save(_settings) ? null : _store.Error;
             });
+        _settingsWindow.ConfigureUpdates(OpenUpdates);
+        _settingsWindow.RenderUpdates(_updates.State, _updates.HasNotice);
         _settingsWindow.Closed += (_, _) => _settingsWindow = null;
         _settingsWindow.Show();
     }
     internal void ShowSettings() => OpenSettings();
+    internal void PrepareHiddenStart() => _allHidden = true;
+    private void OnUpdateState(UpdateState state)
+    {
+        if (_disposed) return;
+        if (!Overlay.Dispatcher.CheckAccess()) { Overlay.Dispatcher.BeginInvoke(() => OnUpdateState(state)); return; }
+        if (!ReferenceEquals(state, _updates.State)) return;
+        UpdateTray(); _settingsWindow?.RenderUpdates(state, _updates.HasNotice);
+    }
+    internal void ShowUpdates() => OpenUpdates();
+    private void OpenUpdates()
+    {
+        RestoreWindows();
+        if (_updateWindow is not null) { Ui.Present(_updateWindow); return; }
+        _updateWindow = new(_updates, async () => await InstallUpdate(), () =>
+        {
+            if (_updates.State.Release is { } release)
+            { _settings = _settings with { SkippedUpdateVersion = release.Version }; _updates.SkippedVersion = release.Version; Save(); _updates.NotifySkipped(); }
+        });
+        _updateWindow.Closed += (_, _) => _updateWindow = null;
+        _updateWindow.Show(); _ = _updates.Check();
+    }
+    private async Task InstallUpdate()
+    {
+        if (_installing) return;
+        _installing = true;
+        try
+        {
+            // Check eligibility before downloading a large package or shutting anything down.
+            UpdatePackage.ReadManifest(AppContext.BaseDirectory, UpdateMaintenance.CurrentVersion, UpdateMaintenance.Variant);
+            var workspace = UpdateMaintenance.Workspace(); var stage = await _updates.Download(workspace);
+            if (stage is null || _disposed || _updateWindow is null) return;
+            var job = await Task.Run(() => UpdateMaintenance.Prepare(workspace, stage, _allHidden, _demo, _preview));
+            if (_updateWindow is null || _disposed) return;
+            await UpdateMaintenance.StartWorker(job); Save(); Application.Current.Shutdown();
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or SourceFormatException or System.Text.Json.JsonException or System.ComponentModel.Win32Exception)
+        { _updates.SetMessage("更新未完成，继续使用旧版：" + ex.Message); }
+        finally { _installing = false; }
+    }
     internal void ShowHistory() => OpenHistory();
     internal void ShowBookmarks() => OpenBookmarks();
     private void OpenBookmarks()
@@ -232,6 +290,7 @@ internal sealed class AppController : IDisposable
             return _store.Save(_settings) ? null : "统计布局已在本次生效，但配置保存失败。";
         });
         _statistics = window;
+        window.ConfigureDetails(_webSource is not null ? new PlayerGameDetailSource(_webSource) : new DemoPlayerDetailSource());
         window.SetLiveState(_session.StructuredState);
         window.Closed += async (_, _) =>
         {
@@ -254,6 +313,7 @@ internal sealed class AppController : IDisposable
     {
         var oldSource = _settings.TextSource;
         _settings = settings.Validate();
+        _updates.Automatic = _settings.CheckForUpdates; _updates.SkippedVersion = _settings.SkippedUpdateVersion;
         ThemeManager.Apply(_settings.Theme);
         if (oldSource != _settings.TextSource) _ = _session.SetPreference(_settings.TextSource);
         Overlay.ApplyStyle(_settings);
@@ -279,6 +339,7 @@ internal sealed class AppController : IDisposable
         _tray.FollowedPlayersOnly = _settings.FollowedPlayersOnly;
         _tray.TextSource = _settings.TextSource;
         _tray.TextDelivery = _settings.TextDelivery;
+        _tray.UpdateVersion = _updates.HasNotice ? _updates.State.Release?.Version : null;
     }
     private void UpdateUnread() { Overlay.SetUnread(_recaps.UnreadCount); _recapWindow?.SetUnread(_recaps.UnreadCount); }
     internal void ShowRecap() => OpenRecap();
@@ -311,7 +372,7 @@ internal sealed class AppController : IDisposable
             window.Hide();
         }
     }
-    private IEnumerable<Window> Windows() => new Window?[] { Overlay, _picker, _statistics, _settingsWindow, _history, _recapWindow, _bookmarksWindow }.OfType<Window>();
+    private IEnumerable<Window> Windows() => new Window?[] { Overlay, _picker, _statistics, _settingsWindow, _history, _recapWindow, _bookmarksWindow, _updateWindow }.OfType<Window>();
     private void RestoreWindows()
     {
         if (_disposed) return;
@@ -341,6 +402,7 @@ internal sealed class AppController : IDisposable
         if (_disposed) return;
         _disposed = true;
         _lifetime.Cancel();
+        _updates.Dispose(); _updateSource.Dispose();
         _session.Dispose();
         _statistics?.Close();
         _recapWindow?.Close();

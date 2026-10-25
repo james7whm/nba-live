@@ -360,6 +360,10 @@ internal sealed class HistoryWindow : Window
 
 internal sealed class SettingsWindow : Window
 {
+    private readonly CheckBox _checkUpdates;
+    private readonly TextBlock _updateStatus = Ui.Text("", 11);
+    private readonly Button _updateEntry;
+    private Action? _showUpdates;
     private readonly Slider _width;
     private readonly Slider _font;
     private readonly Slider _opacity;
@@ -429,9 +433,14 @@ internal sealed class SettingsWindow : Window
         _hide = AddInput(shortcuts, "隐藏／恢复", settings.HideHotkey);
         _clickThrough = AddInput(shortcuts, "鼠标穿透", settings.LockHotkey);
         shortcuts.Children.Add(Ui.Text("支持 Ctrl、Alt、Shift，加字母、数字或 F1～F24。开启穿透后，也可从系统托盘恢复操作。", 11));
+        var updates = Ui.Section(sections, "应用更新");
+        _checkUpdates = new CheckBox { Content = "自动检查新版本（每天一次）", IsChecked = settings.CheckForUpdates, Margin = new(0, 0, 0, 12) };
+        updates.Children.Add(_checkUpdates); updates.Children.Add(Ui.Text($"当前版本 v{UpdateMaintenance.CurrentVersion} · 国内优先 Gitee，备用 GitHub", 11));
+        updates.Children.Add(_updateStatus); _updateEntry = Ui.Button("检查更新", () => _showUpdates?.Invoke()); updates.Children.Add(_updateEntry);
         var save = Ui.Primary("保存设置", () =>
         {
             var candidate = settings with { Theme = (AppTheme)_theme.SelectedIndex, Width = _width.Value, FontSize = _font.Value,
+                CheckForUpdates = _checkUpdates.IsChecked == true,
                 BackgroundOpacity = _opacity.Value / 100, HideHotkey = _hide.Text.Trim(), LockHotkey = _clickThrough.Text.Trim(),
                 DisplayMode = (OverlayMode)_mode.SelectedIndex, ImportantEventsOnly = _importantOnly.IsChecked == true,
                 FollowedPlayersOnly = _followedOnly.IsChecked == true, FavoriteTeam = (_favorite.SelectedItem as FavoriteTeamChoice)?.Value ?? "",
@@ -445,6 +454,9 @@ internal sealed class SettingsWindow : Window
         root.Children.Add(new ScrollViewer { Content = sections, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Disabled });
         Content = root;
     }
+    internal void ConfigureUpdates(Action show) => _showUpdates = show;
+    internal void RenderUpdates(UpdateState state, bool notice)
+    { _updateStatus.Text = state.Message; _updateEntry.Content = notice && state.Release is { } r ? "● 发现新版本 v" + r.Version : "检查更新"; }
     private sealed record FavoriteTeamChoice(string Value, string Name);
     private static ComboBox FavoriteTeams(string favorite)
     {

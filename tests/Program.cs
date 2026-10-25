@@ -1,6 +1,45 @@
 using NbaLive.Core;
 using System.Text.Json;
 
+if (args.Contains("--verify-update-package"))
+{
+    var zip = args[Array.IndexOf(args, "--verify-update-package") + 1];
+    var version = args[Array.IndexOf(args, "--version") + 1]; var variant = args[Array.IndexOf(args, "--variant") + 1];
+    var destination = Path.GetFullPath(Path.Combine("artifacts", "update-package-probes", Guid.NewGuid().ToString("N")));
+    var manifest = UpdatePackage.Extract(zip, destination, version, variant);
+    Console.WriteLine(JsonSerializer.Serialize(new { Verified = true, manifest.Version, manifest.Variant, Files = manifest.Files.Count, Directory = destination }));
+    return;
+}
+
+if (args.Contains("--probe-updates"))
+{
+    using var updateSource = new UpdateSource();
+    foreach (var variant in new[] { "modern", "net48" })
+    {
+        var result = await updateSource.Check(new(0, 0, 0), variant, default);
+        Console.WriteLine(JsonSerializer.Serialize(new { variant, result }));
+        if (args.Contains("--download") && result.Release is { } release)
+        {
+            var folder = Path.Combine(Path.GetTempPath(), "NbaLiveUpdateProbes", Guid.NewGuid().ToString("N")); Directory.CreateDirectory(folder);
+            var path = Path.Combine(folder, release.AssetName); var downloaded = await updateSource.Download(release, variant, path, null, default);
+            Console.WriteLine(JsonSerializer.Serialize(new { variant, downloaded.Origin, downloaded.Version, Bytes = new FileInfo(path).Length, Sha256 = UpdatePackage.Hash(path) }));
+        }
+    }
+    return;
+}
+
+if (args.Contains("--probe-player-detail"))
+{
+    var gameIndex = Array.IndexOf(args, "--game"); var playerIndex = Array.IndexOf(args, "--player");
+    if (gameIndex < 0 || playerIndex < 0) throw new ArgumentException("--probe-player-detail --game ID --player ID");
+    using var source = new WebGameSource(); var stats = await source.GetBoxScore(args[gameIndex + 1], default);
+    var team = stats.Away.Players.Any(p => PlayerGameDetailParser.LegacyNumber(p.Id) == args[playerIndex + 1]) ? stats.Away : stats.Home;
+    var query = new PlayerDetailQuery(stats.Game, team.Team, team.Players.Single(p => PlayerGameDetailParser.LegacyNumber(p.Id) == args[playerIndex + 1])) { StatisticsFetchedAt = stats.FetchedAt };
+    var adapter = new PlayerGameDetailSource(source); var snapshot = await adapter.GetDetail(query, default);
+    Console.WriteLine(JsonSerializer.Serialize(snapshot));
+    if (snapshot.Portrait is { } uri) Console.WriteLine(JsonSerializer.Serialize(new { PortraitBytes = (await adapter.GetPortrait(uri, default)).Length }));
+    return;
+}
 if (args.Contains("--probe-statistics"))
 {
     var gameIndex = Array.IndexOf(args, "--game");
@@ -360,7 +399,7 @@ var tests = new (string Name, Func<Task> Run)[]
         }
         finally { Directory.Delete(dir, true); }
     }))
-}.Concat(StatisticsTests.Cases).Concat(CompanionTests.Cases).Concat(JerseyTests.Cases).Concat(LiveCompanionTests.Cases).Concat(CollectionTests.Cases).Concat(ScoringTests.Cases).Concat(DeliveryTests.Cases).Concat(ScheduleProgressTests.Cases).Concat(AnchorTests.Cases).ToArray();
+}.Concat(StatisticsTests.Cases).Concat(CompanionTests.Cases).Concat(JerseyTests.Cases).Concat(LiveCompanionTests.Cases).Concat(CollectionTests.Cases).Concat(ScoringTests.Cases).Concat(DeliveryTests.Cases).Concat(ScheduleProgressTests.Cases).Concat(AnchorTests.Cases).Concat(PlayerDetailTests.Cases).Concat(UpdateTests.Cases).ToArray();
 var failures = 0;
 foreach (var test in tests)
 {

@@ -3,12 +3,21 @@
   <h1>NBA 桌面直播条</h1>
   <p>把比分和文字直播，安静地放在桌面一角。</p>
   <p>Windows 10 / 11 x64 · Win7 SP1 兼容预览 · 暖白与炭灰双主题</p>
-  <p><a href="https://github.com/james7whm/nba-live/releases">下载应用</a> · <a href="#界面预览">界面预览</a> · <a href="#使用说明">使用说明</a> · <a href="docs/VERIFICATION.md">验证记录</a></p>
+  <p><a href="https://github.com/james7whm/nba-live/releases">GitHub 下载</a> · <a href="https://gitee.com/james7whm/nba-live/releases">Gitee 国内下载</a> · <a href="#界面预览">界面预览</a> · <a href="#使用说明">使用说明</a> · <a href="docs/VERIFICATION.md">验证记录</a></p>
 </div>
 
 原生 Windows NBA 悬浮文字直播工具。默认 **360×110 DIP**，提供置顶、胶囊收展、球员统计和比赛回顾；没有声音、闪烁或滚动动画，直播更新不会抢走键盘焦点。
 
-当前版本 **1.2.1**。[查看更新说明](docs/releases/1.2.1.md) · [下载 Win10/11 x64 免安装包](https://github.com/james7whm/nba-live/releases/download/v1.2.1/NbaLive-1.2.1-win-x64.zip) · [下载 Win7 兼容预览包](https://github.com/james7whm/nba-live/releases/download/v1.2.1/NbaLive-1.2.1-compatibility-preview-net48-win-x64.zip)。旧版用户解压到新目录即可使用，原有本地配置与收藏继续保留。
+当前版本 **1.2.2**。[查看更新说明](docs/releases/1.2.2.md)。旧版用户退出应用后解压到新目录即可使用，原有本地配置与收藏继续保留。
+
+| 下载渠道 | Win10／11 x64 现代版 | Win7 SP1 x64 兼容预览版 |
+| --- | --- | --- |
+| GitHub | [下载 v1.2.2 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.2.2/NbaLive-1.2.2-win-x64.zip) | [下载 v1.2.2 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.2.2/NbaLive-1.2.2-compatibility-preview-net48-win-x64.zip) |
+| Gitee 国内源 | [打开发行列表](https://gitee.com/james7whm/nba-live/releases) | [打开发行列表](https://gitee.com/james7whm/nba-live/releases) |
+
+Gitee 代码由 GitHub 镜像同步，发行附件需另外上传；若国内发行列表暂无 v1.2.2，请先使用 GitHub 或等待国内附件补齐。两个渠道同版本的正式包应有相同 SHA256，不要将平台自动生成的源码 ZIP 当作应用包。
+
+**本版新增：** 设置与托盘提供更新提醒和一键升级，国内优先 Gitee、备用 GitHub；只有点击「下载并更新」才下载、校验并重启，支持失败回滚。v1.2.1 及更早版本不包含此功能，首次需手动安装 v1.2.2。使用方式与恢复说明见 [应用更新](docs/UPDATES.md)。
 
 ## 功能概览
 
@@ -21,13 +30,15 @@
 | 展开阅读 | 最新消息在上，向下看旧记录；更新时保持阅读位置，一键返回最新 |
 | 球星与阵容 | 最多关注 3 人并轮换球员卡；查看双方场上五人与首发参考 |
 | 技术统计 | 首发球队色球衣、在场红球与红字、统计增量、列预设和组合筛选 |
+| 球员单场详情 | 点击球员行查看全场／分节与加时统计、投篮落点、命中率及出手方式 |
+| 应用更新 | 安静提醒、国内源优先、手动确认下载与一键升级、失败恢复旧版 |
 | 球队得分 | 常规节／加时分节表，球队色累计比分曲线与时点比分提示 |
 | 回顾与收藏 | 整理新增事件、查看本地规则摘要，手动收藏精彩原文 |
 | 双主题 | 默认暖白、可选炭灰；30 支球队 Logo、自定义日历与统一窗口样式 |
 
 ### 快速开始
 
-1. 从 [Releases](https://github.com/james7whm/nba-live/releases) 下载适合系统的 x64 ZIP，解压后运行 `NbaLive.exe`。保留整个解压目录；现代版无需安装 .NET，兼容预览版需预装 .NET Framework 4.8。应用本身无需管理员权限。
+1. 从 [GitHub Releases](https://github.com/james7whm/nba-live/releases) 或 [Gitee 国内发行列表](https://gitee.com/james7whm/nba-live/releases) 下载适合系统的 x64 应用 ZIP，解压后运行 `NbaLive.exe`。保留整个解压目录；现代版无需安装 .NET，兼容预览版需预装 .NET Framework 4.8。应用本身无需管理员权限。
 2. 选择一场比赛，点击「查看文字直播」。鼠标移入卡片即可使用文字／球员／阵容切换、回顾和更多菜单。
 3. 在「更多 → 设置 → 外观」切换主题、字号、宽度、不透明度或胶囊模式，保存后生效。
 
@@ -147,6 +158,10 @@
 
 点击列标题排序；球员姓名列固定，窄屏可横向滚动查看其他列。自动更新保留排序、选择和阅读位置，切换当前比赛会清空旧场次数据。未出场球员保留来源说明，统计表缺失数值显示 `-`，不会当作 0。
 
+**球员单场详情。** 点击球员行，或选中后按 Enter，可在右侧查看头像、全场／分节及加时统计、投篮落点、命中率与出手方式；关注星标仍只负责关注。球员身份和节次固定在顶部，下面独立滚动；窄窗口下使用整个统计内容区，通过「返回列表」或 Esc 返回。
+
+命中用橙色实心点、未中用空心点，重叠点悬停可查看同位置记录。接口未提供逐球时间／单球出手方式时不推算；全场前后场篮板与缺失正负值沿用统计表并标明取样时间。两分由总投篮减去三分计算，未出手的命中率显示 `—`。关闭、切场、切换球队或进入球队得分页会取消详情请求；全局隐藏保留选择并暂停详情请求，恢复后刷新，主直播与原有统计继续运行。说明与限制见 [球员详情](docs/PLAYER-DETAIL.md)。
+
 窗口右上角可选择三种列预设，默认「完整」：
 
 - **精简**：球员、关注、出场时间、得分、篮板、助攻。
@@ -208,7 +223,7 @@
 
 应用内不提供外部网页跳转；异常提示提供刷新建议。
 
-**本地取数、静态解析与持续实时更新是不同验收项。请参阅 `docs/VERIFICATION.md` 中的实际验证结果。** 第一版没有账号、视频、评论、多场轮播、自动更新和开机启动。
+**本地取数、静态解析与持续实时更新是不同验收项。请参阅 `docs/VERIFICATION.md` 中的实际验证结果。** 当前没有账号、视频、评论、多场轮播和开机启动。更新提醒与一键升级的使用及恢复方式见 [更新说明](docs/UPDATES.md)。
 
 ## 演示预览
 
