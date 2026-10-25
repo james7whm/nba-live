@@ -30,7 +30,8 @@ public sealed record DesktopRuntimeRequirement(string Name, Version Minimum)
         if (!OperatingSystem.IsWindows()) return [];
 #endif
         if (framework is not ("Microsoft.NETCore.App" or "Microsoft.WindowsDesktop.App")) return [];
-        using var machine = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry64);
+        // Match the .NET host: x64 runtimes are registered in the 32-bit view.
+        using var machine = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32);
         using var key = machine.OpenSubKey(@"SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedfx\" + framework);
         return key?.GetValueNames() ?? [];
     }

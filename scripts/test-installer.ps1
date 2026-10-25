@@ -1,10 +1,15 @@
-param([string]$Version='1.2.3')
+param([string]$Version='1.2.4', [string]$InstallerPath='')
 $ErrorActionPreference='Stop'
 if($env:GITHUB_ACTIONS -ne 'true' -or !$env:RUNNER_TEMP){throw 'Run only on a disposable GitHub Windows runner; this test installs a Microsoft runtime.'}
 if($Version -notmatch '^\d+\.\d+\.\d+$'){throw 'Invalid version'}
 $taskRoot=Split-Path -Parent $PSScriptRoot
 $taskScratch=Join-Path $env:RUNNER_TEMP ('NbaLive-Installer-Check-'+[Guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $taskScratch|Out-Null
+if($InstallerPath){
+    $taskInstaller=(Resolve-Path -LiteralPath $InstallerPath).Path
+    $taskExpected=[IO.File]::ReadAllText($taskInstaller+'.sha256').Trim()
+    if($taskExpected -ne ((Get-FileHash -LiteralPath $taskInstaller).Hash.ToLowerInvariant()+'  '+[IO.Path]::GetFileName($taskInstaller))){throw 'Built installer digest mismatch'}
+}else{
 $taskHeaders=@{'User-Agent'='NbaLive-Installer-Verification';'Authorization'=('Bearer '+$env:GH_TOKEN)}
 $taskRelease=Invoke-RestMethod -Uri "https://api.github.com/repos/james7whm/nba-live/releases/tags/v$Version" -Headers $taskHeaders
 $taskName="NbaLive-$Version-online-setup-win-x64.exe"
@@ -13,6 +18,7 @@ if($taskAsset.Count -ne 1 -or $taskRelease.draft -or $taskRelease.prerelease){th
 $taskInstaller=Join-Path $taskScratch $taskName
 Invoke-WebRequest -Uri $taskAsset[0].browser_download_url -OutFile $taskInstaller
 if($taskAsset[0].digest -ne ('sha256:'+(Get-FileHash -LiteralPath $taskInstaller).Hash.ToLowerInvariant())){throw 'Published installer digest mismatch'}
+}
 function Run-Setup([string[]]$Arguments){
     $taskProcess=Start-Process -FilePath $taskInstaller -ArgumentList $Arguments -WindowStyle Hidden -PassThru -Wait
     return $taskProcess.ExitCode
@@ -35,6 +41,15 @@ $taskSignature=Get-AuthenticodeSignature -LiteralPath $taskRuntimeExe
 if($taskSignature.Status -ne 'Valid' -or $taskSignature.SignerCertificate.Subject -notmatch 'O=Microsoft Corporation'){throw 'Microsoft runtime signature invalid'}
 $taskRuntimeProcess=Start-Process -FilePath $taskRuntimeExe -ArgumentList @('/install','/quiet','/norestart') -WindowStyle Hidden -PassThru -Wait
 if($taskRuntimeProcess.ExitCode -ne 0){throw ('Disposable runner runtime installation returned '+$taskRuntimeProcess.ExitCode)}
+$taskAfterLog=Join-Path $taskScratch 'runtime-after.log'
+[void](Run-Setup @('/VERYSILENT','/SUPPRESSMSGBOXES','/RUNTIMESELFTEST=1',('/LOG="'+$taskAfterLog+'"')))
+if(!(Select-String -LiteralPath $taskAfterLog -SimpleMatch 'NBA_RUNTIME_PRESENT')){throw 'Installed runtime must be detected before app installation'}
+# Exercise the exact updater detector from the built lite payload against the installed runtime.
+$taskPayload=Join-Path $taskRoot "artifacts/NbaLive-$Version-lite-win-x64"
+if(Test-Path -LiteralPath $taskPayload){
+    dotnet tests/bin/Release/net10.0/NbaLive.Tests.dll --verify-installed-runtime (Join-Path $taskPayload 'NbaLive.runtimeconfig.json')
+    if($LASTEXITCODE -ne 0){throw 'Lite updater failed installed runtime detection'}
+}
 $taskData=Join-Path $env:LOCALAPPDATA 'NbaLive'
 New-Item -ItemType Directory -Path $taskData -Force|Out-Null
 $taskMarker=Join-Path $taskData 'installer-preservation-probe.txt'

@@ -8,7 +8,11 @@ on:
       tag:
         description: Published stable tag to resume syncing
         required: true
-        default: v1.2.3
+        default: v1.2.4
+      withdraw:
+        description: Mark an already withdrawn GitHub prerelease as preview on Gitee (keep attachments)
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -32,4 +36,10 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           GITEE_TOKEN: ${{ secrets.GITEE_TOKEN }}
           RELEASE_TAG: ${{ inputs.tag || github.event.release.tag_name }}
-        run: python3 scripts/sync_gitee_release.py --tag "$RELEASE_TAG"
+          WITHDRAW: ${{ inputs.withdraw || false }}
+        run: |
+          if [ "$WITHDRAW" = "true" ]; then
+            python3 scripts/sync_gitee_release.py --tag "$RELEASE_TAG" --withdraw
+          else
+            python3 scripts/sync_gitee_release.py --tag "$RELEASE_TAG"
+          fi

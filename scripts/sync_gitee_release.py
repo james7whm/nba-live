@@ -150,11 +150,23 @@ def mirror(client, tag, release, files):
             "name": release["name"], "body": release.get("body") or "", "prerelease": False})
 
 
-def main(tag):
+def withdraw(client, tag, release):
+    if not release or release.get("draft") or not release.get("prerelease"):
+        raise ValueError("Withdrawal requires a published GitHub prerelease")
+    existing = client.api("/releases/tags/" + tag)
+    if existing:
+        client.api(f"/releases/{existing['id']}", "PATCH", {"tag_name": tag, "target_commitish": tag,
+            "name": release["name"], "body": release.get("body") or "", "prerelease": True})
+    print("Withdrawn stable recommendation without changing attachments: " + tag)
+
+
+def main(tag, withdrawal=False):
     names = asset_names(tag)
     client = Client(os.environ.get("GITEE_TOKEN", ""))
     gh = lambda path: request_json("https://api.github.com/repos/" + REPO + path, os.environ.get("GH_TOKEN", ""))
     release = gh("/releases/tags/" + tag)
+    if withdrawal:
+        return withdraw(client, tag, release)
     if not release or release.get("draft") or release.get("prerelease"):
         raise ValueError("Only published stable releases can be mirrored")
     commit = gh("/commits/" + tag)["sha"]
@@ -188,9 +200,10 @@ def main(tag):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--tag", required=True)
+    parser.add_argument("--withdraw", action="store_true")
     args = parser.parse_args()
     try:
-        main(args.tag)
+        main(args.tag, args.withdraw)
     except Exception as error:
         print("Release sync failed: " + str(error))
         raise SystemExit(1) from None

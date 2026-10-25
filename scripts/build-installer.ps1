@@ -1,4 +1,4 @@
-param([string]$Version='1.2.3', [string]$Compiler='')
+param([string]$Version='1.2.4', [string]$Compiler='')
 $ErrorActionPreference='Stop'
 $taskRoot=Split-Path -Parent $PSScriptRoot
 if($Version -notmatch '^\d+\.\d+\.\d+$'){throw 'Invalid version'}

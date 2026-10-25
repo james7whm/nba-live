@@ -69,9 +69,10 @@ var
   Location: String;
 begin
   Result := False;
-  if not RegQueryStringValue(HKLM64, 'SOFTWARE\dotnet\Setup\InstalledVersions\x64', 'InstallLocation', Location) then Exit;
+  { The .NET host reads this x64 registration from the 32-bit registry view. }
+  if not RegQueryStringValue(HKLM32, 'SOFTWARE\dotnet\Setup\InstalledVersions\x64', 'InstallLocation', Location) then Exit;
   if not FileExists(AddBackslash(Location) + 'dotnet.exe') then Exit;
-  if not RegGetValueNames(HKLM64, 'SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedfx\' + Name, Versions) then Exit;
+  if not RegGetValueNames(HKLM32, 'SOFTWARE\dotnet\Setup\InstalledVersions\x64\sharedfx\' + Name, Versions) then Exit;
   for Index := 0 to GetArrayLength(Versions) - 1 do
     if RuntimeMatches(Versions[Index]) and FileExists(AddBackslash(Location) + 'shared\' + Name + '\' + Versions[Index] + '\' + DllName) then begin
       Result := True;

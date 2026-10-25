@@ -6,7 +6,7 @@ on:
       version:
         description: Version already recorded in the project
         required: true
-        default: '1.2.3'
+        default: '1.2.4'
 
 permissions:
   contents: read
@@ -54,6 +54,11 @@ jobs:
           $log=Join-Path $pwd 'artifacts/installer-selftest.log'
           $process=Start-Process -FilePath $installer -ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/RUNTIMESELFTEST=1',('/LOG="'+$log+'"')) -WindowStyle Hidden -PassThru -Wait
           if(!(Select-String -LiteralPath $log -SimpleMatch 'NBA_RUNTIME_TEST_PASS')){Get-Content $log; throw 'Native runtime self-test failed'}
+      - name: Real install, launch and uninstall before publishing
+        shell: pwsh
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        run: scripts/test-installer.ps1 -Version $env:RELEASE_VERSION -InstallerPath "artifacts/NbaLive-$env:RELEASE_VERSION-online-setup-win-x64.exe"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: release-${{ inputs.version }}

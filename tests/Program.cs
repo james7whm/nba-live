@@ -1,6 +1,16 @@
 using NbaLive.Core;
 using System.Text.Json;
 
+if (args.Contains("--verify-installed-runtime"))
+{
+    var path = args[Array.IndexOf(args, "--verify-installed-runtime") + 1];
+    foreach (var requirement in DesktopRuntimeRequirement.Read(path))
+        if (!DesktopRuntimeRequirement.IsSatisfied(requirement, DesktopRuntimeRequirement.InstalledVersions(requirement.Name)))
+            throw new InvalidOperationException("Installed runtime not detected: " + requirement.Name);
+    Console.WriteLine("PASS Lite updater recognizes installed runtime from Windows registration.");
+    return;
+}
+
 if (args.Contains("--verify-update-package"))
 {
     var zip = args[Array.IndexOf(args, "--verify-update-package") + 1];

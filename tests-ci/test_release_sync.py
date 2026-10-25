@@ -9,6 +9,19 @@ spec.loader.exec_module(sync)
 
 
 class ReleaseSyncTests(unittest.TestCase):
+    def test_withdrawal_only_changes_metadata_after_github_withdrawal(self):
+        class Fake:
+            def __init__(self): self.changes = []
+            def api(self, path, method="GET", body=None):
+                if method == "PATCH": self.changes.append(body)
+                return {"id": 1}
+        client = Fake()
+        with self.assertRaises(ValueError):
+            sync.withdraw(client, "v1.2.3", {"prerelease": False})
+        self.assertFalse(client.changes)
+        sync.withdraw(client, "v1.2.3", {"prerelease": True, "name": "withdrawn"})
+        self.assertEqual(client.changes, [{"tag_name": "v1.2.3", "target_commitish": "v1.2.3", "name": "withdrawn", "body": "", "prerelease": True}])
+
     def test_excludes_full_and_includes_installer_checksums(self):
         names = sync.asset_names("v1.2.3")
         self.assertEqual(len(names), 6)
