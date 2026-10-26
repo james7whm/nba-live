@@ -49,6 +49,18 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
         _client.DefaultRequestHeaders.CacheControl = new() { NoCache = true };
     }
 
+    internal Task<string> ReadTeamInsightsPage(string path, CancellationToken ct)
+    {
+        if (path is not ("/standings" or "/standings/division" or "/stats/teams")) throw new ArgumentException("Unsupported team page", nameof(path));
+        return Read(path, ct);
+    }
+    internal async Task<string> ReadTeamArchive(Uri uri,CancellationToken ct)
+    {
+        if(uri.Scheme!="https"||uri.Host is not ("site.api.espn.com" or "sports.core.api.espn.com"))throw new ArgumentException("Unsupported archive endpoint",nameof(uri));
+        using var lease=await _requests.Enter(false,ct);
+        using var deadline=CancellationTokenSource.CreateLinkedTokenSource(ct);deadline.CancelAfter(TimeSpan.FromSeconds(8));
+        return await ReadPage(uri.AbsoluteUri,deadline.Token,json:true);
+    }
     private async Task<string> Read(string path, CancellationToken ct)
     {
         var live = path.StartsWith("/games/playbyplay/", StringComparison.Ordinal);
@@ -121,6 +133,8 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
     }
     private static bool IsTlsFailure(Exception ex) => ex is AuthenticationException ||
         ex is WebException { Status: WebExceptionStatus.TrustFailure or WebExceptionStatus.SecureChannelFailure } ||
+        // .NET Framework also reports a peer closing the HTTPS handshake as SendFailure + IOException.
+        ex is WebException { Status: WebExceptionStatus.SendFailure, InnerException: IOException } ||
 #if !NETFRAMEWORK
         ex is HttpRequestException { HttpRequestError: HttpRequestError.SecureConnectionError } ||
 #endif

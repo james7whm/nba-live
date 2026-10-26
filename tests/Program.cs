@@ -1,6 +1,66 @@
 using NbaLive.Core;
 using System.Text.Json;
 
+if(args.Contains("--probe-play-in"))
+{
+    try
+    {
+        using var transport=new WebGameSource();var source=new HistoricalTeamSource(transport);await source.GetSeasons(default);
+        foreach(var year in args.Contains("--all-years")?Enumerable.Range(2020,7).Select(y=>$"{y-1}-{y}").Append("2004-2005"):new[]{"2023-2024","2019-2020","2004-2005"})
+        {
+            var scope=new TeamScope(year,TeamPhase.PlayIn);var rank=await source.GetStandings(scope,default);var graph=rank.PlayIn!;
+            PlayInBoxScore? box=null;if(graph.Games.Count>0)box=await source.GetPlayInDetail(scope,graph.Games.Last(),default);
+            Console.WriteLine(JsonSerializer.Serialize(new{scope,Games=graph.Games.Select(g=>new{g.Id,g.RoundKey,A=g.Team.Name,B=g.Opponent.Name,g.Score,g.GameNumber,g.Tipoff}),graph.Berths,graph.Notice,East=graph.ConferenceNotice("东部"),Detail=box is null?null:new{A=box.A.Team.Name,B=box.B.Team.Name,box.A.Periods,Metrics=box.A.Metrics,Players=box.A.Players.Players.Count,OtherPlayers=box.B.Players.Players.Count}}));
+        }
+    }
+    catch(Exception ex){Console.Error.WriteLine(ex);Environment.ExitCode=1;}
+    return;
+}
+
+if(args.Contains("--probe-team-seasons"))
+{
+    try
+    {
+        using var transport=new WebGameSource();var source=new HistoricalTeamSource(transport);var seasons=await source.GetSeasons(default);
+        var index=Array.IndexOf(args,"--season");var season=index>=0?args[index+1]:"2023-2024";
+        foreach(var phase in new[]{TeamPhase.Regular,TeamPhase.Playoffs})
+        {
+            var scope=new TeamScope(season,phase);var rank=await source.GetStandings(scope,default);
+            foreach(var key in new[]{"lakers","celtics"})
+            {
+                var team=rank.Teams.FirstOrDefault(t=>t.Key==key)??rank.Rows.FirstOrDefault(r=>r.Team.Key==key)?.Team??TeamCatalog.Resolve(key)!;
+                var detail=await source.GetTeamOverview(team,scope,default);
+                Console.WriteLine(JsonSerializer.Serialize(new {scope,Seasons=seasons.Select(s=>s.Id),Rows=rank.Rows.Count,Team=team.FullName,Standing=rank.Rows.FirstOrDefault(r=>r.Team.Key==key),detail.Summary,detail.Averages,Games=detail.Games.Count,Recent=detail.Recent(10).Count,Series=detail.Series.Select(s=>new{s.Round,s.Score,s.Status,Games=s.Games.Count}),detail.Notice}));
+            }
+        }
+    }
+    catch(Exception ex){for(Exception? error=ex;error is not null;error=error.InnerException)Console.Error.WriteLine(error.GetType().FullName+": "+error.Message);Environment.ExitCode=1;}
+    return;
+}
+
+if (args.Contains("--probe-teams"))
+{
+    try
+    {
+    using var transport = new WebGameSource(); var source = new TeamInsightsSource(transport);
+    var standings = await source.GetStandings(default);
+    var index = Array.IndexOf(args, "--team");
+    foreach (var key in index >= 0 ? new[] { args[index + 1] } : new[] { "lakers", "celtics" })
+    {
+        var team = TeamCatalog.Resolve(key)!; var overview = await source.GetTeamOverview(team, standings.Season, default);
+        Console.WriteLine(JsonSerializer.Serialize(new { standings.Season, standing = standings.Rows.Single(r => r.Team.Key == team.Key),
+            DivisionRank = standings.DivisionRanks.GetValueOrDefault(team.Key), standings.Notice,
+            Averages = standings.Averages.GetValueOrDefault(team.Key), Games = overview.Games.Count, Recent = overview.Recent(10), Upcoming = overview.Upcoming(DateTimeOffset.UtcNow, 5) }));
+    }
+    }
+    catch(Exception ex)
+    {
+        for(Exception? error=ex;error is not null;error=error.InnerException)Console.Error.WriteLine(error.GetType().FullName+": "+error.Message);
+        Environment.ExitCode=1;
+    }
+    return;
+}
+
 if (args.Contains("--verify-installed-runtime"))
 {
     var path = args[Array.IndexOf(args, "--verify-installed-runtime") + 1];
@@ -409,7 +469,7 @@ var tests = new (string Name, Func<Task> Run)[]
         }
         finally { Directory.Delete(dir, true); }
     }))
-}.Concat(StatisticsTests.Cases).Concat(CompanionTests.Cases).Concat(JerseyTests.Cases).Concat(LiveCompanionTests.Cases).Concat(CollectionTests.Cases).Concat(ScoringTests.Cases).Concat(DeliveryTests.Cases).Concat(ScheduleProgressTests.Cases).Concat(AnchorTests.Cases).Concat(PlayerDetailTests.Cases).Concat(UpdateTests.Cases).ToArray();
+}.Concat(StatisticsTests.Cases).Concat(CompanionTests.Cases).Concat(JerseyTests.Cases).Concat(LiveCompanionTests.Cases).Concat(CollectionTests.Cases).Concat(ScoringTests.Cases).Concat(DeliveryTests.Cases).Concat(ScheduleProgressTests.Cases).Concat(AnchorTests.Cases).Concat(PlayerDetailTests.Cases).Concat(UpdateTests.Cases).Concat(TeamInsightsTests.Cases).Concat(HistoricalTeamTests.Cases).Concat(PlayoffBracketTests.Cases).Concat(PlayInTests.Cases).ToArray();
 var failures = 0;
 foreach (var test in tests)
 {

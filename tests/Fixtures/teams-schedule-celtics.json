@@ -1,0 +1,3370 @@
+{
+  "success": true,
+  "result": {
+    "gameList": [
+      {
+        "day": "20251009",
+        "matchList": [
+          {
+            "matchId": "1405864721692753920",
+            "matchStatus": "COMPLETED",
+            "homeScore": 103,
+            "awayScore": 121,
+            "homeTeamId": "1901000000501313",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "灰熊",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2025-2026",
+            "matchTime": "2025-10-09 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251011",
+        "matchList": [
+          {
+            "matchId": "1405864723404029952",
+            "matchStatus": "COMPLETED",
+            "homeScore": 107,
+            "awayScore": 105,
+            "homeTeamId": "1901000000501298",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "猛龙",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2025-2026",
+            "matchTime": "2025-10-11 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251013",
+        "matchList": [
+          {
+            "matchId": "1405864725220163584",
+            "matchStatus": "COMPLETED",
+            "homeScore": 138,
+            "awayScore": 107,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501288",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "骑士",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2025-2026",
+            "matchTime": "2025-10-13 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251016",
+        "matchList": [
+          {
+            "matchId": "1405864727770300416",
+            "matchStatus": "COMPLETED",
+            "homeScore": 110,
+            "awayScore": 108,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501298",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "猛龙",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2025-2026",
+            "matchTime": "2025-10-16 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251023",
+        "matchList": [
+          {
+            "matchId": "1405864733285810176",
+            "matchStatus": "COMPLETED",
+            "homeScore": 116,
+            "awayScore": 117,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501281",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "76人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-10-23 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251025",
+        "matchList": [
+          {
+            "matchId": "1405864735584288768",
+            "matchStatus": "COMPLETED",
+            "homeScore": 105,
+            "awayScore": 95,
+            "homeTeamId": "1901000000501273",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "尼克斯",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-10-25 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251027",
+        "matchList": [
+          {
+            "matchId": "1405864738465775616",
+            "matchStatus": "COMPLETED",
+            "homeScore": 119,
+            "awayScore": 113,
+            "homeTeamId": "1901000000501290",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "活塞",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-10-27 03:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251028",
+        "matchList": [
+          {
+            "matchId": "1405864740244160512",
+            "matchStatus": "COMPLETED",
+            "homeScore": 90,
+            "awayScore": 122,
+            "homeTeamId": "1901000000501296",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "鹈鹕",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-10-28 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251030",
+        "matchList": [
+          {
+            "matchId": "1405864742722994176",
+            "matchStatus": "COMPLETED",
+            "homeScore": 125,
+            "awayScore": 105,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501288",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "骑士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-10-30 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251101",
+        "matchList": [
+          {
+            "matchId": "1405864745419931648",
+            "matchStatus": "COMPLETED",
+            "homeScore": 108,
+            "awayScore": 109,
+            "homeTeamId": "1901000000501281",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "76人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-01 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251102",
+        "matchList": [
+          {
+            "matchId": "1405864747819073536",
+            "matchStatus": "COMPLETED",
+            "homeScore": 101,
+            "awayScore": 128,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501311",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "火箭",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-02 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251104",
+        "matchList": [
+          {
+            "matchId": "1405864750071414784",
+            "matchStatus": "COMPLETED",
+            "homeScore": 103,
+            "awayScore": 105,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501320",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "爵士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-04 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251106",
+        "matchList": [
+          {
+            "matchId": "1405864752789323776",
+            "matchStatus": "COMPLETED",
+            "homeScore": 136,
+            "awayScore": 107,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501283",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "奇才",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-06 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251108",
+        "matchList": [
+          {
+            "matchId": "1405864754609651712",
+            "matchStatus": "COMPLETED",
+            "homeScore": 123,
+            "awayScore": 110,
+            "homeTeamId": "1901000000501279",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "魔术",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-08 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251110",
+        "matchList": [
+          {
+            "matchId": "1405864758141255680",
+            "matchStatus": "COMPLETED",
+            "homeScore": 107,
+            "awayScore": 111,
+            "homeTeamId": "1901000000501279",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "魔术",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-10 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251112",
+        "matchList": [
+          {
+            "matchId": "1405864761186320384",
+            "matchStatus": "COMPLETED",
+            "homeScore": 102,
+            "awayScore": 100,
+            "homeTeamId": "1901000000501281",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "76人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-12 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251113",
+        "matchList": [
+          {
+            "matchId": "1405864762302005248",
+            "matchStatus": "COMPLETED",
+            "homeScore": 131,
+            "awayScore": 95,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501313",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "灰熊",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-13 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251117",
+        "matchList": [
+          {
+            "matchId": "1405864767247089664",
+            "matchStatus": "COMPLETED",
+            "homeScore": 121,
+            "awayScore": 118,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501333",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "快船",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-17 04:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251119",
+        "matchList": [
+          {
+            "matchId": "1405864770296348672",
+            "matchStatus": "COMPLETED",
+            "homeScore": 99,
+            "awayScore": 113,
+            "homeTeamId": "1901000000501336",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "篮网",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-19 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251122",
+        "matchList": [
+          {
+            "matchId": "1405864773844729856",
+            "matchStatus": "COMPLETED",
+            "homeScore": 105,
+            "awayScore": 113,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501336",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "篮网",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-22 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251124",
+        "matchList": [
+          {
+            "matchId": "1405864776810102784",
+            "matchStatus": "COMPLETED",
+            "homeScore": 138,
+            "awayScore": 129,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501279",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "魔术",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-24 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251127",
+        "matchList": [
+          {
+            "matchId": "1405864780069076992",
+            "matchStatus": "COMPLETED",
+            "homeScore": 117,
+            "awayScore": 114,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501290",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "活塞",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-27 06:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251130",
+        "matchList": [
+          {
+            "matchId": "1405864783642624000",
+            "matchStatus": "COMPLETED",
+            "homeScore": 119,
+            "awayScore": 115,
+            "homeTeamId": "1901000000501315",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "森林狼",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-30 06:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251201",
+        "matchList": [
+          {
+            "matchId": "1405864785404231680",
+            "matchStatus": "COMPLETED",
+            "homeScore": 115,
+            "awayScore": 117,
+            "homeTeamId": "1901000000501288",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "骑士",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-01 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251203",
+        "matchList": [
+          {
+            "matchId": "1405864789086830592",
+            "matchStatus": "COMPLETED",
+            "homeScore": 123,
+            "awayScore": 117,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501273",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "尼克斯",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-03 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251205",
+        "matchList": [
+          {
+            "matchId": "1405864791196565504",
+            "matchStatus": "COMPLETED",
+            "homeScore": 101,
+            "awayScore": 146,
+            "homeTeamId": "1901000000501283",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "奇才",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-05 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251206",
+        "matchList": [
+          {
+            "matchId": "1405864792257724416",
+            "matchStatus": "COMPLETED",
+            "homeScore": 126,
+            "awayScore": 105,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-06 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251208",
+        "matchList": [
+          {
+            "matchId": "1405864795663499264",
+            "matchStatus": "COMPLETED",
+            "homeScore": 113,
+            "awayScore": 121,
+            "homeTeamId": "1901000000501298",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "猛龙",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-08 04:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251212",
+        "matchList": [
+          {
+            "matchId": "1444478068822376448",
+            "matchStatus": "COMPLETED",
+            "homeScore": 116,
+            "awayScore": 101,
+            "homeTeamId": "1901000000501294",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "雄鹿",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-12 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251216",
+        "matchList": [
+          {
+            "matchId": "1444478071984881664",
+            "matchStatus": "COMPLETED",
+            "homeScore": 105,
+            "awayScore": 112,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501290",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "活塞",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-16 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251220",
+        "matchList": [
+          {
+            "matchId": "1405864800440811520",
+            "matchStatus": "COMPLETED",
+            "homeScore": 129,
+            "awayScore": 116,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501267",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "热火",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-20 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251221",
+        "matchList": [
+          {
+            "matchId": "1405864801325809664",
+            "matchStatus": "COMPLETED",
+            "homeScore": 96,
+            "awayScore": 112,
+            "homeTeamId": "1901000000501298",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "猛龙",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-21 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251223",
+        "matchList": [
+          {
+            "matchId": "1405864804182130688",
+            "matchStatus": "COMPLETED",
+            "homeScore": 103,
+            "awayScore": 95,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501292",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "步行者",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-23 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251227",
+        "matchList": [
+          {
+            "matchId": "1405864809487925248",
+            "matchStatus": "COMPLETED",
+            "homeScore": 122,
+            "awayScore": 140,
+            "homeTeamId": "1901000000501292",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "步行者",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-27 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251229",
+        "matchList": [
+          {
+            "matchId": "1405864812797231104",
+            "matchStatus": "COMPLETED",
+            "homeScore": 114,
+            "awayScore": 108,
+            "homeTeamId": "1901000000501325",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "开拓者",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-29 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251231",
+        "matchList": [
+          {
+            "matchId": "1405864815469002752",
+            "matchStatus": "COMPLETED",
+            "homeScore": 119,
+            "awayScore": 129,
+            "homeTeamId": "1901000000501320",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "爵士",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-31 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260102",
+        "matchList": [
+          {
+            "matchId": "1405864818136580096",
+            "matchStatus": "COMPLETED",
+            "homeScore": 106,
+            "awayScore": 120,
+            "homeTeamId": "1901000000501321",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "国王",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-02 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260104",
+        "matchList": [
+          {
+            "matchId": "1405864821559132160",
+            "matchStatus": "COMPLETED",
+            "homeScore": 115,
+            "awayScore": 146,
+            "homeTeamId": "1901000000501333",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "快船",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-04 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260106",
+        "matchList": [
+          {
+            "matchId": "1405864823400431616",
+            "matchStatus": "COMPLETED",
+            "homeScore": 115,
+            "awayScore": 101,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501286",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "公牛",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-06 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260108",
+        "matchList": [
+          {
+            "matchId": "1405864826932035584",
+            "matchStatus": "COMPLETED",
+            "homeScore": 110,
+            "awayScore": 114,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501301",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "掘金",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-08 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260110",
+        "matchList": [
+          {
+            "matchId": "1405864828525871104",
+            "matchStatus": "COMPLETED",
+            "homeScore": 125,
+            "awayScore": 117,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501298",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "猛龙",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-10 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260111",
+        "matchList": [
+          {
+            "matchId": "1405864830845321216",
+            "matchStatus": "COMPLETED",
+            "homeScore": 95,
+            "awayScore": 100,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501317",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "马刺",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-11 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260113",
+        "matchList": [
+          {
+            "matchId": "1405864833831665664",
+            "matchStatus": "COMPLETED",
+            "homeScore": 98,
+            "awayScore": 96,
+            "homeTeamId": "1901000000501292",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "步行者",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-13 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260116",
+        "matchList": [
+          {
+            "matchId": "1405864837753339904",
+            "matchStatus": "COMPLETED",
+            "homeScore": 114,
+            "awayScore": 119,
+            "homeTeamId": "1901000000501267",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "热火",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-16 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260118",
+        "matchList": [
+          {
+            "matchId": "1405864840056012800",
+            "matchStatus": "COMPLETED",
+            "homeScore": 106,
+            "awayScore": 132,
+            "homeTeamId": "1901000000501284",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "老鹰",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-18 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260120",
+        "matchList": [
+          {
+            "matchId": "1405864843646337024",
+            "matchStatus": "COMPLETED",
+            "homeScore": 104,
+            "awayScore": 103,
+            "homeTeamId": "1901000000501290",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "活塞",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-20 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260122",
+        "matchList": [
+          {
+            "matchId": "1405864845630242816",
+            "matchStatus": "COMPLETED",
+            "homeScore": 119,
+            "awayScore": 104,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501292",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "步行者",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-22 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260124",
+        "matchList": [
+          {
+            "matchId": "1405864848343957504",
+            "matchStatus": "COMPLETED",
+            "homeScore": 126,
+            "awayScore": 130,
+            "homeTeamId": "1901000000501336",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "篮网",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-24 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260125",
+        "matchList": [
+          {
+            "matchId": "1405864850634047488",
+            "matchStatus": "COMPLETED",
+            "homeScore": 114,
+            "awayScore": 111,
+            "homeTeamId": "1901000000501286",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "公牛",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-25 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260127",
+        "matchList": [
+          {
+            "matchId": "1405864853041577984",
+            "matchStatus": "COMPLETED",
+            "homeScore": 102,
+            "awayScore": 94,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501325",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "开拓者",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-27 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260129",
+        "matchList": [
+          {
+            "matchId": "1405864855755292672",
+            "matchStatus": "COMPLETED",
+            "homeScore": 106,
+            "awayScore": 117,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501284",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "老鹰",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-29 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260131",
+        "matchList": [
+          {
+            "matchId": "1405864858208960512",
+            "matchStatus": "COMPLETED",
+            "homeScore": 112,
+            "awayScore": 93,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501321",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "国王",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-31 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260202",
+        "matchList": [
+          {
+            "matchId": "1405864860566159360",
+            "matchStatus": "COMPLETED",
+            "homeScore": 107,
+            "awayScore": 79,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501294",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "雄鹿",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-02 04:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260204",
+        "matchList": [
+          {
+            "matchId": "1405864864471056384",
+            "matchStatus": "COMPLETED",
+            "homeScore": 100,
+            "awayScore": 110,
+            "homeTeamId": "1901000000501300",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "独行侠",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-04 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260205",
+        "matchList": [
+          {
+            "matchId": "1405864865540603904",
+            "matchStatus": "COMPLETED",
+            "homeScore": 93,
+            "awayScore": 114,
+            "homeTeamId": "1901000000501311",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "火箭",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-05 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260207",
+        "matchList": [
+          {
+            "matchId": "1405864867876831232",
+            "matchStatus": "COMPLETED",
+            "homeScore": 98,
+            "awayScore": 96,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501267",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "热火",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-07 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260209",
+        "matchList": [
+          {
+            "matchId": "1405864870611517440",
+            "matchStatus": "COMPLETED",
+            "homeScore": 89,
+            "awayScore": 111,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501273",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "尼克斯",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-09 01:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260212",
+        "matchList": [
+          {
+            "matchId": "1405864874864541696",
+            "matchStatus": "COMPLETED",
+            "homeScore": 124,
+            "awayScore": 105,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501286",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "公牛",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-12 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260220",
+        "matchList": [
+          {
+            "matchId": "1405864878308065280",
+            "matchStatus": "COMPLETED",
+            "homeScore": 110,
+            "awayScore": 121,
+            "homeTeamId": "1901000000501331",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "勇士",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-20 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260223",
+        "matchList": [
+          {
+            "matchId": "1405864882695307264",
+            "matchStatus": "COMPLETED",
+            "homeScore": 89,
+            "awayScore": 111,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "湖人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-23 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260225",
+        "matchList": [
+          {
+            "matchId": "1405864885631320064",
+            "matchStatus": "COMPLETED",
+            "homeScore": 81,
+            "awayScore": 97,
+            "homeTeamId": "1901000000501327",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "太阳",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-25 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260226",
+        "matchList": [
+          {
+            "matchId": "1405864887179018240",
+            "matchStatus": "COMPLETED",
+            "homeScore": 103,
+            "awayScore": 84,
+            "homeTeamId": "1901000000501301",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "掘金",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-26 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260228",
+        "matchList": [
+          {
+            "matchId": "1405864889385222144",
+            "matchStatus": "COMPLETED",
+            "homeScore": 148,
+            "awayScore": 111,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501336",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "篮网",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-28 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260302",
+        "matchList": [
+          {
+            "matchId": "1405864892061188096",
+            "matchStatus": "COMPLETED",
+            "homeScore": 114,
+            "awayScore": 98,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501281",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "76人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-02 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260303",
+        "matchList": [
+          {
+            "matchId": "1405864893197844480",
+            "matchStatus": "COMPLETED",
+            "homeScore": 81,
+            "awayScore": 108,
+            "homeTeamId": "1901000000501294",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "雄鹿",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-03 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260305",
+        "matchList": [
+          {
+            "matchId": "1405864895898976256",
+            "matchStatus": "COMPLETED",
+            "homeScore": 89,
+            "awayScore": 118,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501334",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "黄蜂",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-05 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260307",
+        "matchList": [
+          {
+            "matchId": "1405864898436530176",
+            "matchStatus": "COMPLETED",
+            "homeScore": 120,
+            "awayScore": 100,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501300",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "独行侠",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-07 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260309",
+        "matchList": [
+          {
+            "matchId": "1405864900755980288",
+            "matchStatus": "COMPLETED",
+            "homeScore": 98,
+            "awayScore": 109,
+            "homeTeamId": "1901000000501288",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "骑士",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-09 01:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260311",
+        "matchList": [
+          {
+            "matchId": "1405864904304361472",
+            "matchStatus": "COMPLETED",
+            "homeScore": 125,
+            "awayScore": 116,
+            "homeTeamId": "1901000000501317",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "马刺",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-11 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260313",
+        "matchList": [
+          {
+            "matchId": "1405864907466866688",
+            "matchStatus": "COMPLETED",
+            "homeScore": 104,
+            "awayScore": 102,
+            "homeTeamId": "1901000000501329",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "雷霆",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-13 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260315",
+        "matchList": [
+          {
+            "matchId": "1405864909874397184",
+            "matchStatus": "COMPLETED",
+            "homeScore": 111,
+            "awayScore": 100,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501283",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "奇才",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-15 06:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260317",
+        "matchList": [
+          {
+            "matchId": "1405864912923656192",
+            "matchStatus": "COMPLETED",
+            "homeScore": 120,
+            "awayScore": 112,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501327",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "太阳",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-17 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260319",
+        "matchList": [
+          {
+            "matchId": "1405864914907561984",
+            "matchStatus": "COMPLETED",
+            "homeScore": 120,
+            "awayScore": 99,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501331",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "勇士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-19 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260321",
+        "matchList": [
+          {
+            "matchId": "1405864918653075456",
+            "matchStatus": "COMPLETED",
+            "homeScore": 112,
+            "awayScore": 117,
+            "homeTeamId": "1901000000501313",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "灰熊",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-21 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260323",
+        "matchList": [
+          {
+            "matchId": "1405864921551339520",
+            "matchStatus": "COMPLETED",
+            "homeScore": 92,
+            "awayScore": 102,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501315",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "森林狼",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-23 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260326",
+        "matchList": [
+          {
+            "matchId": "1405864925200384000",
+            "matchStatus": "COMPLETED",
+            "homeScore": 119,
+            "awayScore": 109,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501329",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "雷霆",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-26 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260328",
+        "matchList": [
+          {
+            "matchId": "1405864927570165760",
+            "matchStatus": "COMPLETED",
+            "homeScore": 109,
+            "awayScore": 102,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501284",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "老鹰",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-28 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260330",
+        "matchList": [
+          {
+            "matchId": "1405864930627813376",
+            "matchStatus": "COMPLETED",
+            "homeScore": 99,
+            "awayScore": 114,
+            "homeTeamId": "1901000000501334",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "黄蜂",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-30 06:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260331",
+        "matchList": [
+          {
+            "matchId": "1405864931881910272",
+            "matchStatus": "COMPLETED",
+            "homeScore": 112,
+            "awayScore": 102,
+            "homeTeamId": "1901000000501284",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "老鹰",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-31 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260402",
+        "matchList": [
+          {
+            "matchId": "1405864934503350272",
+            "matchStatus": "COMPLETED",
+            "homeScore": 129,
+            "awayScore": 147,
+            "homeTeamId": "1901000000501267",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "热火",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-02 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260404",
+        "matchList": [
+          {
+            "matchId": "1405864938055925760",
+            "matchStatus": "COMPLETED",
+            "homeScore": 101,
+            "awayScore": 133,
+            "homeTeamId": "1901000000501294",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "雄鹿",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-04 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260406",
+        "matchList": [
+          {
+            "matchId": "1405864939691704320",
+            "matchStatus": "COMPLETED",
+            "homeScore": 115,
+            "awayScore": 101,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501298",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "猛龙",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-06 03:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260408",
+        "matchList": [
+          {
+            "matchId": "1405864942468333568",
+            "matchStatus": "COMPLETED",
+            "homeScore": 113,
+            "awayScore": 102,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501334",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "黄蜂",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-08 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260410",
+        "matchList": [
+          {
+            "matchId": "1405864945748279296",
+            "matchStatus": "COMPLETED",
+            "homeScore": 112,
+            "awayScore": 106,
+            "homeTeamId": "1901000000501273",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "尼克斯",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-10 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260411",
+        "matchList": [
+          {
+            "matchId": "1405864947514081280",
+            "matchStatus": "COMPLETED",
+            "homeScore": 144,
+            "awayScore": 118,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501296",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "鹈鹕",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-11 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260413",
+        "matchList": [
+          {
+            "matchId": "1405864950013886464",
+            "matchStatus": "COMPLETED",
+            "homeScore": 113,
+            "awayScore": 108,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501279",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "魔术",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-13 06:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260420",
+        "matchList": [
+          {
+            "matchId": "1494321529515671552",
+            "matchStatus": "COMPLETED",
+            "homeScore": 123,
+            "awayScore": 91,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501281",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "76人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-04-20 01:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260422",
+        "matchList": [
+          {
+            "matchId": "1494321530102874112",
+            "matchStatus": "COMPLETED",
+            "homeScore": 97,
+            "awayScore": 111,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501281",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "76人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-04-22 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260425",
+        "matchList": [
+          {
+            "matchId": "1494321530643939328",
+            "matchStatus": "COMPLETED",
+            "homeScore": 100,
+            "awayScore": 108,
+            "homeTeamId": "1901000000501281",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "76人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-04-25 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260427",
+        "matchList": [
+          {
+            "matchId": "1494321531159838720",
+            "matchStatus": "COMPLETED",
+            "homeScore": 96,
+            "awayScore": 128,
+            "homeTeamId": "1901000000501281",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "76人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-04-27 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260429",
+        "matchList": [
+          {
+            "matchId": "1494321531558297600",
+            "matchStatus": "COMPLETED",
+            "homeScore": 97,
+            "awayScore": 113,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501281",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "76人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-04-29 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260501",
+        "matchList": [
+          {
+            "matchId": "1494321532007088128",
+            "matchStatus": "COMPLETED",
+            "homeScore": 106,
+            "awayScore": 93,
+            "homeTeamId": "1901000000501281",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "76人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-05-01 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260503",
+        "matchList": [
+          {
+            "matchId": "1494683917930725376",
+            "matchStatus": "COMPLETED",
+            "homeScore": 100,
+            "awayScore": 109,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501281",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "76人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-05-03 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261009",
+        "matchList": [
+          {
+            "matchId": "1537445620871069696",
+            "matchStatus": "COMPLETED",
+            "homeScore": 113,
+            "awayScore": 124,
+            "homeTeamId": "1901000000501288",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "骑士",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2026-2027",
+            "matchTime": "2026-10-09 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261011",
+        "matchList": [
+          {
+            "matchId": "1537445621919645696",
+            "matchStatus": "COMPLETED",
+            "homeScore": 144,
+            "awayScore": 106,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501281",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "76人",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2026-2027",
+            "matchTime": "2026-10-11 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261015",
+        "matchList": [
+          {
+            "matchId": "1537445622808838144",
+            "matchStatus": "COMPLETED",
+            "homeScore": 114,
+            "awayScore": 93,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501334",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "黄蜂",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2026-2027",
+            "matchTime": "2026-10-15 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261017",
+        "matchList": [
+          {
+            "matchId": "1537445623144382464",
+            "matchStatus": "COMPLETED",
+            "homeScore": 120,
+            "awayScore": 125,
+            "homeTeamId": "1901000000501281",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "76人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2026-2027",
+            "matchTime": "2026-10-17 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261021",
+        "matchList": [
+          {
+            "matchId": "1537445623890968576",
+            "matchStatus": "COMPLETED",
+            "homeScore": 121,
+            "awayScore": 113,
+            "homeTeamId": "1901000000501290",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "活塞",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-10-21 03:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261024",
+        "matchList": [
+          {
+            "matchId": "1537445625157648384",
+            "matchStatus": "COMPLETED",
+            "homeScore": 107,
+            "awayScore": 103,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501273",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "尼克斯",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-10-24 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261027",
+        "matchList": [
+          {
+            "matchId": "1537808026277249024",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501286",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "公牛",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-10-27 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261028",
+        "matchList": [
+          {
+            "matchId": "1537808027481014272",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501336",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "篮网",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-10-28 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261031",
+        "matchList": [
+          {
+            "matchId": "1537445626042646528",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501286",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "公牛",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-10-31 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261102",
+        "matchList": [
+          {
+            "matchId": "1537808032350601216",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501279",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "魔术",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-02 04:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261103",
+        "matchList": [
+          {
+            "matchId": "1537808034556805120",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501311",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "火箭",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-03 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261105",
+        "matchList": [
+          {
+            "matchId": "1537808036129669120",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501294",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "雄鹿",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-05 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261107",
+        "matchList": [
+          {
+            "matchId": "1537445627460321280",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501334",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "黄蜂",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-07 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261109",
+        "matchList": [
+          {
+            "matchId": "1537808040697266176",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501294",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "雄鹿",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-09 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261111",
+        "matchList": [
+          {
+            "matchId": "1537808042769252352",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501281",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "76人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-11 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261112",
+        "matchList": [
+          {
+            "matchId": "1537808043792662528",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501298",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "猛龙",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-12 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261116",
+        "matchList": [
+          {
+            "matchId": "1537808048234430464",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501300",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "独行侠",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-16 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261117",
+        "matchList": [
+          {
+            "matchId": "1537808049085874176",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501279",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "魔术",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-17 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261119",
+        "matchList": [
+          {
+            "matchId": "1537808052432928768",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501301",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "掘金",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-19 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261122",
+        "matchList": [
+          {
+            "matchId": "1537808055020814336",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501321",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "国王",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-22 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261123",
+        "matchList": [
+          {
+            "matchId": "1537808056191025152",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501331",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "勇士",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-23 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261125",
+        "matchList": [
+          {
+            "matchId": "1537445632531234816",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501283",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "奇才",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-25 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261128",
+        "matchList": [
+          {
+            "matchId": "1537445635064594432",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501284",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "老鹰",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-28 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261130",
+        "matchList": [
+          {
+            "matchId": "1537808060024619008",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501317",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "马刺",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-30 05:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261201",
+        "matchList": [
+          {
+            "matchId": "1537808062247600128",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501300",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "独行侠",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-01 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261203",
+        "matchList": [
+          {
+            "matchId": "1537808064449609728",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501334",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "黄蜂",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-03 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261214",
+        "matchList": [
+          {
+            "matchId": "1537808068010573824",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501336",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "篮网",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-14 04:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261215",
+        "matchList": [
+          {
+            "matchId": "1537808069528911872",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501283",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "奇才",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-15 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261217",
+        "matchList": [
+          {
+            "matchId": "1537808071974191104",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501283",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "奇才",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-17 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261219",
+        "matchList": [
+          {
+            "matchId": "1537808075233165312",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501320",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "爵士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-19 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261221",
+        "matchList": [
+          {
+            "matchId": "1537808078571831296",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501290",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "活塞",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-21 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261224",
+        "matchList": [
+          {
+            "matchId": "1537808082220875776",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501325",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "开拓者",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-24 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261226",
+        "matchList": [
+          {
+            "matchId": "1537445636436131840",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501267",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "热火",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-26 03:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261229",
+        "matchList": [
+          {
+            "matchId": "1537808087707025408",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501288",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "骑士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-29 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261231",
+        "matchList": [
+          {
+            "matchId": "1537808090097778688",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501286",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "公牛",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-31 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270102",
+        "matchList": [
+          {
+            "matchId": "1537808093184786432",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501320",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "爵士",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-02 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270103",
+        "matchList": [
+          {
+            "matchId": "1537808094887673856",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501325",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "开拓者",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-03 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270105",
+        "matchList": [
+          {
+            "matchId": "1537808097194541056",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501327",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "太阳",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-05 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270108",
+        "matchList": [
+          {
+            "matchId": "1537808101820858368",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "湖人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-08 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270110",
+        "matchList": [
+          {
+            "matchId": "1537808104245166080",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501333",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "快船",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-10 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270112",
+        "matchList": [
+          {
+            "matchId": "1537808106325540864",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501311",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "火箭",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-12 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270114",
+        "matchList": [
+          {
+            "matchId": "1537808108758237184",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501273",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "尼克斯",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-14 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270117",
+        "matchList": [
+          {
+            "matchId": "1537808112625385472",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501336",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "篮网",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-17 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270119",
+        "matchList": [
+          {
+            "matchId": "1537808114819006464",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501283",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "奇才",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-19 04:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270121",
+        "matchList": [
+          {
+            "matchId": "1537808117067153408",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501292",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "步行者",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-21 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270122",
+        "matchList": [
+          {
+            "matchId": "1537808118602268672",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501281",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "76人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-22 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270124",
+        "matchList": [
+          {
+            "matchId": "1537808121353732096",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501334",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "黄蜂",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-24 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270126",
+        "matchList": [
+          {
+            "matchId": "1537808123438301184",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501298",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "猛龙",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-26 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270128",
+        "matchList": [
+          {
+            "matchId": "1537808126370119680",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501333",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "快船",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-28 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270130",
+        "matchList": [
+          {
+            "matchId": "1537808129146748928",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501327",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "太阳",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-30 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270201",
+        "matchList": [
+          {
+            "matchId": "1537808131751411712",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501298",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "猛龙",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-01 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270203",
+        "matchList": [
+          {
+            "matchId": "1537808134796476416",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-03 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270205",
+        "matchList": [
+          {
+            "matchId": "1537808136658747392",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501334",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "黄蜂",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-05 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270206",
+        "matchList": [
+          {
+            "matchId": "1537808138340663296",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501284",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "老鹰",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-06 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270208",
+        "matchList": [
+          {
+            "matchId": "1537808141498974208",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501281",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "76人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-08 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270210",
+        "matchList": [
+          {
+            "matchId": "1537808143537405952",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501301",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "掘金",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-10 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270211",
+        "matchList": [
+          {
+            "matchId": "1537808145395482624",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501331",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "勇士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-11 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270213",
+        "matchList": [
+          {
+            "matchId": "1537808148084031488",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501315",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "森林狼",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-13 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270215",
+        "matchList": [
+          {
+            "matchId": "1537808150088908800",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501298",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "猛龙",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-15 02:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270218",
+        "matchList": [
+          {
+            "matchId": "1537808154333544448",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501329",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "雷霆",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-18 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270219",
+        "matchList": [
+          {
+            "matchId": "1537808155164016640",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501313",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "灰熊",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-19 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270227",
+        "matchList": [
+          {
+            "matchId": "1537808157592518656",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501288",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "骑士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-27 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270301",
+        "matchList": [
+          {
+            "matchId": "1537808160490782720",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501315",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "森林狼",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-01 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270303",
+        "matchList": [
+          {
+            "matchId": "1537808162340470784",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501292",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "步行者",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-03 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270306",
+        "matchList": [
+          {
+            "matchId": "1537808166455083008",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501290",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "活塞",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-06 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270308",
+        "matchList": [
+          {
+            "matchId": "1537808168720007168",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501281",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "76人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-08 02:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270310",
+        "matchList": [
+          {
+            "matchId": "1537808171450499072",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501286",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "公牛",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-10 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270312",
+        "matchList": [
+          {
+            "matchId": "1537808174147436544",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501313",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "灰熊",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-12 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270313",
+        "matchList": [
+          {
+            "matchId": "1537808175334424576",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501329",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "雷霆",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-13 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270315",
+        "matchList": [
+          {
+            "matchId": "1537808177716789248",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501273",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "尼克斯",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-15 00:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270317",
+        "matchList": [
+          {
+            "matchId": "1537808180019462144",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501321",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "国王",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-17 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270319",
+        "matchList": [
+          {
+            "matchId": "1537808183194550272",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501279",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "魔术",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-19 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270322",
+        "matchList": [
+          {
+            "matchId": "1537808186612908032",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501296",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "鹈鹕",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-22 03:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270324",
+        "matchList": [
+          {
+            "matchId": "1537808189322428416",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501336",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "篮网",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-24 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270325",
+        "matchList": [
+          {
+            "matchId": "1537808190832377856",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501317",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "马刺",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-25 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270328",
+        "matchList": [
+          {
+            "matchId": "1537808195131539456",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501267",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "热火",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-28 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270329",
+        "matchList": [
+          {
+            "matchId": "1537808196482105344",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501296",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "鹈鹕",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-29 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270331",
+        "matchList": [
+          {
+            "matchId": "1537808199019659264",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501292",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "步行者",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-31 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270402",
+        "matchList": [
+          {
+            "matchId": "1537808201171337216",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501288",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "骑士",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-02 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270403",
+        "matchList": [
+          {
+            "matchId": "1537808202056335360",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501267",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "热火",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-03 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270405",
+        "matchList": [
+          {
+            "matchId": "1537808206057701376",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501273",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "尼克斯",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-05 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270408",
+        "matchList": [
+          {
+            "matchId": "1537808209035657216",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501279",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "魔术",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-08 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270410",
+        "matchList": [
+          {
+            "matchId": "1537808211447382016",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501284",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "老鹰",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-10 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270412",
+        "matchList": [
+          {
+            "matchId": "1537808214467280896",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501294",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "雄鹿",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-12 06:00:00"
+          }
+        ]
+      }
+    ]
+  }
+}

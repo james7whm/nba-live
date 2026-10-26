@@ -112,6 +112,7 @@ internal sealed class GamePickerWindow : Window
         public FontWeight HomeWeight => Game.Status == GameStatus.Live ? FontWeights.SemiBold : Game.Status == GameStatus.Finished && Game.AwayScore is { } away && Game.HomeScore is { } home && home > away ? FontWeights.Bold : FontWeights.Normal;
     }
     internal event Action<GameInfo>? Selected;
+    internal event Action? TeamsRequested;
 
     internal GamePickerWindow(IGameSource source, string favoriteTeam)
     {
@@ -134,6 +135,8 @@ internal sealed class GamePickerWindow : Window
         var title = Ui.Text("选择一场比赛", 24); title.Margin = new(0); title.VerticalAlignment = VerticalAlignment.Center; heading.Children.Add(title);
         DockPanel.SetDock(heading, Dock.Top);
         root.Children.Add(heading);
+        var teamsEntry=Ui.Button("球队与排名  ›",()=>TeamsRequested?.Invoke());teamsEntry.HorizontalAlignment=HorizontalAlignment.Left;teamsEntry.Margin=new(0,0,0,14);
+        DockPanel.SetDock(teamsEntry,Dock.Top);root.Children.Add(teamsEntry);
         var footer = new DockPanel { LastChildFill = true };
         _choose = Ui.Primary("查看文字直播", Choose); _choose.Margin = new(14, 0, 0, 0); _choose.IsDefault = true; _choose.IsEnabled = false;
         _choose.MinWidth = 150; _choose.Height = 42; _choose.FontSize = 14;

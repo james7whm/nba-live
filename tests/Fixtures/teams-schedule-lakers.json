@@ -1,0 +1,3541 @@
+{
+  "success": true,
+  "result": {
+    "gameList": [
+      {
+        "day": "20251004",
+        "matchList": [
+          {
+            "matchId": "1405864717662027776",
+            "matchStatus": "COMPLETED",
+            "homeScore": 81,
+            "awayScore": 103,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501327",
+            "homeTeamName": "湖人",
+            "awayTeamName": "太阳",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2025-2026",
+            "matchTime": "2025-10-04 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251006",
+        "matchList": [
+          {
+            "matchId": "1405864719444606976",
+            "matchStatus": "COMPLETED",
+            "homeScore": 111,
+            "awayScore": 103,
+            "homeTeamId": "1901000000501331",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "勇士",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2025-2026",
+            "matchTime": "2025-10-06 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251013",
+        "matchList": [
+          {
+            "matchId": "1405864725568290816",
+            "matchStatus": "COMPLETED",
+            "homeScore": 126,
+            "awayScore": 116,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501331",
+            "homeTeamName": "湖人",
+            "awayTeamName": "勇士",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2025-2026",
+            "matchTime": "2025-10-13 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251015",
+        "matchList": [
+          {
+            "matchId": "1405864727237623808",
+            "matchStatus": "COMPLETED",
+            "homeScore": 113,
+            "awayScore": 104,
+            "homeTeamId": "1901000000501327",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "太阳",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2025-2026",
+            "matchTime": "2025-10-15 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251016",
+        "matchList": [
+          {
+            "matchId": "1405864727942266880",
+            "matchStatus": "COMPLETED",
+            "homeScore": 94,
+            "awayScore": 121,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501300",
+            "homeTeamName": "湖人",
+            "awayTeamName": "独行侠",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2025-2026",
+            "matchTime": "2025-10-16 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251018",
+        "matchList": [
+          {
+            "matchId": "1405864730458849280",
+            "matchStatus": "COMPLETED",
+            "homeScore": 116,
+            "awayScore": 117,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501321",
+            "homeTeamName": "湖人",
+            "awayTeamName": "国王",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2025-2026",
+            "matchTime": "2025-10-18 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251022",
+        "matchList": [
+          {
+            "matchId": "1405864731993964544",
+            "matchStatus": "COMPLETED",
+            "homeScore": 109,
+            "awayScore": 119,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501331",
+            "homeTeamName": "湖人",
+            "awayTeamName": "勇士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-10-22 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251025",
+        "matchList": [
+          {
+            "matchId": "1405864736838385664",
+            "matchStatus": "COMPLETED",
+            "homeScore": 128,
+            "awayScore": 110,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501315",
+            "homeTeamName": "湖人",
+            "awayTeamName": "森林狼",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-10-25 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251027",
+        "matchList": [
+          {
+            "matchId": "1405864739736649728",
+            "matchStatus": "COMPLETED",
+            "homeScore": 120,
+            "awayScore": 127,
+            "homeTeamId": "1901000000501321",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "国王",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-10-27 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251028",
+        "matchList": [
+          {
+            "matchId": "1405864741653446656",
+            "matchStatus": "COMPLETED",
+            "homeScore": 108,
+            "awayScore": 122,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501325",
+            "homeTeamName": "湖人",
+            "awayTeamName": "开拓者",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-10-28 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251030",
+        "matchList": [
+          {
+            "matchId": "1405864744157446144",
+            "matchStatus": "COMPLETED",
+            "homeScore": 115,
+            "awayScore": 116,
+            "homeTeamId": "1901000000501315",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "森林狼",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-10-30 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251101",
+        "matchList": [
+          {
+            "matchId": "1405864746376232960",
+            "matchStatus": "COMPLETED",
+            "homeScore": 112,
+            "awayScore": 117,
+            "homeTeamId": "1901000000501313",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "灰熊",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-01 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251103",
+        "matchList": [
+          {
+            "matchId": "1405864749375160320",
+            "matchStatus": "COMPLETED",
+            "homeScore": 130,
+            "awayScore": 120,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501267",
+            "homeTeamName": "湖人",
+            "awayTeamName": "热火",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-03 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251104",
+        "matchList": [
+          {
+            "matchId": "1405864750797029376",
+            "matchStatus": "COMPLETED",
+            "homeScore": 115,
+            "awayScore": 123,
+            "homeTeamId": "1901000000501325",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "开拓者",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-04 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251106",
+        "matchList": [
+          {
+            "matchId": "1405864753703682048",
+            "matchStatus": "COMPLETED",
+            "homeScore": 118,
+            "awayScore": 116,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501317",
+            "homeTeamName": "湖人",
+            "awayTeamName": "马刺",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-06 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251109",
+        "matchList": [
+          {
+            "matchId": "1405864756912324608",
+            "matchStatus": "COMPLETED",
+            "homeScore": 122,
+            "awayScore": 102,
+            "homeTeamId": "1901000000501284",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "老鹰",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-09 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251111",
+        "matchList": [
+          {
+            "matchId": "1405864759181443072",
+            "matchStatus": "COMPLETED",
+            "homeScore": 111,
+            "awayScore": 121,
+            "homeTeamId": "1901000000501334",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "黄蜂",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-11 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251113",
+        "matchList": [
+          {
+            "matchId": "1405864763572879360",
+            "matchStatus": "COMPLETED",
+            "homeScore": 121,
+            "awayScore": 92,
+            "homeTeamId": "1901000000501329",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "雷霆",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-13 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251115",
+        "matchList": [
+          {
+            "matchId": "1405864765196075008",
+            "matchStatus": "COMPLETED",
+            "homeScore": 104,
+            "awayScore": 118,
+            "homeTeamId": "1901000000501296",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "鹈鹕",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-15 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251116",
+        "matchList": [
+          {
+            "matchId": "1405864767049957376",
+            "matchStatus": "COMPLETED",
+            "homeScore": 95,
+            "awayScore": 119,
+            "homeTeamId": "1901000000501294",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "雄鹿",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-16 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251119",
+        "matchList": [
+          {
+            "matchId": "1405864770799665152",
+            "matchStatus": "COMPLETED",
+            "homeScore": 140,
+            "awayScore": 126,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501320",
+            "homeTeamName": "湖人",
+            "awayTeamName": "爵士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-19 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251124",
+        "matchList": [
+          {
+            "matchId": "1405864777367945216",
+            "matchStatus": "COMPLETED",
+            "homeScore": 106,
+            "awayScore": 108,
+            "homeTeamId": "1901000000501320",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "爵士",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-24 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251126",
+        "matchList": [
+          {
+            "matchId": "1405864779892916224",
+            "matchStatus": "COMPLETED",
+            "homeScore": 135,
+            "awayScore": 118,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501333",
+            "homeTeamName": "湖人",
+            "awayTeamName": "快船",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-26 12:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251129",
+        "matchList": [
+          {
+            "matchId": "1405864783302885376",
+            "matchStatus": "COMPLETED",
+            "homeScore": 129,
+            "awayScore": 119,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501300",
+            "homeTeamName": "湖人",
+            "awayTeamName": "独行侠",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-11-29 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251201",
+        "matchList": [
+          {
+            "matchId": "1405864786477973504",
+            "matchStatus": "COMPLETED",
+            "homeScore": 133,
+            "awayScore": 121,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501296",
+            "homeTeamName": "湖人",
+            "awayTeamName": "鹈鹕",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-01 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251202",
+        "matchList": [
+          {
+            "matchId": "1405864788185055232",
+            "matchStatus": "COMPLETED",
+            "homeScore": 108,
+            "awayScore": 125,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501327",
+            "homeTeamName": "湖人",
+            "awayTeamName": "太阳",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-02 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251205",
+        "matchList": [
+          {
+            "matchId": "1405864791695687680",
+            "matchStatus": "COMPLETED",
+            "homeScore": 120,
+            "awayScore": 123,
+            "homeTeamId": "1901000000501298",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "猛龙",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-05 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251206",
+        "matchList": [
+          {
+            "matchId": "1405864792257724416",
+            "matchStatus": "COMPLETED",
+            "homeScore": 126,
+            "awayScore": 105,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-06 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251208",
+        "matchList": [
+          {
+            "matchId": "1405864796359753728",
+            "matchStatus": "COMPLETED",
+            "homeScore": 108,
+            "awayScore": 112,
+            "homeTeamId": "1901000000501281",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "76人",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-08 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251211",
+        "matchList": [
+          {
+            "matchId": "1444478068642021376",
+            "matchStatus": "COMPLETED",
+            "homeScore": 119,
+            "awayScore": 132,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501317",
+            "homeTeamName": "湖人",
+            "awayTeamName": "马刺",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-11 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251215",
+        "matchList": [
+          {
+            "matchId": "1448690829374783488",
+            "matchStatus": "COMPLETED",
+            "homeScore": 114,
+            "awayScore": 116,
+            "homeTeamId": "1901000000501327",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "太阳",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-15 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251219",
+        "matchList": [
+          {
+            "matchId": "1405864799618727936",
+            "matchStatus": "COMPLETED",
+            "homeScore": 135,
+            "awayScore": 143,
+            "homeTeamId": "1901000000501320",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "爵士",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-19 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251221",
+        "matchList": [
+          {
+            "matchId": "1405864802760261632",
+            "matchStatus": "COMPLETED",
+            "homeScore": 103,
+            "awayScore": 88,
+            "homeTeamId": "1901000000501333",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "快船",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-21 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251224",
+        "matchList": [
+          {
+            "matchId": "1405864807021674496",
+            "matchStatus": "COMPLETED",
+            "homeScore": 132,
+            "awayScore": 108,
+            "homeTeamId": "1901000000501327",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "太阳",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-24 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251226",
+        "matchList": [
+          {
+            "matchId": "1405864808590344192",
+            "matchStatus": "COMPLETED",
+            "homeScore": 96,
+            "awayScore": 119,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501311",
+            "homeTeamName": "湖人",
+            "awayTeamName": "火箭",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-26 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20251229",
+        "matchList": [
+          {
+            "matchId": "1405864813145358336",
+            "matchStatus": "COMPLETED",
+            "homeScore": 125,
+            "awayScore": 101,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501321",
+            "homeTeamName": "湖人",
+            "awayTeamName": "国王",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-29 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20251231",
+        "matchList": [
+          {
+            "matchId": "1405864815649357824",
+            "matchStatus": "COMPLETED",
+            "homeScore": 106,
+            "awayScore": 128,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501290",
+            "homeTeamName": "湖人",
+            "awayTeamName": "活塞",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2025-12-31 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260103",
+        "matchList": [
+          {
+            "matchId": "1405864820116291584",
+            "matchStatus": "COMPLETED",
+            "homeScore": 128,
+            "awayScore": 121,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501313",
+            "homeTeamName": "湖人",
+            "awayTeamName": "灰熊",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-03 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260105",
+        "matchList": [
+          {
+            "matchId": "1405864823022944256",
+            "matchStatus": "COMPLETED",
+            "homeScore": 120,
+            "awayScore": 114,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501313",
+            "homeTeamName": "湖人",
+            "awayTeamName": "灰熊",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-05 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260107",
+        "matchList": [
+          {
+            "matchId": "1405864825371754496",
+            "matchStatus": "COMPLETED",
+            "homeScore": 103,
+            "awayScore": 111,
+            "homeTeamId": "1901000000501296",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "鹈鹕",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-07 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260108",
+        "matchList": [
+          {
+            "matchId": "1405864826743291904",
+            "matchStatus": "COMPLETED",
+            "homeScore": 107,
+            "awayScore": 91,
+            "homeTeamId": "1901000000501317",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "马刺",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-08 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260110",
+        "matchList": [
+          {
+            "matchId": "1405864830149066752",
+            "matchStatus": "COMPLETED",
+            "homeScore": 101,
+            "awayScore": 105,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501294",
+            "homeTeamName": "湖人",
+            "awayTeamName": "雄鹿",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-10 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260113",
+        "matchList": [
+          {
+            "matchId": "1405864834188181504",
+            "matchStatus": "COMPLETED",
+            "homeScore": 124,
+            "awayScore": 112,
+            "homeTeamId": "1901000000501321",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "国王",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-13 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260114",
+        "matchList": [
+          {
+            "matchId": "1405864835417112576",
+            "matchStatus": "COMPLETED",
+            "homeScore": 141,
+            "awayScore": 116,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501284",
+            "homeTeamName": "湖人",
+            "awayTeamName": "老鹰",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-14 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260116",
+        "matchList": [
+          {
+            "matchId": "1405864838659309568",
+            "matchStatus": "COMPLETED",
+            "homeScore": 117,
+            "awayScore": 135,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501334",
+            "homeTeamName": "湖人",
+            "awayTeamName": "黄蜂",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-16 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260118",
+        "matchList": [
+          {
+            "matchId": "1405864841301721088",
+            "matchStatus": "COMPLETED",
+            "homeScore": 132,
+            "awayScore": 116,
+            "homeTeamId": "1901000000501325",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "开拓者",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-18 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260119",
+        "matchList": [
+          {
+            "matchId": "1405864842383851520",
+            "matchStatus": "COMPLETED",
+            "homeScore": 110,
+            "awayScore": 93,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501298",
+            "homeTeamName": "湖人",
+            "awayTeamName": "猛龙",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-19 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260121",
+        "matchList": [
+          {
+            "matchId": "1405864844925599744",
+            "matchStatus": "COMPLETED",
+            "homeScore": 107,
+            "awayScore": 115,
+            "homeTeamId": "1901000000501301",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "掘金",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-21 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260123",
+        "matchList": [
+          {
+            "matchId": "1405864848012607488",
+            "matchStatus": "COMPLETED",
+            "homeScore": 112,
+            "awayScore": 104,
+            "homeTeamId": "1901000000501333",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "快船",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-23 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260125",
+        "matchList": [
+          {
+            "matchId": "1405864850843762688",
+            "matchStatus": "COMPLETED",
+            "homeScore": 110,
+            "awayScore": 116,
+            "homeTeamId": "1901000000501300",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "独行侠",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-25 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260127",
+        "matchList": [
+          {
+            "matchId": "1405864853230321664",
+            "matchStatus": "COMPLETED",
+            "homeScore": 118,
+            "awayScore": 129,
+            "homeTeamId": "1901000000501286",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "公牛",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-27 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260129",
+        "matchList": [
+          {
+            "matchId": "1405864855231004672",
+            "matchStatus": "COMPLETED",
+            "homeScore": 129,
+            "awayScore": 99,
+            "homeTeamId": "1901000000501288",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "骑士",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-29 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260131",
+        "matchList": [
+          {
+            "matchId": "1405864857881804800",
+            "matchStatus": "COMPLETED",
+            "homeScore": 111,
+            "awayScore": 142,
+            "homeTeamId": "1901000000501283",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "奇才",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-01-31 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260202",
+        "matchList": [
+          {
+            "matchId": "1405864861631512576",
+            "matchStatus": "COMPLETED",
+            "homeScore": 112,
+            "awayScore": 100,
+            "homeTeamId": "1901000000501273",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "尼克斯",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-02 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260204",
+        "matchList": [
+          {
+            "matchId": "1405864863795773440",
+            "matchStatus": "COMPLETED",
+            "homeScore": 109,
+            "awayScore": 125,
+            "homeTeamId": "1901000000501336",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "篮网",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-04 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260206",
+        "matchList": [
+          {
+            "matchId": "1405864867516121088",
+            "matchStatus": "COMPLETED",
+            "homeScore": 119,
+            "awayScore": 115,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501281",
+            "homeTeamName": "湖人",
+            "awayTeamName": "76人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-06 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260208",
+        "matchList": [
+          {
+            "matchId": "1405864869923651584",
+            "matchStatus": "COMPLETED",
+            "homeScore": 105,
+            "awayScore": 99,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501331",
+            "homeTeamName": "湖人",
+            "awayTeamName": "勇士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-08 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260210",
+        "matchList": [
+          {
+            "matchId": "1405864872591228928",
+            "matchStatus": "COMPLETED",
+            "homeScore": 110,
+            "awayScore": 119,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501329",
+            "homeTeamName": "湖人",
+            "awayTeamName": "雷霆",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-10 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260211",
+        "matchList": [
+          {
+            "matchId": "1405864873635610624",
+            "matchStatus": "COMPLETED",
+            "homeScore": 108,
+            "awayScore": 136,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501317",
+            "homeTeamName": "湖人",
+            "awayTeamName": "马刺",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-11 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260213",
+        "matchList": [
+          {
+            "matchId": "1405864876835864576",
+            "matchStatus": "COMPLETED",
+            "homeScore": 124,
+            "awayScore": 104,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501300",
+            "homeTeamName": "湖人",
+            "awayTeamName": "独行侠",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-13 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260221",
+        "matchList": [
+          {
+            "matchId": "1405864880354885632",
+            "matchStatus": "COMPLETED",
+            "homeScore": 125,
+            "awayScore": 122,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501333",
+            "homeTeamName": "湖人",
+            "awayTeamName": "快船",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-21 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260223",
+        "matchList": [
+          {
+            "matchId": "1405864882695307264",
+            "matchStatus": "COMPLETED",
+            "homeScore": 89,
+            "awayScore": 111,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "湖人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-23 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260225",
+        "matchList": [
+          {
+            "matchId": "1405864885811675136",
+            "matchStatus": "COMPLETED",
+            "homeScore": 109,
+            "awayScore": 110,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501279",
+            "homeTeamName": "湖人",
+            "awayTeamName": "魔术",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-25 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260227",
+        "matchList": [
+          {
+            "matchId": "1405864888655413248",
+            "matchStatus": "COMPLETED",
+            "homeScore": 113,
+            "awayScore": 110,
+            "homeTeamId": "1901000000501327",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "太阳",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-02-27 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260301",
+        "matchList": [
+          {
+            "matchId": "1405864890622541824",
+            "matchStatus": "COMPLETED",
+            "homeScore": 101,
+            "awayScore": 129,
+            "homeTeamId": "1901000000501331",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "勇士",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-01 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260302",
+        "matchList": [
+          {
+            "matchId": "1405864892845522944",
+            "matchStatus": "COMPLETED",
+            "homeScore": 128,
+            "awayScore": 104,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501321",
+            "homeTeamName": "湖人",
+            "awayTeamName": "国王",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-02 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260304",
+        "matchList": [
+          {
+            "matchId": "1405864895353716736",
+            "matchStatus": "COMPLETED",
+            "homeScore": 110,
+            "awayScore": 101,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501296",
+            "homeTeamName": "湖人",
+            "awayTeamName": "鹈鹕",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-04 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260306",
+        "matchList": [
+          {
+            "matchId": "1405864898260369408",
+            "matchStatus": "COMPLETED",
+            "homeScore": 120,
+            "awayScore": 113,
+            "homeTeamId": "1901000000501301",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "掘金",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-06 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260307",
+        "matchList": [
+          {
+            "matchId": "1405864899506077696",
+            "matchStatus": "COMPLETED",
+            "homeScore": 128,
+            "awayScore": 117,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501292",
+            "homeTeamName": "湖人",
+            "awayTeamName": "步行者",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-07 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260309",
+        "matchList": [
+          {
+            "matchId": "1405864900923752448",
+            "matchStatus": "COMPLETED",
+            "homeScore": 110,
+            "awayScore": 97,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501273",
+            "homeTeamName": "湖人",
+            "awayTeamName": "尼克斯",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-09 03:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260311",
+        "matchList": [
+          {
+            "matchId": "1405864905159999488",
+            "matchStatus": "COMPLETED",
+            "homeScore": 120,
+            "awayScore": 106,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501315",
+            "homeTeamName": "湖人",
+            "awayTeamName": "森林狼",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-11 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260313",
+        "matchList": [
+          {
+            "matchId": "1405864907647221760",
+            "matchStatus": "COMPLETED",
+            "homeScore": 142,
+            "awayScore": 130,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501286",
+            "homeTeamName": "湖人",
+            "awayTeamName": "公牛",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-13 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260315",
+        "matchList": [
+          {
+            "matchId": "1405864910390296576",
+            "matchStatus": "COMPLETED",
+            "homeScore": 127,
+            "awayScore": 125,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501301",
+            "homeTeamName": "湖人",
+            "awayTeamName": "掘金",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-15 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260317",
+        "matchList": [
+          {
+            "matchId": "1405864913112399872",
+            "matchStatus": "COMPLETED",
+            "homeScore": 92,
+            "awayScore": 100,
+            "homeTeamId": "1901000000501311",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "火箭",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-17 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260319",
+        "matchList": [
+          {
+            "matchId": "1405864916337819648",
+            "matchStatus": "COMPLETED",
+            "homeScore": 116,
+            "awayScore": 124,
+            "homeTeamId": "1901000000501311",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "火箭",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-19 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260320",
+        "matchList": [
+          {
+            "matchId": "1405864917398978560",
+            "matchStatus": "COMPLETED",
+            "homeScore": 126,
+            "awayScore": 134,
+            "homeTeamId": "1901000000501267",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "热火",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-20 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260322",
+        "matchList": [
+          {
+            "matchId": "1405864919223500800",
+            "matchStatus": "COMPLETED",
+            "homeScore": 104,
+            "awayScore": 105,
+            "homeTeamId": "1901000000501279",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "魔术",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-22 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260324",
+        "matchList": [
+          {
+            "matchId": "1405864922260176896",
+            "matchStatus": "COMPLETED",
+            "homeScore": 113,
+            "awayScore": 110,
+            "homeTeamId": "1901000000501290",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "活塞",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-24 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260326",
+        "matchList": [
+          {
+            "matchId": "1405864924650930176",
+            "matchStatus": "COMPLETED",
+            "homeScore": 130,
+            "awayScore": 137,
+            "homeTeamId": "1901000000501292",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "步行者",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-26 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260328",
+        "matchList": [
+          {
+            "matchId": "1405864928811679744",
+            "matchStatus": "COMPLETED",
+            "homeScore": 116,
+            "awayScore": 99,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501336",
+            "homeTeamName": "湖人",
+            "awayTeamName": "篮网",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-28 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260331",
+        "matchList": [
+          {
+            "matchId": "1405864932985012224",
+            "matchStatus": "COMPLETED",
+            "homeScore": 120,
+            "awayScore": 101,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501283",
+            "homeTeamName": "湖人",
+            "awayTeamName": "奇才",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-03-31 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260401",
+        "matchList": [
+          {
+            "matchId": "1405864933903564800",
+            "matchStatus": "COMPLETED",
+            "homeScore": 127,
+            "awayScore": 113,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501288",
+            "homeTeamName": "湖人",
+            "awayTeamName": "骑士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-01 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260403",
+        "matchList": [
+          {
+            "matchId": "1405864936361426944",
+            "matchStatus": "COMPLETED",
+            "homeScore": 139,
+            "awayScore": 96,
+            "homeTeamId": "1901000000501329",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "雷霆",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-03 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260406",
+        "matchList": [
+          {
+            "matchId": "1405864940819972096",
+            "matchStatus": "COMPLETED",
+            "homeScore": 134,
+            "awayScore": 128,
+            "homeTeamId": "1901000000501300",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "独行侠",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-06 07:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260408",
+        "matchList": [
+          {
+            "matchId": "1405864943785345024",
+            "matchStatus": "COMPLETED",
+            "homeScore": 87,
+            "awayScore": 123,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501329",
+            "homeTeamName": "湖人",
+            "awayTeamName": "雷霆",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-08 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260410",
+        "matchList": [
+          {
+            "matchId": "1405864946478088192",
+            "matchStatus": "COMPLETED",
+            "homeScore": 103,
+            "awayScore": 119,
+            "homeTeamId": "1901000000501331",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "勇士",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-10 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260411",
+        "matchList": [
+          {
+            "matchId": "1405864949099528192",
+            "matchStatus": "COMPLETED",
+            "homeScore": 101,
+            "awayScore": 73,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501327",
+            "homeTeamName": "湖人",
+            "awayTeamName": "太阳",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-11 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260413",
+        "matchList": [
+          {
+            "matchId": "1405864950814998528",
+            "matchStatus": "COMPLETED",
+            "homeScore": 131,
+            "awayScore": 107,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501320",
+            "homeTeamName": "湖人",
+            "awayTeamName": "爵士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2025-2026",
+            "matchTime": "2026-04-13 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260419",
+        "matchList": [
+          {
+            "matchId": "1493234386999443456",
+            "matchStatus": "COMPLETED",
+            "homeScore": 107,
+            "awayScore": 98,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501311",
+            "homeTeamName": "湖人",
+            "awayTeamName": "火箭",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-04-19 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260422",
+        "matchList": [
+          {
+            "matchId": "1493974246194413568",
+            "matchStatus": "COMPLETED",
+            "homeScore": 101,
+            "awayScore": 94,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501311",
+            "homeTeamName": "湖人",
+            "awayTeamName": "火箭",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-04-22 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260425",
+        "matchList": [
+          {
+            "matchId": "1493974247154909184",
+            "matchStatus": "COMPLETED",
+            "homeScore": 108,
+            "awayScore": 112,
+            "homeTeamId": "1901000000501311",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "火箭",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-04-25 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260427",
+        "matchList": [
+          {
+            "matchId": "1493974248174125056",
+            "matchStatus": "COMPLETED",
+            "homeScore": 115,
+            "awayScore": 96,
+            "homeTeamId": "1901000000501311",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "火箭",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-04-27 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260430",
+        "matchList": [
+          {
+            "matchId": "1493974249092677632",
+            "matchStatus": "COMPLETED",
+            "homeScore": 93,
+            "awayScore": 99,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501311",
+            "homeTeamName": "湖人",
+            "awayTeamName": "火箭",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-04-30 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260502",
+        "matchList": [
+          {
+            "matchId": "1493974249956704256",
+            "matchStatus": "COMPLETED",
+            "homeScore": 78,
+            "awayScore": 98,
+            "homeTeamId": "1901000000501311",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "火箭",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-05-02 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260504",
+        "matchList": [
+          {
+            "matchId": "1493974250623598592",
+            "matchStatus": "CANCELLED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501311",
+            "homeTeamName": "湖人",
+            "awayTeamName": "火箭",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-05-04 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260506",
+        "matchList": [
+          {
+            "matchId": "1500119731275825152",
+            "matchStatus": "COMPLETED",
+            "homeScore": 108,
+            "awayScore": 90,
+            "homeTeamId": "1901000000501329",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "雷霆",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-05-06 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260508",
+        "matchList": [
+          {
+            "matchId": "1500119731544260608",
+            "matchStatus": "COMPLETED",
+            "homeScore": 125,
+            "awayScore": 107,
+            "homeTeamId": "1901000000501329",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "雷霆",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-05-08 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260510",
+        "matchList": [
+          {
+            "matchId": "1500119731825278976",
+            "matchStatus": "COMPLETED",
+            "homeScore": 108,
+            "awayScore": 131,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501329",
+            "homeTeamName": "湖人",
+            "awayTeamName": "雷霆",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-05-10 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260512",
+        "matchList": [
+          {
+            "matchId": "1500119732043382784",
+            "matchStatus": "COMPLETED",
+            "homeScore": 110,
+            "awayScore": 115,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501329",
+            "homeTeamName": "湖人",
+            "awayTeamName": "雷霆",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-05-12 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20260514",
+        "matchList": [
+          {
+            "matchId": "1500119732269875200",
+            "matchStatus": "CANCELLED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501329",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "雷霆",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-05-14 01:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20260517",
+        "matchList": [
+          {
+            "matchId": "1500119732487979008",
+            "matchStatus": "CANCELLED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501329",
+            "homeTeamName": "湖人",
+            "awayTeamName": "雷霆",
+            "leagueType": "NBA",
+            "competitionStageType": "PLAYOFF",
+            "season": "2025-2026",
+            "matchTime": "2026-05-17 01:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261006",
+        "matchList": [
+          {
+            "matchId": "1537808008791195648",
+            "matchStatus": "COMPLETED",
+            "homeScore": 103,
+            "awayScore": 127,
+            "homeTeamId": "1901000000501321",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "国王",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2026-2027",
+            "matchTime": "2026-10-06 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261007",
+        "matchList": [
+          {
+            "matchId": "1537445620631994368",
+            "matchStatus": "COMPLETED",
+            "homeScore": 124,
+            "awayScore": 98,
+            "homeTeamId": "1901000000501331",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "勇士",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2026-2027",
+            "matchTime": "2026-10-07 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261009",
+        "matchList": [
+          {
+            "matchId": "1537808010997399552",
+            "matchStatus": "COMPLETED",
+            "homeScore": 114,
+            "awayScore": 110,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501321",
+            "homeTeamName": "湖人",
+            "awayTeamName": "国王",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2026-2027",
+            "matchTime": "2026-10-09 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261014",
+        "matchList": [
+          {
+            "matchId": "1537808012993888256",
+            "matchStatus": "COMPLETED",
+            "homeScore": 89,
+            "awayScore": 101,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501331",
+            "homeTeamName": "湖人",
+            "awayTeamName": "勇士",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2026-2027",
+            "matchTime": "2026-10-14 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261017",
+        "matchList": [
+          {
+            "matchId": "1537808015036514304",
+            "matchStatus": "COMPLETED",
+            "homeScore": 106,
+            "awayScore": 121,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501301",
+            "homeTeamName": "湖人",
+            "awayTeamName": "掘金",
+            "leagueType": "NBA",
+            "competitionStageType": "PRESEASON",
+            "season": "2026-2027",
+            "matchTime": "2026-10-17 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261022",
+        "matchList": [
+          {
+            "matchId": "1537445624650137600",
+            "matchStatus": "COMPLETED",
+            "homeScore": 127,
+            "awayScore": 105,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501331",
+            "homeTeamName": "湖人",
+            "awayTeamName": "勇士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-10-22 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261024",
+        "matchList": [
+          {
+            "matchId": "1537808022250717184",
+            "matchStatus": "COMPLETED",
+            "homeScore": 125,
+            "awayScore": 117,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501333",
+            "homeTeamName": "湖人",
+            "awayTeamName": "快船",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-10-24 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261026",
+        "matchList": [
+          {
+            "matchId": "1537808024456921088",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501320",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "爵士",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-10-26 05:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261028",
+        "matchList": [
+          {
+            "matchId": "1537808027975942144",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501325",
+            "homeTeamName": "湖人",
+            "awayTeamName": "开拓者",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-10-28 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261029",
+        "matchList": [
+          {
+            "matchId": "1537808030035345408",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501333",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "快船",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-10-29 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261031",
+        "matchList": [
+          {
+            "matchId": "1537445627087028224",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501331",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "勇士",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-10-31 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261102",
+        "matchList": [
+          {
+            "matchId": "1537808032870694912",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501298",
+            "homeTeamName": "湖人",
+            "awayTeamName": "猛龙",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-02 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261103",
+        "matchList": [
+          {
+            "matchId": "1537808035060121600",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501267",
+            "homeTeamName": "湖人",
+            "awayTeamName": "热火",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-03 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261105",
+        "matchList": [
+          {
+            "matchId": "1537808037656395776",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501321",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "国王",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-05 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261107",
+        "matchList": [
+          {
+            "matchId": "1537445628697640960",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501325",
+            "homeTeamName": "湖人",
+            "awayTeamName": "开拓者",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-07 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261109",
+        "matchList": [
+          {
+            "matchId": "1537808040185561088",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501290",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "活塞",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-09 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261110",
+        "matchList": [
+          {
+            "matchId": "1537808041552904192",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501284",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "老鹰",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-10 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261112",
+        "matchList": [
+          {
+            "matchId": "1537808044358893568",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501294",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "雄鹿",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-12 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261116",
+        "matchList": [
+          {
+            "matchId": "1537808047559147520",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501327",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "太阳",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-16 05:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261118",
+        "matchList": [
+          {
+            "matchId": "1537808050767790080",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501334",
+            "homeTeamName": "湖人",
+            "awayTeamName": "黄蜂",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-18 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261119",
+        "matchList": [
+          {
+            "matchId": "1537808052932050944",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501320",
+            "homeTeamName": "湖人",
+            "awayTeamName": "爵士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-19 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261121",
+        "matchList": [
+          {
+            "matchId": "1537445632002752512",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501321",
+            "homeTeamName": "湖人",
+            "awayTeamName": "国王",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-21 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261124",
+        "matchList": [
+          {
+            "matchId": "1537808058053296128",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501320",
+            "homeTeamName": "湖人",
+            "awayTeamName": "爵士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-24 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261128",
+        "matchList": [
+          {
+            "matchId": "1537445635744071680",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501317",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "马刺",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-28 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261130",
+        "matchList": [
+          {
+            "matchId": "1537808059848458240",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501313",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "灰熊",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-11-30 05:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261201",
+        "matchList": [
+          {
+            "matchId": "1537808061920444416",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501311",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "火箭",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-01 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261203",
+        "matchList": [
+          {
+            "matchId": "1537808064986480640",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501296",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "鹈鹕",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-03 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261215",
+        "matchList": [
+          {
+            "matchId": "1537808070749454336",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501296",
+            "homeTeamName": "湖人",
+            "awayTeamName": "鹈鹕",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-15 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261217",
+        "matchList": [
+          {
+            "matchId": "1537808073345728512",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501315",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "森林狼",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-17 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20261219",
+        "matchList": [
+          {
+            "matchId": "1537808075761647616",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501315",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "森林狼",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-19 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261220",
+        "matchList": [
+          {
+            "matchId": "1537808076965412864",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501301",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "掘金",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-20 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261222",
+        "matchList": [
+          {
+            "matchId": "1537808080320856064",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501292",
+            "homeTeamName": "湖人",
+            "awayTeamName": "步行者",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-22 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261224",
+        "matchList": [
+          {
+            "matchId": "1537808083252674560",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501301",
+            "homeTeamName": "湖人",
+            "awayTeamName": "掘金",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-24 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261226",
+        "matchList": [
+          {
+            "matchId": "1537445636603904000",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501281",
+            "homeTeamName": "湖人",
+            "awayTeamName": "76人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-26 06:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261228",
+        "matchList": [
+          {
+            "matchId": "1537808087098851328",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501313",
+            "homeTeamName": "湖人",
+            "awayTeamName": "灰熊",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-28 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20261230",
+        "matchList": [
+          {
+            "matchId": "1537808089590267904",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501311",
+            "homeTeamName": "湖人",
+            "awayTeamName": "火箭",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2026-12-30 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270101",
+        "matchList": [
+          {
+            "matchId": "1537808091809054720",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501296",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "鹈鹕",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-01 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270103",
+        "matchList": [
+          {
+            "matchId": "1537808094367580160",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501286",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "公牛",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-03 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270104",
+        "matchList": [
+          {
+            "matchId": "1537808095806226432",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501298",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "猛龙",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-04 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270106",
+        "matchList": [
+          {
+            "matchId": "1537808097697857536",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501283",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "奇才",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-06 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270108",
+        "matchList": [
+          {
+            "matchId": "1537808101820858368",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501263",
+            "homeTeamName": "湖人",
+            "awayTeamName": "凯尔特人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-08 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270109",
+        "matchList": [
+          {
+            "matchId": "1537808103204978688",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501290",
+            "homeTeamName": "湖人",
+            "awayTeamName": "活塞",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-09 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270112",
+        "matchList": [
+          {
+            "matchId": "1537808106820468736",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501333",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "快船",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-12 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270114",
+        "matchList": [
+          {
+            "matchId": "1537808109278330880",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501325",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "开拓者",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-14 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270115",
+        "matchList": [
+          {
+            "matchId": "1537808110716977152",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501279",
+            "homeTeamName": "湖人",
+            "awayTeamName": "魔术",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-15 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270118",
+        "matchList": [
+          {
+            "matchId": "1537808114575736832",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501294",
+            "homeTeamName": "湖人",
+            "awayTeamName": "雄鹿",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-18 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270120",
+        "matchList": [
+          {
+            "matchId": "1537808116291207168",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501321",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "国王",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-20 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270122",
+        "matchList": [
+          {
+            "matchId": "1537808118954590208",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501331",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "勇士",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-22 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270123",
+        "matchList": [
+          {
+            "matchId": "1537808120519065600",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501321",
+            "homeTeamName": "湖人",
+            "awayTeamName": "国王",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-23 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270125",
+        "matchList": [
+          {
+            "matchId": "1537808122393919488",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501283",
+            "homeTeamName": "湖人",
+            "awayTeamName": "奇才",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-25 05:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270127",
+        "matchList": [
+          {
+            "matchId": "1537808125715808256",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501329",
+            "homeTeamName": "湖人",
+            "awayTeamName": "雷霆",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-27 12:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270129",
+        "matchList": [
+          {
+            "matchId": "1537808127573884928",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501292",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "步行者",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-29 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270131",
+        "matchList": [
+          {
+            "matchId": "1537808131080323072",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501273",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "尼克斯",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-01-31 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270201",
+        "matchList": [
+          {
+            "matchId": "1537808132305059840",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501334",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "黄蜂",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-01 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270203",
+        "matchList": [
+          {
+            "matchId": "1537808134796476416",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501263",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "凯尔特人",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-03 09:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270205",
+        "matchList": [
+          {
+            "matchId": "1537808137145286656",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501336",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "篮网",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-05 08:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270207",
+        "matchList": [
+          {
+            "matchId": "1537808140311986176",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501317",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "马刺",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-07 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270209",
+        "matchList": [
+          {
+            "matchId": "1537808143029895168",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501327",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "太阳",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-09 10:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270211",
+        "matchList": [
+          {
+            "matchId": "1537808145894604800",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501333",
+            "homeTeamName": "湖人",
+            "awayTeamName": "快船",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-11 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270213",
+        "matchList": [
+          {
+            "matchId": "1537808148465713152",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501301",
+            "homeTeamName": "湖人",
+            "awayTeamName": "掘金",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-13 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270217",
+        "matchList": [
+          {
+            "matchId": "1537808152265752576",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501286",
+            "homeTeamName": "湖人",
+            "awayTeamName": "公牛",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-17 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270219",
+        "matchList": [
+          {
+            "matchId": "1537808155512143872",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501311",
+            "homeTeamName": "湖人",
+            "awayTeamName": "火箭",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-19 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270227",
+        "matchList": [
+          {
+            "matchId": "1537808158271995904",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501301",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "掘金",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-02-27 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270301",
+        "matchList": [
+          {
+            "matchId": "1537808159828082688",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501300",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "独行侠",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-01 04:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270303",
+        "matchList": [
+          {
+            "matchId": "1537808162172698624",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501279",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "魔术",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-03 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270305",
+        "matchList": [
+          {
+            "matchId": "1537808164928356352",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501281",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "76人",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-05 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270307",
+        "matchList": [
+          {
+            "matchId": "1537808168392851456",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501329",
+            "homeTeamName": "湖人",
+            "awayTeamName": "雷霆",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-07 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270308",
+        "matchList": [
+          {
+            "matchId": "1537808169554673664",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501336",
+            "homeTeamName": "湖人",
+            "awayTeamName": "篮网",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-08 11:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270312",
+        "matchList": [
+          {
+            "matchId": "1537808174982103040",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501273",
+            "homeTeamName": "湖人",
+            "awayTeamName": "尼克斯",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-12 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270313",
+        "matchList": [
+          {
+            "matchId": "1537808176173285376",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501288",
+            "homeTeamName": "湖人",
+            "awayTeamName": "骑士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-13 11:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270315",
+        "matchList": [
+          {
+            "matchId": "1537808178702450688",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501331",
+            "homeTeamName": "湖人",
+            "awayTeamName": "勇士",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-15 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270317",
+        "matchList": [
+          {
+            "matchId": "1537808181210644480",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501325",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "开拓者",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-17 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270318",
+        "matchList": [
+          {
+            "matchId": "1537808182699622400",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501327",
+            "homeTeamName": "湖人",
+            "awayTeamName": "太阳",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-18 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270320",
+        "matchList": [
+          {
+            "matchId": "1537808184868077568",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501284",
+            "homeTeamName": "湖人",
+            "awayTeamName": "老鹰",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-20 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270322",
+        "matchList": [
+          {
+            "matchId": "1537808187653095424",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501300",
+            "homeTeamName": "湖人",
+            "awayTeamName": "独行侠",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-22 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270324",
+        "matchList": [
+          {
+            "matchId": "1537808189486006272",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501267",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "热火",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-24 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270326",
+        "matchList": [
+          {
+            "matchId": "1537808192312967168",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501288",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "骑士",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-26 07:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270329",
+        "matchList": [
+          {
+            "matchId": "1537808195978788864",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501311",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "火箭",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-29 03:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270331",
+        "matchList": [
+          {
+            "matchId": "1537808198851887104",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501313",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "灰熊",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-03-31 08:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270402",
+        "matchList": [
+          {
+            "matchId": "1537808201720791040",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501329",
+            "awayTeamId": "1901000000501323",
+            "homeTeamName": "雷霆",
+            "awayTeamName": "湖人",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-02 09:30:00"
+          }
+        ]
+      },
+      {
+        "day": "20270405",
+        "matchList": [
+          {
+            "matchId": "1537808206225473536",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501317",
+            "homeTeamName": "湖人",
+            "awayTeamName": "马刺",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-05 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270407",
+        "matchList": [
+          {
+            "matchId": "1537808208289071104",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501300",
+            "homeTeamName": "湖人",
+            "awayTeamName": "独行侠",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-07 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270408",
+        "matchList": [
+          {
+            "matchId": "1537808210247811072",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501315",
+            "homeTeamName": "湖人",
+            "awayTeamName": "森林狼",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-08 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270410",
+        "matchList": [
+          {
+            "matchId": "1537808213435482112",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501315",
+            "homeTeamName": "湖人",
+            "awayTeamName": "森林狼",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-10 10:00:00"
+          }
+        ]
+      },
+      {
+        "day": "20270412",
+        "matchList": [
+          {
+            "matchId": "1537808215843012608",
+            "matchStatus": "NOTSTARTED",
+            "homeScore": null,
+            "awayScore": null,
+            "homeTeamId": "1901000000501323",
+            "awayTeamId": "1901000000501327",
+            "homeTeamName": "湖人",
+            "awayTeamName": "太阳",
+            "leagueType": "NBA",
+            "competitionStageType": "REGULAR",
+            "season": "2026-2027",
+            "matchTime": "2027-04-12 08:30:00"
+          }
+        ]
+      }
+    ]
+  }
+}

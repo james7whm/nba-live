@@ -48,14 +48,27 @@ internal sealed class MatchScoreLine : Viewbox
 {
     private readonly TeamLogo _away=new(),_home=new();
     private readonly TextBlock _awayName=new(),_homeName=new(),_score=new();
-    internal MatchScoreLine(double fontSize=16,double logoSize=22)
+    internal event Action<string>? TeamRequested;
+    internal MatchScoreLine(double fontSize=16,double logoSize=22,bool teamNavigation=false)
     {
         Stretch=Stretch.Uniform; StretchDirection=StretchDirection.DownOnly; HorizontalAlignment=HorizontalAlignment.Left; VerticalAlignment=VerticalAlignment.Center;
         var row=new StackPanel {Orientation=Orientation.Horizontal,VerticalAlignment=VerticalAlignment.Center};
         _away.Width=_away.Height=_home.Width=_home.Height=logoSize;
         foreach(var text in new[]{_awayName,_homeName,_score}) {text.FontSize=fontSize; text.VerticalAlignment=VerticalAlignment.Center; text.Margin=new(4,0,4,0);}
         _score.FontWeight=FontWeights.SemiBold; _score.Margin=new(5,0,5,0);
-        row.Children.Add(_away); row.Children.Add(_awayName); row.Children.Add(_score); row.Children.Add(_homeName); row.Children.Add(_home); Child=row;
+        if(teamNavigation)
+        {
+            Button TeamEntry(bool home)
+            {
+                var content=new StackPanel{Orientation=Orientation.Horizontal,VerticalAlignment=VerticalAlignment.Center};
+                if(home){content.Children.Add(_homeName);content.Children.Add(_home);}else{content.Children.Add(_away);content.Children.Add(_awayName);}
+                var button=Ui.Button("",()=>TeamRequested?.Invoke(home?_home.Team:_away.Team));button.Content=content;button.Padding=new(2);button.Margin=new(0);button.BorderThickness=new(0);button.Background=Brushes.Transparent;button.Cursor=Cursors.Hand;button.ToolTip="查看球队概览与排名";
+                System.Windows.Automation.AutomationProperties.SetName(button,home?"查看主队概览与排名":"查看客队概览与排名");return button;
+            }
+            row.Children.Add(TeamEntry(false));row.Children.Add(_score);row.Children.Add(TeamEntry(true));
+        }
+        else{row.Children.Add(_away);row.Children.Add(_awayName);row.Children.Add(_score);row.Children.Add(_homeName);row.Children.Add(_home);}
+        Child=row;
     }
     internal void Update(GameInfo? game)
     {

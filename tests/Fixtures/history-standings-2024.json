@@ -1,0 +1,3715 @@
+{
+  "children": [
+    {
+      "standings": {
+        "seasonType": 2,
+        "entries": [
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 109.231705,
+                "displayValue": "109.2"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 120.57317,
+                "displayValue": "120.6"
+              },
+              {
+                "name": "clincher",
+                "value": 5.0,
+                "displayValue": "*"
+              },
+              {
+                "name": "differential",
+                "value": 11.399999999999991,
+                "displayValue": "+11.4"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.88235295,
+                "displayValue": "0.882"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.78846157,
+                "displayValue": "0.788"
+              },
+              {
+                "name": "losses",
+                "value": 18.0,
+                "displayValue": "18"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 1.0,
+                "displayValue": "1"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 930.0,
+                "displayValue": "+930"
+              },
+              {
+                "name": "points",
+                "value": 23.0,
+                "displayValue": "23.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 8957.0,
+                "displayValue": "8957"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9887.0,
+                "displayValue": "9887"
+              },
+              {
+                "name": "streak",
+                "value": 2.0,
+                "displayValue": "W2"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.7804878,
+                "displayValue": ".780"
+              },
+              {
+                "name": "wins",
+                "value": 64.0,
+                "displayValue": "64"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "64-18"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "37-4"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "27-14"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "15-2"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "41-11"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "7-3"
+              }
+            ],
+            "team": {
+              "id": "2",
+              "displayName": "Boston Celtics"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 108.20731,
+                "displayValue": "108.2"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 112.79269,
+                "displayValue": "112.8"
+              },
+              {
+                "name": "clincher",
+                "value": 1.0,
+                "displayValue": "x"
+              },
+              {
+                "name": "differential",
+                "value": 4.599999999999994,
+                "displayValue": "+4.6"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.7058824,
+                "displayValue": "0.706"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 14.0,
+                "displayValue": "14"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.6730769,
+                "displayValue": "0.673"
+              },
+              {
+                "name": "losses",
+                "value": 32.0,
+                "displayValue": "32"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 2.0,
+                "displayValue": "2"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 376.0,
+                "displayValue": "+376"
+              },
+              {
+                "name": "points",
+                "value": 9.0,
+                "displayValue": "9.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 8873.0,
+                "displayValue": "8873"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9249.0,
+                "displayValue": "9249"
+              },
+              {
+                "name": "streak",
+                "value": 5.0,
+                "displayValue": "W5"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.6097561,
+                "displayValue": ".610"
+              },
+              {
+                "name": "wins",
+                "value": 50.0,
+                "displayValue": "50"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "50-32"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "27-14"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "23-18"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "12-5"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "35-17"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "6-4"
+              }
+            ],
+            "team": {
+              "id": "18",
+              "displayName": "New York Knicks"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 116.35366,
+                "displayValue": "116.4"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 118.97561,
+                "displayValue": "119.0"
+              },
+              {
+                "name": "clincher",
+                "value": 2.0,
+                "displayValue": "y"
+              },
+              {
+                "name": "differential",
+                "value": 2.5999999999999943,
+                "displayValue": "+2.6"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.5882353,
+                "displayValue": "0.588"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 15.0,
+                "displayValue": "15"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.65384614,
+                "displayValue": "0.654"
+              },
+              {
+                "name": "losses",
+                "value": 33.0,
+                "displayValue": "33"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 3.0,
+                "displayValue": "3"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 215.0,
+                "displayValue": "+215"
+              },
+              {
+                "name": "points",
+                "value": 8.0,
+                "displayValue": "8.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9541.0,
+                "displayValue": "9541"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9756.0,
+                "displayValue": "9756"
+              },
+              {
+                "name": "streak",
+                "value": -2.0,
+                "displayValue": "L2"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.597561,
+                "displayValue": ".598"
+              },
+              {
+                "name": "wins",
+                "value": 49.0,
+                "displayValue": "49"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "49-33"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "31-11"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "18-22"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "10-7"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "34-18"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "3-7"
+              }
+            ],
+            "team": {
+              "id": "15",
+              "displayName": "Milwaukee Bucks"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 110.21951,
+                "displayValue": "110.2"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 112.63415,
+                "displayValue": "112.6"
+              },
+              {
+                "name": "clincher",
+                "value": 1.0,
+                "displayValue": "x"
+              },
+              {
+                "name": "differential",
+                "value": 2.3999999999999915,
+                "displayValue": "+2.4"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.6875,
+                "displayValue": "0.688"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 16.0,
+                "displayValue": "16"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.59615386,
+                "displayValue": "0.596"
+              },
+              {
+                "name": "losses",
+                "value": 34.0,
+                "displayValue": "34"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 4.0,
+                "displayValue": "4"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 198.0,
+                "displayValue": "+198"
+              },
+              {
+                "name": "points",
+                "value": 7.0,
+                "displayValue": "7.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9038.0,
+                "displayValue": "9038"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9236.0,
+                "displayValue": "9236"
+              },
+              {
+                "name": "streak",
+                "value": -1.0,
+                "displayValue": "L1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.58536583,
+                "displayValue": ".585"
+              },
+              {
+                "name": "wins",
+                "value": 48.0,
+                "displayValue": "48"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "48-34"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "26-15"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "22-19"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "11-5"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "31-21"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "4-6"
+              }
+            ],
+            "team": {
+              "id": "5",
+              "displayName": "Cleveland Cavaliers"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 108.45122,
+                "displayValue": "108.5"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 110.46342,
+                "displayValue": "110.5"
+              },
+              {
+                "name": "clincher",
+                "value": 2.0,
+                "displayValue": "y"
+              },
+              {
+                "name": "differential",
+                "value": 2.0,
+                "displayValue": "+2.0"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.5625,
+                "displayValue": "0.563"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 17.0,
+                "displayValue": "17"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.61538464,
+                "displayValue": "0.615"
+              },
+              {
+                "name": "losses",
+                "value": 35.0,
+                "displayValue": "35"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 5.0,
+                "displayValue": "5"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 165.0,
+                "displayValue": "+165"
+              },
+              {
+                "name": "points",
+                "value": 6.0,
+                "displayValue": "6.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 8893.0,
+                "displayValue": "8893"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9058.0,
+                "displayValue": "9058"
+              },
+              {
+                "name": "streak",
+                "value": 1.0,
+                "displayValue": "W1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5731707,
+                "displayValue": ".573"
+              },
+              {
+                "name": "wins",
+                "value": 47.0,
+                "displayValue": "47"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "47-35"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "29-12"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "18-23"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "9-7"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "32-20"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "5-5"
+              }
+            ],
+            "team": {
+              "id": "19",
+              "displayName": "Orlando Magic"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 120.243904,
+                "displayValue": "120.2"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 123.29269,
+                "displayValue": "123.3"
+              },
+              {
+                "name": "clincher",
+                "value": 1.0,
+                "displayValue": "x"
+              },
+              {
+                "name": "differential",
+                "value": 3.0999999999999943,
+                "displayValue": "+3.1"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.64705884,
+                "displayValue": "0.647"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 17.0,
+                "displayValue": "17"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.61538464,
+                "displayValue": "0.615"
+              },
+              {
+                "name": "losses",
+                "value": 35.0,
+                "displayValue": "35"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 6.0,
+                "displayValue": "6"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 250.0,
+                "displayValue": "+250"
+              },
+              {
+                "name": "points",
+                "value": 6.0,
+                "displayValue": "6.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9860.0,
+                "displayValue": "9860"
+              },
+              {
+                "name": "pointsFor",
+                "value": 10110.0,
+                "displayValue": "10110"
+              },
+              {
+                "name": "streak",
+                "value": 1.0,
+                "displayValue": "W1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5731707,
+                "displayValue": ".573"
+              },
+              {
+                "name": "wins",
+                "value": 47.0,
+                "displayValue": "47"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "47-35"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "26-15"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "21-20"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "11-6"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "32-20"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "7-3"
+              }
+            ],
+            "team": {
+              "id": "11",
+              "displayName": "Indiana Pacers"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 111.54878,
+                "displayValue": "111.5"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 114.57317,
+                "displayValue": "114.6"
+              },
+              {
+                "name": "clincher",
+                "value": 7.0,
+                "displayValue": "xp"
+              },
+              {
+                "name": "differential",
+                "value": 3.0999999999999943,
+                "displayValue": "+3.1"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.5,
+                "displayValue": "0.500"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 17.0,
+                "displayValue": "17"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.59615386,
+                "displayValue": "0.596"
+              },
+              {
+                "name": "losses",
+                "value": 35.0,
+                "displayValue": "35"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 7.0,
+                "displayValue": "7"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 248.0,
+                "displayValue": "+248"
+              },
+              {
+                "name": "points",
+                "value": 6.0,
+                "displayValue": "6.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9147.0,
+                "displayValue": "9147"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9395.0,
+                "displayValue": "9395"
+              },
+              {
+                "name": "streak",
+                "value": 8.0,
+                "displayValue": "W8"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5731707,
+                "displayValue": ".573"
+              },
+              {
+                "name": "wins",
+                "value": 47.0,
+                "displayValue": "47"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "47-35"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "25-16"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "22-19"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "8-8"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "31-21"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "8-2"
+              }
+            ],
+            "team": {
+              "id": "20",
+              "displayName": "Philadelphia 76ers"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 108.39024,
+                "displayValue": "108.4"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 110.14634,
+                "displayValue": "110.1"
+              },
+              {
+                "name": "clincher",
+                "value": 7.0,
+                "displayValue": "xp"
+              },
+              {
+                "name": "differential",
+                "value": 1.6999999999999886,
+                "displayValue": "+1.7"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.8125,
+                "displayValue": "0.813"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 18.0,
+                "displayValue": "18"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.61538464,
+                "displayValue": "0.615"
+              },
+              {
+                "name": "losses",
+                "value": 36.0,
+                "displayValue": "36"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 8.0,
+                "displayValue": "8"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 144.0,
+                "displayValue": "+144"
+              },
+              {
+                "name": "points",
+                "value": 5.0,
+                "displayValue": "5.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 8888.0,
+                "displayValue": "8888"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9032.0,
+                "displayValue": "9032"
+              },
+              {
+                "name": "streak",
+                "value": 2.0,
+                "displayValue": "W2"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5609756,
+                "displayValue": ".561"
+              },
+              {
+                "name": "wins",
+                "value": 46.0,
+                "displayValue": "46"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "46-36"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "22-19"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "24-17"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "13-3"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "32-20"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "7-3"
+              }
+            ],
+            "team": {
+              "id": "14",
+              "displayName": "Miami Heat"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 113.70731,
+                "displayValue": "113.7"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 112.268295,
+                "displayValue": "112.3"
+              },
+              {
+                "name": "clincher",
+                "value": 6.0,
+                "displayValue": "pb"
+              },
+              {
+                "name": "differential",
+                "value": -1.4000000000000057,
+                "displayValue": "-1.4"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.4375,
+                "displayValue": "0.438"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 25.0,
+                "displayValue": "25"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.43137255,
+                "displayValue": "0.431"
+              },
+              {
+                "name": "losses",
+                "value": 43.0,
+                "displayValue": "43"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 9.0,
+                "displayValue": "9"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -118.0,
+                "displayValue": "-118"
+              },
+              {
+                "name": "points",
+                "value": -2.0,
+                "displayValue": "-2.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9324.0,
+                "displayValue": "9324"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9206.0,
+                "displayValue": "9206"
+              },
+              {
+                "name": "streak",
+                "value": -1.0,
+                "displayValue": "L1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.47560975,
+                "displayValue": ".476"
+              },
+              {
+                "name": "wins",
+                "value": 39.0,
+                "displayValue": "39"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "39-43"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "20-21"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "19-22"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "7-9"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "22-29"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "5-5"
+              }
+            ],
+            "team": {
+              "id": "4",
+              "displayName": "Chicago Bulls"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 120.48781,
+                "displayValue": "120.5"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 118.32927,
+                "displayValue": "118.3"
+              },
+              {
+                "name": "clincher",
+                "value": 6.0,
+                "displayValue": "pb"
+              },
+              {
+                "name": "differential",
+                "value": -2.200000000000003,
+                "displayValue": "-2.2"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.5,
+                "displayValue": "0.500"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 28.0,
+                "displayValue": "28"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.42307693,
+                "displayValue": "0.423"
+              },
+              {
+                "name": "losses",
+                "value": 46.0,
+                "displayValue": "46"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 10.0,
+                "displayValue": "10"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -177.0,
+                "displayValue": "-177"
+              },
+              {
+                "name": "points",
+                "value": -5.0,
+                "displayValue": "-5.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9880.0,
+                "displayValue": "9880"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9703.0,
+                "displayValue": "9703"
+              },
+              {
+                "name": "streak",
+                "value": -6.0,
+                "displayValue": "L6"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.4390244,
+                "displayValue": ".439"
+              },
+              {
+                "name": "wins",
+                "value": 36.0,
+                "displayValue": "36"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "36-46"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "21-20"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "15-26"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "8-8"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "22-30"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "3-7"
+              }
+            ],
+            "team": {
+              "id": "1",
+              "displayName": "Atlanta Hawks"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 113.256096,
+                "displayValue": "113.3"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 110.37805,
+                "displayValue": "110.4"
+              },
+              {
+                "name": "clincher",
+                "value": 4.0,
+                "displayValue": "e"
+              },
+              {
+                "name": "differential",
+                "value": -2.8999999999999915,
+                "displayValue": "-2.9"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.3125,
+                "displayValue": "0.313"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 32.0,
+                "displayValue": "32"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.46153846,
+                "displayValue": "0.462"
+              },
+              {
+                "name": "losses",
+                "value": 50.0,
+                "displayValue": "50"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 11.0,
+                "displayValue": "11"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -236.0,
+                "displayValue": "-236"
+              },
+              {
+                "name": "points",
+                "value": -9.0,
+                "displayValue": "-9.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9287.0,
+                "displayValue": "9287"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9051.0,
+                "displayValue": "9051"
+              },
+              {
+                "name": "streak",
+                "value": -2.0,
+                "displayValue": "L2"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.3902439,
+                "displayValue": ".390"
+              },
+              {
+                "name": "wins",
+                "value": 32.0,
+                "displayValue": "32"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "32-50"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "20-21"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "12-29"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "5-11"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "24-28"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "5-5"
+              }
+            ],
+            "team": {
+              "id": "17",
+              "displayName": "Brooklyn Nets"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 118.79269,
+                "displayValue": "118.8"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 112.35366,
+                "displayValue": "112.4"
+              },
+              {
+                "name": "clincher",
+                "value": 4.0,
+                "displayValue": "e"
+              },
+              {
+                "name": "differential",
+                "value": -6.3999999999999915,
+                "displayValue": "-6.4"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.0625,
+                "displayValue": "0.063"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 39.0,
+                "displayValue": "39"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.34615386,
+                "displayValue": "0.346"
+              },
+              {
+                "name": "losses",
+                "value": 57.0,
+                "displayValue": "57"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 12.0,
+                "displayValue": "12"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -528.0,
+                "displayValue": "-528"
+              },
+              {
+                "name": "points",
+                "value": -16.0,
+                "displayValue": "-16.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9741.0,
+                "displayValue": "9741"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9213.0,
+                "displayValue": "9213"
+              },
+              {
+                "name": "streak",
+                "value": -4.0,
+                "displayValue": "L4"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.30487806,
+                "displayValue": ".305"
+              },
+              {
+                "name": "wins",
+                "value": 25.0,
+                "displayValue": "25"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "25-57"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "14-27"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "11-30"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "1-15"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "18-34"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "2-8"
+              }
+            ],
+            "team": {
+              "id": "28",
+              "displayName": "Toronto Raptors"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 116.82927,
+                "displayValue": "116.8"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 106.585365,
+                "displayValue": "106.6"
+              },
+              {
+                "name": "clincher",
+                "value": 4.0,
+                "displayValue": "e"
+              },
+              {
+                "name": "differential",
+                "value": -10.200000000000003,
+                "displayValue": "-10.2"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.375,
+                "displayValue": "0.375"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 43.0,
+                "displayValue": "43"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.26923078,
+                "displayValue": "0.269"
+              },
+              {
+                "name": "losses",
+                "value": 61.0,
+                "displayValue": "61"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 13.0,
+                "displayValue": "13"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -840.0,
+                "displayValue": "-840"
+              },
+              {
+                "name": "points",
+                "value": -20.0,
+                "displayValue": "-20.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9580.0,
+                "displayValue": "9580"
+              },
+              {
+                "name": "pointsFor",
+                "value": 8740.0,
+                "displayValue": "8740"
+              },
+              {
+                "name": "streak",
+                "value": 1.0,
+                "displayValue": "W1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.25609756,
+                "displayValue": ".256"
+              },
+              {
+                "name": "wins",
+                "value": 21.0,
+                "displayValue": "21"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "21-61"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "11-30"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "10-31"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "6-10"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "14-38"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "3-7"
+              }
+            ],
+            "team": {
+              "id": "30",
+              "displayName": "Charlotte Hornets"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 123.03658,
+                "displayValue": "123.0"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 113.743904,
+                "displayValue": "113.7"
+              },
+              {
+                "name": "clincher",
+                "value": 4.0,
+                "displayValue": "e"
+              },
+              {
+                "name": "differential",
+                "value": -9.299999999999997,
+                "displayValue": "-9.3"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.25,
+                "displayValue": "0.250"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 49.0,
+                "displayValue": "49"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.21153846,
+                "displayValue": "0.212"
+              },
+              {
+                "name": "losses",
+                "value": 67.0,
+                "displayValue": "67"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 14.0,
+                "displayValue": "14"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -762.0,
+                "displayValue": "-762"
+              },
+              {
+                "name": "points",
+                "value": -26.0,
+                "displayValue": "-26.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 10089.0,
+                "displayValue": "10089"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9327.0,
+                "displayValue": "9327"
+              },
+              {
+                "name": "streak",
+                "value": -6.0,
+                "displayValue": "L6"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.18292683,
+                "displayValue": ".183"
+              },
+              {
+                "name": "wins",
+                "value": 15.0,
+                "displayValue": "15"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "15-67"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "7-34"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "8-33"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "4-12"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "11-41"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "1-9"
+              }
+            ],
+            "team": {
+              "id": "27",
+              "displayName": "Washington Wizards"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 118.98781,
+                "displayValue": "119.0"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 109.87805,
+                "displayValue": "109.9"
+              },
+              {
+                "name": "clincher",
+                "value": 4.0,
+                "displayValue": "e"
+              },
+              {
+                "name": "differential",
+                "value": -9.099999999999994,
+                "displayValue": "-9.1"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.125,
+                "displayValue": "0.125"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 50.0,
+                "displayValue": "50"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.19607843,
+                "displayValue": "0.196"
+              },
+              {
+                "name": "losses",
+                "value": 68.0,
+                "displayValue": "68"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 15.0,
+                "displayValue": "15"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -747.0,
+                "displayValue": "-747"
+              },
+              {
+                "name": "points",
+                "value": -27.0,
+                "displayValue": "-27.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9757.0,
+                "displayValue": "9757"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9010.0,
+                "displayValue": "9010"
+              },
+              {
+                "name": "streak",
+                "value": -1.0,
+                "displayValue": "L1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.17073171,
+                "displayValue": ".171"
+              },
+              {
+                "name": "wins",
+                "value": 14.0,
+                "displayValue": "14"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "14-68"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "7-33"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "7-35"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "2-14"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "10-41"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "2-8"
+              }
+            ],
+            "team": {
+              "id": "8",
+              "displayName": "Detroit Pistons"
+            }
+          }
+        ],
+        "season": 2024
+      },
+      "name": "Eastern Conference"
+    },
+    {
+      "standings": {
+        "seasonType": 2,
+        "entries": [
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 112.67073,
+                "displayValue": "112.7"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 120.085365,
+                "displayValue": "120.1"
+              },
+              {
+                "name": "clincher",
+                "value": 3.0,
+                "displayValue": "z"
+              },
+              {
+                "name": "differential",
+                "value": 7.3999999999999915,
+                "displayValue": "+7.4"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.75,
+                "displayValue": "0.750"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.6923077,
+                "displayValue": "0.692"
+              },
+              {
+                "name": "losses",
+                "value": 25.0,
+                "displayValue": "25"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 1.0,
+                "displayValue": "1"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 608.0,
+                "displayValue": "+608"
+              },
+              {
+                "name": "points",
+                "value": 16.0,
+                "displayValue": "16.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9239.0,
+                "displayValue": "9239"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9847.0,
+                "displayValue": "9847"
+              },
+              {
+                "name": "streak",
+                "value": 5.0,
+                "displayValue": "W5"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.69512194,
+                "displayValue": ".695"
+              },
+              {
+                "name": "wins",
+                "value": 57.0,
+                "displayValue": "57"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "57-25"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "33-8"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "24-17"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "12-4"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "36-16"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "7-3"
+              }
+            ],
+            "team": {
+              "id": "25",
+              "displayName": "Oklahoma City Thunder"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 109.597565,
+                "displayValue": "109.6"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 114.85366,
+                "displayValue": "114.9"
+              },
+              {
+                "name": "clincher",
+                "value": 1.0,
+                "displayValue": "x"
+              },
+              {
+                "name": "differential",
+                "value": 5.300000000000011,
+                "displayValue": "+5.3"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.625,
+                "displayValue": "0.625"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.63461536,
+                "displayValue": "0.635"
+              },
+              {
+                "name": "losses",
+                "value": 25.0,
+                "displayValue": "25"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 2.0,
+                "displayValue": "2"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 431.0,
+                "displayValue": "+431"
+              },
+              {
+                "name": "points",
+                "value": 16.0,
+                "displayValue": "16.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 8987.0,
+                "displayValue": "8987"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9418.0,
+                "displayValue": "9418"
+              },
+              {
+                "name": "streak",
+                "value": 1.0,
+                "displayValue": "W1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.69512194,
+                "displayValue": ".695"
+              },
+              {
+                "name": "wins",
+                "value": 57.0,
+                "displayValue": "57"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "57-25"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "33-8"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "24-17"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "10-6"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "33-19"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "6-4"
+              }
+            ],
+            "team": {
+              "id": "7",
+              "displayName": "Denver Nuggets"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 106.52439,
+                "displayValue": "106.5"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 112.97561,
+                "displayValue": "113.0"
+              },
+              {
+                "name": "clincher",
+                "value": 1.0,
+                "displayValue": "x"
+              },
+              {
+                "name": "differential",
+                "value": 6.5,
+                "displayValue": "+6.5"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.75,
+                "displayValue": "0.750"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 1.0,
+                "displayValue": "1"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.71153843,
+                "displayValue": "0.712"
+              },
+              {
+                "name": "losses",
+                "value": 26.0,
+                "displayValue": "26"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 3.0,
+                "displayValue": "3"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 529.0,
+                "displayValue": "+529"
+              },
+              {
+                "name": "points",
+                "value": 15.0,
+                "displayValue": "15.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 8735.0,
+                "displayValue": "8735"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9264.0,
+                "displayValue": "9264"
+              },
+              {
+                "name": "streak",
+                "value": -1.0,
+                "displayValue": "L1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.68292683,
+                "displayValue": ".683"
+              },
+              {
+                "name": "wins",
+                "value": 56.0,
+                "displayValue": "56"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "56-26"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "30-11"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "26-15"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "12-4"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "37-15"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "6-4"
+              }
+            ],
+            "team": {
+              "id": "16",
+              "displayName": "Minnesota Timberwolves"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 112.34146,
+                "displayValue": "112.3"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 115.62195,
+                "displayValue": "115.6"
+              },
+              {
+                "name": "clincher",
+                "value": 2.0,
+                "displayValue": "y"
+              },
+              {
+                "name": "differential",
+                "value": 3.299999999999997,
+                "displayValue": "+3.3"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.5625,
+                "displayValue": "0.563"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 6.0,
+                "displayValue": "6"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.5769231,
+                "displayValue": "0.577"
+              },
+              {
+                "name": "losses",
+                "value": 31.0,
+                "displayValue": "31"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 4.0,
+                "displayValue": "4"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 269.0,
+                "displayValue": "+269"
+              },
+              {
+                "name": "points",
+                "value": 10.0,
+                "displayValue": "10.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9212.0,
+                "displayValue": "9212"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9481.0,
+                "displayValue": "9481"
+              },
+              {
+                "name": "streak",
+                "value": -3.0,
+                "displayValue": "L3"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.6219512,
+                "displayValue": ".622"
+              },
+              {
+                "name": "wins",
+                "value": 51.0,
+                "displayValue": "51"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "51-31"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "25-16"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "26-15"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "9-7"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "30-22"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "6-4"
+              }
+            ],
+            "team": {
+              "id": "12",
+              "displayName": "LA Clippers"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 115.64634,
+                "displayValue": "115.6"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 117.85366,
+                "displayValue": "117.9"
+              },
+              {
+                "name": "clincher",
+                "value": 2.0,
+                "displayValue": "y"
+              },
+              {
+                "name": "differential",
+                "value": 2.3000000000000114,
+                "displayValue": "+2.3"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.6875,
+                "displayValue": "0.688"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 7.0,
+                "displayValue": "7"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.59615386,
+                "displayValue": "0.596"
+              },
+              {
+                "name": "losses",
+                "value": 32.0,
+                "displayValue": "32"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 5.0,
+                "displayValue": "5"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 181.0,
+                "displayValue": "+181"
+              },
+              {
+                "name": "points",
+                "value": 9.0,
+                "displayValue": "9.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9483.0,
+                "displayValue": "9483"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9664.0,
+                "displayValue": "9664"
+              },
+              {
+                "name": "streak",
+                "value": -2.0,
+                "displayValue": "L2"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.6097561,
+                "displayValue": ".610"
+              },
+              {
+                "name": "wins",
+                "value": 50.0,
+                "displayValue": "50"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "50-32"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "25-16"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "25-16"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "11-5"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "31-21"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "7-3"
+              }
+            ],
+            "team": {
+              "id": "6",
+              "displayName": "Dallas Mavericks"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 113.18293,
+                "displayValue": "113.2"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 116.243904,
+                "displayValue": "116.2"
+              },
+              {
+                "name": "clincher",
+                "value": 1.0,
+                "displayValue": "x"
+              },
+              {
+                "name": "differential",
+                "value": 3.0,
+                "displayValue": "+3.0"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.5,
+                "displayValue": "0.500"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 8.0,
+                "displayValue": "8"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.5576923,
+                "displayValue": "0.558"
+              },
+              {
+                "name": "losses",
+                "value": 33.0,
+                "displayValue": "33"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 6.0,
+                "displayValue": "6"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 251.0,
+                "displayValue": "+251"
+              },
+              {
+                "name": "points",
+                "value": 8.0,
+                "displayValue": "8.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9281.0,
+                "displayValue": "9281"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9532.0,
+                "displayValue": "9532"
+              },
+              {
+                "name": "streak",
+                "value": 3.0,
+                "displayValue": "W3"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.597561,
+                "displayValue": ".598"
+              },
+              {
+                "name": "wins",
+                "value": 49.0,
+                "displayValue": "49"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "49-33"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "25-16"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "24-17"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "9-9"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "29-23"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "7-3"
+              }
+            ],
+            "team": {
+              "id": "21",
+              "displayName": "Phoenix Suns"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 110.65854,
+                "displayValue": "110.7"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 115.07317,
+                "displayValue": "115.1"
+              },
+              {
+                "name": "clincher",
+                "value": 7.0,
+                "displayValue": "xp"
+              },
+              {
+                "name": "differential",
+                "value": 4.3999999999999915,
+                "displayValue": "+4.4"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.5625,
+                "displayValue": "0.563"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 8.0,
+                "displayValue": "8"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.5769231,
+                "displayValue": "0.577"
+              },
+              {
+                "name": "losses",
+                "value": 33.0,
+                "displayValue": "33"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 8.0,
+                "displayValue": "8"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 362.0,
+                "displayValue": "+362"
+              },
+              {
+                "name": "points",
+                "value": 8.0,
+                "displayValue": "8.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9074.0,
+                "displayValue": "9074"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9436.0,
+                "displayValue": "9436"
+              },
+              {
+                "name": "streak",
+                "value": -1.0,
+                "displayValue": "L1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.597561,
+                "displayValue": ".598"
+              },
+              {
+                "name": "wins",
+                "value": 49.0,
+                "displayValue": "49"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "49-33"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "21-19"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "28-14"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "9-7"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "30-22"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "5-5"
+              }
+            ],
+            "team": {
+              "id": "3",
+              "displayName": "New Orleans Pelicans"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 117.439026,
+                "displayValue": "117.4"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 118.03658,
+                "displayValue": "118.0"
+              },
+              {
+                "name": "clincher",
+                "value": 7.0,
+                "displayValue": "xp"
+              },
+              {
+                "name": "differential",
+                "value": 0.5999999999999943,
+                "displayValue": "+0.6"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.4117647,
+                "displayValue": "0.412"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 10.0,
+                "displayValue": "10"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.5192308,
+                "displayValue": "0.519"
+              },
+              {
+                "name": "losses",
+                "value": 35.0,
+                "displayValue": "35"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 7.0,
+                "displayValue": "7"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 49.0,
+                "displayValue": "+49"
+              },
+              {
+                "name": "points",
+                "value": 6.0,
+                "displayValue": "6.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9630.0,
+                "displayValue": "9630"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9679.0,
+                "displayValue": "9679"
+              },
+              {
+                "name": "streak",
+                "value": 2.0,
+                "displayValue": "W2"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5731707,
+                "displayValue": ".573"
+              },
+              {
+                "name": "wins",
+                "value": 47.0,
+                "displayValue": "47"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "47-35"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "28-14"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "19-21"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "7-10"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "27-25"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "7-3"
+              }
+            ],
+            "team": {
+              "id": "13",
+              "displayName": "Los Angeles Lakers"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 114.81707,
+                "displayValue": "114.8"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 116.560974,
+                "displayValue": "116.6"
+              },
+              {
+                "name": "clincher",
+                "value": 6.0,
+                "displayValue": "pb"
+              },
+              {
+                "name": "differential",
+                "value": 1.7999999999999972,
+                "displayValue": "+1.8"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.5882353,
+                "displayValue": "0.588"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 11.0,
+                "displayValue": "11"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.5769231,
+                "displayValue": "0.577"
+              },
+              {
+                "name": "losses",
+                "value": 36.0,
+                "displayValue": "36"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 9.0,
+                "displayValue": "9"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 143.0,
+                "displayValue": "+143"
+              },
+              {
+                "name": "points",
+                "value": 5.0,
+                "displayValue": "5.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9415.0,
+                "displayValue": "9415"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9558.0,
+                "displayValue": "9558"
+              },
+              {
+                "name": "streak",
+                "value": 1.0,
+                "displayValue": "W1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5609756,
+                "displayValue": ".561"
+              },
+              {
+                "name": "wins",
+                "value": 46.0,
+                "displayValue": "46"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "46-36"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "24-17"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "22-19"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "10-7"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "30-22"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "4-6"
+              }
+            ],
+            "team": {
+              "id": "23",
+              "displayName": "Sacramento Kings"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 115.15854,
+                "displayValue": "115.2"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 117.768295,
+                "displayValue": "117.8"
+              },
+              {
+                "name": "clincher",
+                "value": 6.0,
+                "displayValue": "pb"
+              },
+              {
+                "name": "differential",
+                "value": 2.5999999999999943,
+                "displayValue": "+2.6"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.4375,
+                "displayValue": "0.438"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 11.0,
+                "displayValue": "11"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.5,
+                "displayValue": "0.500"
+              },
+              {
+                "name": "losses",
+                "value": 36.0,
+                "displayValue": "36"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 10.0,
+                "displayValue": "10"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 214.0,
+                "displayValue": "+214"
+              },
+              {
+                "name": "points",
+                "value": 5.0,
+                "displayValue": "5.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9443.0,
+                "displayValue": "9443"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9657.0,
+                "displayValue": "9657"
+              },
+              {
+                "name": "streak",
+                "value": 1.0,
+                "displayValue": "W1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5609756,
+                "displayValue": ".561"
+              },
+              {
+                "name": "wins",
+                "value": 46.0,
+                "displayValue": "46"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "46-36"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "21-20"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "25-16"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "7-9"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "26-26"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "8-2"
+              }
+            ],
+            "team": {
+              "id": "9",
+              "displayName": "Golden State Warriors"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 113.20731,
+                "displayValue": "113.2"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 114.32927,
+                "displayValue": "114.3"
+              },
+              {
+                "name": "clincher",
+                "value": 4.0,
+                "displayValue": "e"
+              },
+              {
+                "name": "differential",
+                "value": 1.0999999999999943,
+                "displayValue": "+1.1"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.5625,
+                "displayValue": "0.563"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 16.0,
+                "displayValue": "16"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.53846157,
+                "displayValue": "0.538"
+              },
+              {
+                "name": "losses",
+                "value": 41.0,
+                "displayValue": "41"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 11.0,
+                "displayValue": "11"
+              },
+              {
+                "name": "pointDifferential",
+                "value": 92.0,
+                "displayValue": "+92"
+              },
+              {
+                "name": "points",
+                "value": 0.0,
+                "displayValue": "0.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9283.0,
+                "displayValue": "9283"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9375.0,
+                "displayValue": "9375"
+              },
+              {
+                "name": "streak",
+                "value": 2.0,
+                "displayValue": "W2"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.5,
+                "displayValue": ".500"
+              },
+              {
+                "name": "wins",
+                "value": 41.0,
+                "displayValue": "41"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "41-41"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "27-14"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "14-27"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "9-7"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "28-24"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "4-6"
+              }
+            ],
+            "team": {
+              "id": "10",
+              "displayName": "Houston Rockets"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 120.54878,
+                "displayValue": "120.5"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 115.65854,
+                "displayValue": "115.7"
+              },
+              {
+                "name": "clincher",
+                "value": 4.0,
+                "displayValue": "e"
+              },
+              {
+                "name": "differential",
+                "value": -4.799999999999997,
+                "displayValue": "-4.8"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.3125,
+                "displayValue": "0.313"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 26.0,
+                "displayValue": "26"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.30769232,
+                "displayValue": "0.308"
+              },
+              {
+                "name": "losses",
+                "value": 51.0,
+                "displayValue": "51"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 12.0,
+                "displayValue": "12"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -401.0,
+                "displayValue": "-401"
+              },
+              {
+                "name": "points",
+                "value": -10.0,
+                "displayValue": "-10.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9885.0,
+                "displayValue": "9885"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9484.0,
+                "displayValue": "9484"
+              },
+              {
+                "name": "streak",
+                "value": -1.0,
+                "displayValue": "L1"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.37804878,
+                "displayValue": ".378"
+              },
+              {
+                "name": "wins",
+                "value": 31.0,
+                "displayValue": "31"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "31-51"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "21-20"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "10-31"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "5-11"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "16-36"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "2-8"
+              }
+            ],
+            "team": {
+              "id": "26",
+              "displayName": "Utah Jazz"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 112.81707,
+                "displayValue": "112.8"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 105.81707,
+                "displayValue": "105.8"
+              },
+              {
+                "name": "clincher",
+                "value": 4.0,
+                "displayValue": "e"
+              },
+              {
+                "name": "differential",
+                "value": -7.0,
+                "displayValue": "-7.0"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.5,
+                "displayValue": "0.500"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 30.0,
+                "displayValue": "30"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.27450982,
+                "displayValue": "0.275"
+              },
+              {
+                "name": "losses",
+                "value": 55.0,
+                "displayValue": "55"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 13.0,
+                "displayValue": "13"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -574.0,
+                "displayValue": "-574"
+              },
+              {
+                "name": "points",
+                "value": -14.0,
+                "displayValue": "-14.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9251.0,
+                "displayValue": "9251"
+              },
+              {
+                "name": "pointsFor",
+                "value": 8677.0,
+                "displayValue": "8677"
+              },
+              {
+                "name": "streak",
+                "value": -5.0,
+                "displayValue": "L5"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.3292683,
+                "displayValue": ".329"
+              },
+              {
+                "name": "wins",
+                "value": 27.0,
+                "displayValue": "27"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "27-55"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "9-32"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "18-23"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "8-8"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "14-37"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "3-7"
+              }
+            ],
+            "team": {
+              "id": "29",
+              "displayName": "Memphis Grizzlies"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 118.585365,
+                "displayValue": "118.6"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 112.097565,
+                "displayValue": "112.1"
+              },
+              {
+                "name": "clincher",
+                "value": 4.0,
+                "displayValue": "e"
+              },
+              {
+                "name": "differential",
+                "value": -6.5,
+                "displayValue": "-6.5"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.1875,
+                "displayValue": "0.188"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 35.0,
+                "displayValue": "35"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.27450982,
+                "displayValue": "0.275"
+              },
+              {
+                "name": "losses",
+                "value": 60.0,
+                "displayValue": "60"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 14.0,
+                "displayValue": "14"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -532.0,
+                "displayValue": "-532"
+              },
+              {
+                "name": "points",
+                "value": -19.0,
+                "displayValue": "-19.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9724.0,
+                "displayValue": "9724"
+              },
+              {
+                "name": "pointsFor",
+                "value": 9192.0,
+                "displayValue": "9192"
+              },
+              {
+                "name": "streak",
+                "value": 2.0,
+                "displayValue": "W2"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.2682927,
+                "displayValue": ".268"
+              },
+              {
+                "name": "wins",
+                "value": 22.0,
+                "displayValue": "22"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "22-60"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "12-29"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "10-31"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "3-13"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "14-37"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "6-4"
+              }
+            ],
+            "team": {
+              "id": "24",
+              "displayName": "San Antonio Spurs"
+            }
+          },
+          {
+            "stats": [
+              {
+                "name": "avgPointsAgainst",
+                "value": 115.39024,
+                "displayValue": "115.4"
+              },
+              {
+                "name": "avgPointsFor",
+                "value": 106.36585,
+                "displayValue": "106.4"
+              },
+              {
+                "name": "clincher",
+                "value": 4.0,
+                "displayValue": "e"
+              },
+              {
+                "name": "differential",
+                "value": -9.0,
+                "displayValue": "-9.0"
+              },
+              {
+                "name": "divisionWinPercent",
+                "value": 0.0625,
+                "displayValue": "0.063"
+              },
+              {
+                "name": "gamesBehind",
+                "value": 36.0,
+                "displayValue": "36"
+              },
+              {
+                "name": "leagueWinPercent",
+                "value": 0.15384616,
+                "displayValue": "0.154"
+              },
+              {
+                "name": "losses",
+                "value": 61.0,
+                "displayValue": "61"
+              },
+              {
+                "name": "playoffSeed",
+                "value": 15.0,
+                "displayValue": "15"
+              },
+              {
+                "name": "pointDifferential",
+                "value": -740.0,
+                "displayValue": "-740"
+              },
+              {
+                "name": "points",
+                "value": -20.0,
+                "displayValue": "-20.0"
+              },
+              {
+                "name": "pointsAgainst",
+                "value": 9462.0,
+                "displayValue": "9462"
+              },
+              {
+                "name": "pointsFor",
+                "value": 8722.0,
+                "displayValue": "8722"
+              },
+              {
+                "name": "streak",
+                "value": -5.0,
+                "displayValue": "L5"
+              },
+              {
+                "name": "winPercent",
+                "value": 0.25609756,
+                "displayValue": ".256"
+              },
+              {
+                "name": "wins",
+                "value": 21.0,
+                "displayValue": "21"
+              },
+              {
+                "name": "gamesAhead",
+                "value": 0.0,
+                "displayValue": "-"
+              },
+              {
+                "name": "overall",
+                "value": null,
+                "displayValue": "21-61"
+              },
+              {
+                "name": "Home",
+                "value": null,
+                "displayValue": "11-30"
+              },
+              {
+                "name": "Road",
+                "value": null,
+                "displayValue": "10-31"
+              },
+              {
+                "name": "vs. Div.",
+                "value": null,
+                "displayValue": "1-15"
+              },
+              {
+                "name": "vs. Conf.",
+                "value": null,
+                "displayValue": "8-44"
+              },
+              {
+                "name": "Last Ten Games",
+                "value": null,
+                "displayValue": "2-8"
+              }
+            ],
+            "team": {
+              "id": "22",
+              "displayName": "Portland Trail Blazers"
+            }
+          }
+        ],
+        "season": 2024
+      },
+      "name": "Western Conference"
+    }
+  ],
+  "season": {
+    "year": 2024
+  }
+}

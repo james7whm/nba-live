@@ -8,7 +8,7 @@ on:
       tag:
         description: Published stable tag to resume syncing
         required: true
-        default: v1.2.4
+        default: v1.3.0
       withdraw:
         description: Mark an already withdrawn GitHub prerelease as preview on Gitee (keep attachments)
         type: boolean

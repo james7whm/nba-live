@@ -96,6 +96,7 @@ internal sealed class NativeTray : IDisposable
             AppendMenu(menu, 0, 3, "本次会话历史");
             AppendMenu(menu, 0, 16, "精彩收藏");
             AppendMenu(menu, 0, 9, "球员技术统计");
+            AppendMenu(menu, 0, 22, "球队与排名");
             AppendMenu(menu, 0, 10, "刚才发生了啥／事件回顾");
             AppendMenu(menu, CapsuleEnabled ? 8u : 0u, 11, "胶囊模式");
             AppendMenu(menu, ContentMode == OverlayContent.Text ? 8u : 0u, 12, "显示文字直播");

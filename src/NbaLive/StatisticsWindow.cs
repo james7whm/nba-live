@@ -11,7 +11,8 @@ internal sealed class StatisticsWindow : Window
     private readonly Func<FavoritePlayer, string?> _toggleFavorite;
     private readonly bool _demo;
     private readonly TextBlock _heading = Ui.Text("球员技术统计", 20);
-    private readonly MatchScoreLine _matchHeading = new(22,30);
+    private readonly MatchScoreLine _matchHeading = new(22,30,true);
+    internal event Action<string>? TeamRequested;
     private readonly TextBlock _progress = Ui.Text("", 12);
     private readonly TextBlock _status = Ui.Text("请选择比赛后查看球员统计", 11);
     private readonly Button _refresh;
@@ -36,6 +37,7 @@ internal sealed class StatisticsWindow : Window
         Func<FavoritePlayer, string?> toggleFavorite, Func<StatisticsPreset, StatisticsTableLayout[], string?> savePreferences)
     {
         _demo = demo;
+        _matchHeading.TeamRequested+=team=>TeamRequested?.Invoke(team);
         _coordinator = coordinator;
         _toggleFavorite = toggleFavorite;
         _savePreferences = savePreferences; _preset = settings.StatisticsPreset;
@@ -222,7 +224,7 @@ internal sealed class StatisticsWindow : Window
         _status.ToolTip = _status.Text + "\n统计窗口与球员卡共用订阅；没有消费者时停止。缺失数值显示 -，不当作 0。";
     }
 
-    private sealed class TeamSheet : DockPanel
+    internal sealed class TeamSheet : DockPanel
     {
         private readonly ObservableCollection<PlayerRow> _rows = [];
         private readonly Dictionary<string, PlayerRow> _byId = [];
@@ -267,11 +269,13 @@ internal sealed class StatisticsWindow : Window
         internal event Action<FavoritePlayer>? FollowRequested;
         internal event Action<PlayerStatistics>? PlayerRequested;
         internal event Action<StatisticsTableLayout>? LayoutChanged;
-        internal TeamSheet()
+        internal TeamSheet(bool archive=false)
         {
             Margin = new(12);
             var hint = Ui.Text("点击球员行查看本场详情 · 列标题排序 · 球衣标首发，红球／红字标在场", 10);
+            if(archive)hint.Text="历史单场数据 · 球衣标首发 · 名称沿用归档原文 · 未关联实时关注或球员投篮详情";
             hint.ToolTip = "球衣按本场首发身份固定配色，与实时在场无关。红色篮球和红字表示依据本场最新五人换人名单确认在场，可能存在刷新延迟；没有有效名单、赛前或赛后不显示实时在场标记。号码来自当前球队名单，历史比赛号码可能不同。\n得分／篮板／助攻括号为最近两次成功统计的变化；首次不标增量，数据下调标为修正。悬停球衣可查看首发／替补身份、在场依据和比较时间。\n投篮／三分／罚球为命中数-出手数，命中率由对应命中数／出手数计算，未出手显示 —；+/- 为在场净胜分。";
+            if(archive)hint.ToolTip="号码、首发与技术统计来自本场归档；不推测实时在场状态。球员编号独立核验，尚未关联实时关注和投篮详情。球队合计可能包含球队级失误，与球员逐项求和存在口径差异。";
             hint.Margin = new(0, 8, 0, 0);
             SetDock(hint, Dock.Bottom); Children.Add(hint);
             _grid.ItemsSource = _rows;
@@ -321,6 +325,7 @@ internal sealed class StatisticsWindow : Window
             star.SetValue(FontSizeProperty, 16.0);
             _grid.Columns.Add(new DataGridTemplateColumn { Header = "关注", Width = 42,
                 CellTemplate = new DataTemplate { VisualTree = star }, CanUserSort = false, CanUserReorder = false });
+            if(archive)_grid.Columns[0].Visibility=Visibility.Collapsed;
             _grid.AddHandler(Button.ClickEvent, new RoutedEventHandler((_, e) =>
             {
                 if (e.OriginalSource is Button { DataContext: PlayerRow row })

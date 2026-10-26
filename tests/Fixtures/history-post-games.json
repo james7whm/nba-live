@@ -1,0 +1,4935 @@
+{
+  "events": [
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "3",
+                "displayName": "New Orleans Pelicans"
+              },
+              "score": "106",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "13",
+                "displayName": "Los Angeles Lakers"
+              },
+              "score": "110",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "NBA Play-In - West - 7th Place vs 8th Place"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "1",
+            "abbreviation": "STD"
+          }
+        }
+      ],
+      "id": "401654655",
+      "seasonType": null,
+      "date": "2024-04-16T23:30Z",
+      "season": {
+        "year": 2024,
+        "type": 5,
+        "slug": "play-in-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "23",
+                "displayName": "Sacramento Kings"
+              },
+              "score": "118",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "9",
+                "displayName": "Golden State Warriors"
+              },
+              "score": "94",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "NBA Play-In - West - 9th Place vs 10th Place"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "1",
+            "abbreviation": "STD"
+          }
+        }
+      ],
+      "id": "401654656",
+      "seasonType": null,
+      "date": "2024-04-17T02:00Z",
+      "season": {
+        "year": 2024,
+        "type": 5,
+        "slug": "play-in-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "20",
+                "displayName": "Philadelphia 76ers"
+              },
+              "score": "105",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "14",
+                "displayName": "Miami Heat"
+              },
+              "score": "104",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "NBA Play-In - East - 7th Place vs 8th Place"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "1",
+            "abbreviation": "STD"
+          }
+        }
+      ],
+      "id": "401654659",
+      "seasonType": null,
+      "date": "2024-04-17T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 5,
+        "slug": "play-in-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "4",
+                "displayName": "Chicago Bulls"
+              },
+              "score": "131",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "1",
+                "displayName": "Atlanta Hawks"
+              },
+              "score": "116",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "NBA Play-In - East - 9th Place vs 10th Place"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "1",
+            "abbreviation": "STD"
+          }
+        }
+      ],
+      "id": "401654658",
+      "seasonType": null,
+      "date": "2024-04-18T01:48Z",
+      "season": {
+        "year": 2024,
+        "type": 5,
+        "slug": "play-in-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "14",
+                "displayName": "Miami Heat"
+              },
+              "score": "112",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "4",
+                "displayName": "Chicago Bulls"
+              },
+              "score": "91",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "NBA Play-In - East - 8th Seed Game"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "1",
+            "abbreviation": "STD"
+          }
+        }
+      ],
+      "id": "401654660",
+      "seasonType": null,
+      "date": "2024-04-19T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 5,
+        "slug": "play-in-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "3",
+                "displayName": "New Orleans Pelicans"
+              },
+              "score": "105",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "23",
+                "displayName": "Sacramento Kings"
+              },
+              "score": "98",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "NBA Play-In - West - 8th Seed Game"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "1",
+            "abbreviation": "STD"
+          }
+        }
+      ],
+      "id": "401654661",
+      "seasonType": null,
+      "date": "2024-04-20T01:30Z",
+      "season": {
+        "year": 2024,
+        "type": 5,
+        "slug": "play-in-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "97",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "19",
+                "displayName": "Orlando Magic"
+              },
+              "score": "83",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401654757",
+      "seasonType": null,
+      "date": "2024-04-20T17:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "120",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "21",
+                "displayName": "Phoenix Suns"
+              },
+              "score": "95",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401654759",
+      "seasonType": null,
+      "date": "2024-04-20T19:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "111",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "20",
+                "displayName": "Philadelphia 76ers"
+              },
+              "score": "104",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401654756",
+      "seasonType": null,
+      "date": "2024-04-20T22:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "114",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "13",
+                "displayName": "Los Angeles Lakers"
+              },
+              "score": "103",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401654758",
+      "seasonType": null,
+      "date": "2024-04-21T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "114",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "14",
+                "displayName": "Miami Heat"
+              },
+              "score": "94",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401654760",
+      "seasonType": null,
+      "date": "2024-04-21T17:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "12",
+                "displayName": "LA Clippers"
+              },
+              "score": "109",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "97",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401654763",
+      "seasonType": null,
+      "date": "2024-04-21T19:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "15",
+                "displayName": "Milwaukee Bucks"
+              },
+              "score": "109",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "94",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401654761",
+      "seasonType": null,
+      "date": "2024-04-21T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "25",
+                "displayName": "Oklahoma City Thunder"
+              },
+              "score": "94",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "3",
+                "displayName": "New Orleans Pelicans"
+              },
+              "score": "92",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401654762",
+      "seasonType": null,
+      "date": "2024-04-22T01:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "96",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "19",
+                "displayName": "Orlando Magic"
+              },
+              "score": "86",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655118",
+      "seasonType": null,
+      "date": "2024-04-22T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "104",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "20",
+                "displayName": "Philadelphia 76ers"
+              },
+              "score": "101",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655106",
+      "seasonType": null,
+      "date": "2024-04-22T23:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "101",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "13",
+                "displayName": "Los Angeles Lakers"
+              },
+              "score": "99",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655082",
+      "seasonType": null,
+      "date": "2024-04-23T02:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "105",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "21",
+                "displayName": "Phoenix Suns"
+              },
+              "score": "93",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655088",
+      "seasonType": null,
+      "date": "2024-04-23T23:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "15",
+                "displayName": "Milwaukee Bucks"
+              },
+              "score": "108",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "125",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655112",
+      "seasonType": null,
+      "date": "2024-04-24T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "12",
+                "displayName": "LA Clippers"
+              },
+              "score": "93",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "96",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655094",
+      "seasonType": null,
+      "date": "2024-04-24T02:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "101",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "14",
+                "displayName": "Miami Heat"
+              },
+              "score": "111",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655100",
+      "seasonType": null,
+      "date": "2024-04-24T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "25",
+                "displayName": "Oklahoma City Thunder"
+              },
+              "score": "124",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "3",
+                "displayName": "New Orleans Pelicans"
+              },
+              "score": "92",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655076",
+      "seasonType": null,
+      "date": "2024-04-25T01:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "19",
+                "displayName": "Orlando Magic"
+              },
+              "score": "121",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "83",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655119",
+      "seasonType": null,
+      "date": "2024-04-25T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "20",
+                "displayName": "Philadelphia 76ers"
+              },
+              "score": "125",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "114",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655107",
+      "seasonType": null,
+      "date": "2024-04-25T23:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "13",
+                "displayName": "Los Angeles Lakers"
+              },
+              "score": "105",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "112",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655083",
+      "seasonType": null,
+      "date": "2024-04-26T02:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "121",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "15",
+                "displayName": "Milwaukee Bucks"
+              },
+              "score": "118",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 5,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final/OT",
+              "shortDetail": "Final/OT",
+              "altDetail": "OT"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655113",
+      "seasonType": null,
+      "date": "2024-04-26T21:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "101",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "12",
+                "displayName": "LA Clippers"
+              },
+              "score": "90",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655095",
+      "seasonType": null,
+      "date": "2024-04-27T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "21",
+                "displayName": "Phoenix Suns"
+              },
+              "score": "109",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "126",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655089",
+      "seasonType": null,
+      "date": "2024-04-27T02:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "19",
+                "displayName": "Orlando Magic"
+              },
+              "score": "112",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "89",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655120",
+      "seasonType": null,
+      "date": "2024-04-27T17:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "3",
+                "displayName": "New Orleans Pelicans"
+              },
+              "score": "85",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "25",
+                "displayName": "Oklahoma City Thunder"
+              },
+              "score": "106",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655077",
+      "seasonType": null,
+      "date": "2024-04-27T19:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "14",
+                "displayName": "Miami Heat"
+              },
+              "score": "84",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "104",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655101",
+      "seasonType": null,
+      "date": "2024-04-27T22:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "13",
+                "displayName": "Los Angeles Lakers"
+              },
+              "score": "119",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "108",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655084",
+      "seasonType": null,
+      "date": "2024-04-28T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "20",
+                "displayName": "Philadelphia 76ers"
+              },
+              "score": "92",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "97",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655108",
+      "seasonType": null,
+      "date": "2024-04-28T17:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "111",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "12",
+                "displayName": "LA Clippers"
+              },
+              "score": "116",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655096",
+      "seasonType": null,
+      "date": "2024-04-28T19:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "126",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "15",
+                "displayName": "Milwaukee Bucks"
+              },
+              "score": "113",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655114",
+      "seasonType": null,
+      "date": "2024-04-28T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "21",
+                "displayName": "Phoenix Suns"
+              },
+              "score": "116",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "122",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655090",
+      "seasonType": null,
+      "date": "2024-04-29T01:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "14",
+                "displayName": "Miami Heat"
+              },
+              "score": "88",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "102",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655102",
+      "seasonType": null,
+      "date": "2024-04-29T23:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "3",
+                "displayName": "New Orleans Pelicans"
+              },
+              "score": "89",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "25",
+                "displayName": "Oklahoma City Thunder"
+              },
+              "score": "97",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655078",
+      "seasonType": null,
+      "date": "2024-04-30T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "108",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "13",
+                "displayName": "Los Angeles Lakers"
+              },
+              "score": "106",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655085",
+      "seasonType": null,
+      "date": "2024-04-30T02:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "106",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "20",
+                "displayName": "Philadelphia 76ers"
+              },
+              "score": "112",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 5,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final/OT",
+              "shortDetail": "Final/OT",
+              "altDetail": "OT"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655109",
+      "seasonType": null,
+      "date": "2024-04-30T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "104",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "19",
+                "displayName": "Orlando Magic"
+              },
+              "score": "103",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655121",
+      "seasonType": null,
+      "date": "2024-05-01T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "15",
+                "displayName": "Milwaukee Bucks"
+              },
+              "score": "115",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "92",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655115",
+      "seasonType": null,
+      "date": "2024-05-01T01:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "118",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "14",
+                "displayName": "Miami Heat"
+              },
+              "score": "84",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655103",
+      "seasonType": null,
+      "date": "2024-05-01T23:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "12",
+                "displayName": "LA Clippers"
+              },
+              "score": "93",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "123",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655097",
+      "seasonType": null,
+      "date": "2024-05-02T02:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "120",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "15",
+                "displayName": "Milwaukee Bucks"
+              },
+              "score": "98",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 6"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655116",
+      "seasonType": null,
+      "date": "2024-05-02T22:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "20",
+                "displayName": "Philadelphia 76ers"
+              },
+              "score": "115",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "118",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 6"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655110",
+      "seasonType": null,
+      "date": "2024-05-03T01:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "19",
+                "displayName": "Orlando Magic"
+              },
+              "score": "103",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "96",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 6"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655122",
+      "seasonType": null,
+      "date": "2024-05-03T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "114",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "12",
+                "displayName": "LA Clippers"
+              },
+              "score": "101",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West 1st Round - Game 6"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655098",
+      "seasonType": null,
+      "date": "2024-05-04T01:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "99",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "106",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657182",
+      "seasonType": null,
+      "date": "2024-05-04T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "106",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "19",
+                "displayName": "Orlando Magic"
+              },
+              "score": "94",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East 1st Round - Game 7"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "14",
+            "abbreviation": "RD16"
+          }
+        }
+      ],
+      "id": "401655123",
+      "seasonType": null,
+      "date": "2024-05-05T17:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "121",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "117",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657420",
+      "seasonType": null,
+      "date": "2024-05-06T23:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "80",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "106",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657183",
+      "seasonType": null,
+      "date": "2024-05-07T02:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "120",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "95",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658224",
+      "seasonType": null,
+      "date": "2024-05-07T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "25",
+                "displayName": "Oklahoma City Thunder"
+              },
+              "score": "117",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "95",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657231",
+      "seasonType": null,
+      "date": "2024-05-08T01:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "130",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "121",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657421",
+      "seasonType": null,
+      "date": "2024-05-09T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "94",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "118",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658225",
+      "seasonType": null,
+      "date": "2024-05-09T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "25",
+                "displayName": "Oklahoma City Thunder"
+              },
+              "score": "110",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "119",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658188",
+      "seasonType": null,
+      "date": "2024-05-10T01:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "111",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "106",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657422",
+      "seasonType": null,
+      "date": "2024-05-10T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "90",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "117",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657184",
+      "seasonType": null,
+      "date": "2024-05-11T01:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "105",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "25",
+                "displayName": "Oklahoma City Thunder"
+              },
+              "score": "101",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658190",
+      "seasonType": null,
+      "date": "2024-05-11T19:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "93",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "106",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658226",
+      "seasonType": null,
+      "date": "2024-05-12T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "121",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "89",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657423",
+      "seasonType": null,
+      "date": "2024-05-12T19:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "107",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "115",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657185",
+      "seasonType": null,
+      "date": "2024-05-13T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "102",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "109",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658227",
+      "seasonType": null,
+      "date": "2024-05-13T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "96",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "25",
+                "displayName": "Oklahoma City Thunder"
+              },
+              "score": "100",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658191",
+      "seasonType": null,
+      "date": "2024-05-14T01:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "121",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "91",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658196",
+      "seasonType": null,
+      "date": "2024-05-15T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "112",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "97",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657186",
+      "seasonType": null,
+      "date": "2024-05-15T02:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "113",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "5",
+                "displayName": "Cleveland Cavaliers"
+              },
+              "score": "98",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658228",
+      "seasonType": null,
+      "date": "2024-05-15T23:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "25",
+                "displayName": "Oklahoma City Thunder"
+              },
+              "score": "92",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "104",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658192",
+      "seasonType": null,
+      "date": "2024-05-16T01:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "115",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "70",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 6"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657187",
+      "seasonType": null,
+      "date": "2024-05-17T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "116",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "103",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 6"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658197",
+      "seasonType": null,
+      "date": "2024-05-18T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "117",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "25",
+                "displayName": "Oklahoma City Thunder"
+              },
+              "score": "116",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 6"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658194",
+      "seasonType": null,
+      "date": "2024-05-19T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "18",
+                "displayName": "New York Knicks"
+              },
+              "score": "109",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "130",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Semifinals - Game 7"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401658198",
+      "seasonType": null,
+      "date": "2024-05-19T19:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "7",
+                "displayName": "Denver Nuggets"
+              },
+              "score": "90",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "98",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Semifinals - Game 7"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "15",
+            "abbreviation": "QTR"
+          }
+        }
+      ],
+      "id": "401657188",
+      "seasonType": null,
+      "date": "2024-05-20T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "133",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "128",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Finals - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 5,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final/OT",
+              "shortDetail": "Final/OT",
+              "altDetail": "OT"
+            }
+          },
+          "type": {
+            "id": "16",
+            "abbreviation": "SEMI"
+          }
+        }
+      ],
+      "id": "401671998",
+      "seasonType": null,
+      "date": "2024-05-22T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "105",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "108",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Finals - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "16",
+            "abbreviation": "SEMI"
+          }
+        }
+      ],
+      "id": "401672976",
+      "seasonType": null,
+      "date": "2024-05-23T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "126",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "110",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Finals - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "16",
+            "abbreviation": "SEMI"
+          }
+        }
+      ],
+      "id": "401671999",
+      "seasonType": null,
+      "date": "2024-05-24T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "108",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "109",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Finals - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "16",
+            "abbreviation": "SEMI"
+          }
+        }
+      ],
+      "id": "401672977",
+      "seasonType": null,
+      "date": "2024-05-25T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "111",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "114",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Finals - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "16",
+            "abbreviation": "SEMI"
+          }
+        }
+      ],
+      "id": "401672000",
+      "seasonType": null,
+      "date": "2024-05-26T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "116",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "107",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Finals - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "16",
+            "abbreviation": "SEMI"
+          }
+        }
+      ],
+      "id": "401672978",
+      "seasonType": null,
+      "date": "2024-05-27T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "11",
+                "displayName": "Indiana Pacers"
+              },
+              "score": "102",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "105",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "East Finals - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "16",
+            "abbreviation": "SEMI"
+          }
+        }
+      ],
+      "id": "401672001",
+      "seasonType": null,
+      "date": "2024-05-28T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "100",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "105",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Finals - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "16",
+            "abbreviation": "SEMI"
+          }
+        }
+      ],
+      "id": "401672979",
+      "seasonType": null,
+      "date": "2024-05-29T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "16",
+                "displayName": "Minnesota Timberwolves"
+              },
+              "score": "103",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "124",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "West Finals - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "16",
+            "abbreviation": "SEMI"
+          }
+        }
+      ],
+      "id": "401672980",
+      "seasonType": null,
+      "date": "2024-05-31T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "107",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "89",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "NBA Finals - Game 1"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "17",
+            "abbreviation": "FINAL"
+          }
+        }
+      ],
+      "id": "401656359",
+      "seasonType": null,
+      "date": "2024-06-07T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "105",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "98",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "NBA Finals - Game 2"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "17",
+            "abbreviation": "FINAL"
+          }
+        }
+      ],
+      "id": "401656360",
+      "seasonType": null,
+      "date": "2024-06-10T00:00Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "99",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "106",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "NBA Finals - Game 3"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "17",
+            "abbreviation": "FINAL"
+          }
+        }
+      ],
+      "id": "401656361",
+      "seasonType": null,
+      "date": "2024-06-13T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "122",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "84",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "NBA Finals - Game 4"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "17",
+            "abbreviation": "FINAL"
+          }
+        }
+      ],
+      "id": "401656362",
+      "seasonType": null,
+      "date": "2024-06-15T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    },
+    {
+      "competitions": [
+        {
+          "competitors": [
+            {
+              "team": {
+                "id": "2",
+                "displayName": "Boston Celtics"
+              },
+              "score": "106",
+              "homeAway": "home"
+            },
+            {
+              "team": {
+                "id": "6",
+                "displayName": "Dallas Mavericks"
+              },
+              "score": "88",
+              "homeAway": "away"
+            }
+          ],
+          "notes": [
+            {
+              "type": "event",
+              "headline": "NBA Finals - Game 5"
+            }
+          ],
+          "status": {
+            "clock": 0.0,
+            "displayClock": "0.0",
+            "period": 4,
+            "type": {
+              "id": "3",
+              "name": "STATUS_FINAL",
+              "state": "post",
+              "completed": true,
+              "description": "Final",
+              "detail": "Final",
+              "shortDetail": "Final"
+            }
+          },
+          "type": {
+            "id": "17",
+            "abbreviation": "FINAL"
+          }
+        }
+      ],
+      "id": "401656363",
+      "seasonType": null,
+      "date": "2024-06-18T00:30Z",
+      "season": {
+        "year": 2024,
+        "type": 3,
+        "slug": "post-season"
+      }
+    }
+  ]
+}

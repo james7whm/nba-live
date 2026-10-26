@@ -1,4 +1,4 @@
-param([switch]$SkipTests, [string]$Version = '1.2.4', [string]$ArtifactSuffix = '', [switch]$Compatible, [switch]$Lite)
+param([switch]$SkipTests, [string]$Version = '1.3.0', [string]$ArtifactSuffix = '', [switch]$Compatible, [switch]$Lite)
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path -Parent $PSScriptRoot
 if ($Version -notmatch '^\d+\.\d+\.\d+$') { throw 'Version must be a numeric major.minor.patch value.' }
@@ -46,13 +46,19 @@ try {
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\TEAM-COLORS.md') -Destination (Join-Path $taskOutput 'docs\TEAM-COLORS.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\COMPATIBILITY.md') -Destination (Join-Path $taskOutput 'docs\COMPATIBILITY.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\PLAYER-DETAIL.md') -Destination (Join-Path $taskOutput 'docs\PLAYER-DETAIL.md')
+    Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\TEAM-INSIGHTS.md') -Destination (Join-Path $taskOutput 'docs\TEAM-INSIGHTS.md')
+    Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\PLAY-IN.md') -Destination (Join-Path $taskOutput 'docs\PLAY-IN.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\UPDATES.md') -Destination (Join-Path $taskOutput 'docs\UPDATES.md')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\app-icon.png') -Destination (Join-Path $taskOutput 'docs\app-icon.png')
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\screenshots') -Destination (Join-Path $taskOutput 'docs') -Recurse
+    Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\designs') -Destination (Join-Path $taskOutput 'docs') -Recurse
     Copy-Item -LiteralPath (Join-Path $taskRoot 'docs\releases') -Destination (Join-Path $taskOutput 'docs') -Recurse
     $taskDotnetRoot = Split-Path -Parent $taskDotnet
     Copy-Item -LiteralPath (Join-Path $taskDotnetRoot 'LICENSE.txt') -Destination (Join-Path $taskOutput 'DOTNET-LICENSE.txt')
     Copy-Item -LiteralPath (Join-Path $taskDotnetRoot 'ThirdPartyNotices.txt') -Destination (Join-Path $taskOutput 'DOTNET-ThirdPartyNotices.txt')
+    if($ArtifactSuffix -in @('teams-preview','team-seasons-preview','bracket-preview','bracket-fix-preview','play-in-preview')){
+        Copy-Item -LiteralPath (Join-Path $taskRoot 'scripts\teams-preview.cmd') -Destination (Join-Path $taskOutput '球队面板预览.cmd')
+    }
     $taskManifestFiles = [ordered]@{}
     Get-ChildItem -LiteralPath $taskOutput -File -Recurse | Sort-Object FullName | ForEach-Object {
         $taskRelative = $_.FullName.Substring($taskOutput.Length + 1).Replace('\','/')

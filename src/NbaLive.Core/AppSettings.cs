@@ -9,6 +9,11 @@ public sealed record FavoritePlayer(string Id, string Name);
 
 public sealed record AppSettings
 {
+    public string LastBrowsedTeam { get; init; } = "";
+    public string LastTeamSeason {get;init;} = "";
+    public TeamPhase LastTeamPhase {get;init;}
+    public bool TeamBracketMode {get;init;}
+    public bool PlayInBracketMode {get;init;} = true;
     public double Width { get; init; } = 360;
     public double FontSize { get; init; } = 12;
     public double BackgroundOpacity { get; init; } = .92;
@@ -33,6 +38,9 @@ public sealed record AppSettings
     public StatisticsTableLayout[] StatisticsLayouts { get; init; } = [];
     public AppSettings Validate() => this with
     {
+        LastBrowsedTeam = TeamCatalog.Resolve(LastBrowsedTeam)?.Key ?? "",
+        LastTeamSeason = TeamScope.ValidSeason(LastTeamSeason)?LastTeamSeason:"",
+        LastTeamPhase = Enum.IsDefined(typeof(TeamPhase),LastTeamPhase)?LastTeamPhase:TeamPhase.Regular,
         Width = RuntimeCompat.IsFinite(Width) ? RuntimeCompat.Clamp(Width, 280, 480) : 360,
         FontSize = RuntimeCompat.IsFinite(FontSize) ? RuntimeCompat.Clamp(FontSize, 11, 16) : 12,
         BackgroundOpacity = RuntimeCompat.IsFinite(BackgroundOpacity) ? RuntimeCompat.Clamp(BackgroundOpacity, .2, 1) : .92,

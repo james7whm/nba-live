@@ -1,4 +1,4 @@
-param([Parameter(Mandatory)][ValidateSet('Inspect','Draft','Upload','Publish','Verify')][string]$Action,[string]$Commit='', [string]$Version='1.2.4', [long]$ReleaseId=0)
+param([Parameter(Mandatory)][ValidateSet('Inspect','Draft','Upload','Publish','Verify')][string]$Action,[string]$Commit='', [string]$Version='1.3.0', [long]$ReleaseId=0)
 $ErrorActionPreference='Stop'
 $taskRoot=Split-Path -Parent $PSScriptRoot
 if($env:GITHUB_ACTIONS -ne 'true' -or !$env:GH_TOKEN){throw 'Run this publisher through GitHub Actions'}

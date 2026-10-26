@@ -8,14 +8,69 @@
 
 原生 Windows NBA 悬浮文字直播工具。默认 **360×110 DIP**，提供置顶、胶囊收展、球员统计和比赛回顾；没有声音、闪烁或滚动动画，直播更新不会抢走键盘焦点。
 
-当前版本 **1.2.4**。[查看更新说明](docs/releases/1.2.4.md)。新用户建议选择在线安装包，原有本地配置与收藏继续保留。
+当前版本 **1.3.0**。[查看更新说明](docs/releases/1.3.0.md)。新用户建议选择在线安装包，原有本地配置与收藏继续保留。
+
+**v1.3.0 新增：球队与排名、历史赛季、季后赛及附加赛对阵图。** 支持赛季搜索、常规赛／附加赛／季后赛切换、当季排名与赛区、球队场均、近期赛果及系列赛。季后赛可查看完整晋级图，附加赛提供出线路线、单场比分、分节、球队对比和完整球员表，并区分2020特殊赛制。暖白／炭灰双主题，支持从选赛页、统计页球队名称及托盘打开。使用方式与数据范围见 [球队面板说明](docs/TEAM-INSIGHTS.md) 和 [附加赛说明](docs/PLAY-IN.md)。
+
+<details>
+<summary>附加赛对阵与单场数据（2023–24 真实归档，双主题）</summary>
+
+选择「赛季 → 附加赛」，全景上西下东，卡片显示常规赛位次与单场比分，右侧显示最终第7／8种子和实际首轮对手。点击比赛查看单场统计，点击出线席位定位该季季后赛。以下是当前 WPF 程序实际加载历史归档的截图。
+
+<table>
+  <tr><th>暖白 · 附加赛全景</th><th>炭灰 · 单场详情</th></tr>
+  <tr><td><img src="docs/screenshots/play-in-overview-warm.png" alt="2023–24 附加赛真实六场赛果与四个出线席位" width="480"></td><td><img src="docs/screenshots/play-in-detail-dark.png" alt="鹈鹕105比98国王真实分节与单场统计，炭灰主题" width="480"></td></tr>
+  <tr><th>暖白 · 2020 特殊赛制</th><th>炭灰 · 完整球员表</th></tr>
+  <tr><td><img src="docs/screenshots/play-in-2020-warm.png" alt="2020 开拓者126比122灰熊，第二场条件未触发" width="480"></td><td><img src="docs/screenshots/play-in-players-dark.png" alt="本场归档球员技术统计，首发球衣与居中数字" width="480"></td></tr>
+</table>
+
+归档球员姓名可能仅提供原文，目前不关联实时关注或球员投篮详情；缺失字段显示「—」。预览包、已验证年份和使用方式见 [附加赛说明](docs/PLAY-IN.md)。
+
+</details>
+
+<details>
+<summary>季后赛对阵图（2023–24 真实归档，双主题）</summary>
+
+在「球队与排名」选择赛季和「季后赛 → 对阵图」。西部、东部向中央总决赛汇聚，卡片数字为系列赛胜场；点击展开 G1 等赛果，比分始终按标题的球队顺序排列。窄窗口自动使用分区视图，也可单独查看总决赛。首次升级保留球队列表，之后记住图／表选择。
+
+<table>
+  <tr><th>暖白 · 全景</th><th>炭灰 · 系列赛详情</th></tr>
+  <tr><td><img src="docs/screenshots/bracket-overview-warm.png" alt="2023–24 季后赛真实对阵，暖白主题" width="480"></td><td><img src="docs/screenshots/bracket-series-dark.png" alt="2023–24 掘金对湖人五场赛果，炭灰主题" width="480"></td></tr>
+</table>
+
+本图来自实际 WPF 窗口与历史归档；不预填未来胜者，不将附加赛混入季后赛树。历史轮次资料缺失时明确提示，只连接已核验的晋级关系。
+
+</details>
+
+<details>
+<summary>历史赛季界面（2023–24 真实归档，双主题）</summary>
+
+以下为应用实际读取的历史归档，取样于 2026-10-26，不代表当天赛况。赛季与阶段共同限定排名、技术统计和赛果；右侧可独立滚动查看完整赛程与系列赛。
+
+<table>
+  <tr><th>暖白</th><th>炭灰</th></tr>
+  <tr><td><img src="docs/screenshots/teams-history-regular-warm.png" alt="2023–24 湖人常规赛真实归档，暖白主题" width="480"></td><td><img src="docs/screenshots/teams-history-regular-dark.png" alt="2023–24 湖人常规赛真实归档，炭灰主题" width="480"></td></tr>
+  <tr><td><img src="docs/screenshots/teams-history-playoffs-warm.png" alt="2023–24 湖人季后赛与系列赛真实归档，暖白主题" width="480"></td><td><img src="docs/screenshots/teams-history-playoffs-dark.png" alt="2023–24 湖人季后赛与系列赛真实归档，炭灰主题" width="480"></td></tr>
+</table>
+
+</details>
+
+<details>
+<summary>球队与排名界面（演示数据）</summary>
+
+<table>
+  <tr><th>暖白</th><th>炭灰</th></tr>
+  <tr><td><img src="docs/screenshots/teams-warm.png" alt="暖白球队与排名开发预览，数字为演示数据" width="480"></td><td><img src="docs/screenshots/teams-dark.png" alt="炭灰球队与排名开发预览，数字为演示数据" width="480"></td></tr>
+</table>
+
+</details>
 
 | 形态 | 适用场景 | GitHub | Gitee 国内源 |
 | --- | --- | --- | --- |
-| **在线安装包（推荐）** | Win10／11 x64；检测组件，缺少时经确认从微软下载 | [下载 EXE](https://github.com/james7whm/nba-live/releases/download/v1.2.4/NbaLive-1.2.4-online-setup-win-x64.exe) | [下载 EXE](https://gitee.com/james7whm/nba-live/releases/download/v1.2.4/NbaLive-1.2.4-online-setup-win-x64.exe) |
-| 现代轻量 ZIP | Win10／11 x64；须先安装 .NET 10 Desktop Runtime x64 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.2.4/NbaLive-1.2.4-lite-win-x64.zip) | [下载 ZIP](https://gitee.com/james7whm/nba-live/releases/download/v1.2.4/NbaLive-1.2.4-lite-win-x64.zip) |
-| 现代免安装完整版 ZIP | Win10／11 x64；包含运行环境，解压即用、适合离线或不便安装组件 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.2.4/NbaLive-1.2.4-win-x64.zip) | 不上传带环境的完整版，节约容量 |
-| Win7 兼容预览 ZIP | Win7 SP1／Win10／Win11 x64；需预装 .NET Framework 4.8 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.2.4/NbaLive-1.2.4-compatibility-preview-net48-win-x64.zip) | [下载 ZIP](https://gitee.com/james7whm/nba-live/releases/download/v1.2.4/NbaLive-1.2.4-compatibility-preview-net48-win-x64.zip) |
+| **在线安装包（推荐）** | Win10／11 x64；检测组件，缺少时经确认从微软下载 | [下载 EXE](https://github.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-online-setup-win-x64.exe) | [下载 EXE](https://gitee.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-online-setup-win-x64.exe) |
+| 现代轻量 ZIP | Win10／11 x64；须先安装 .NET 10 Desktop Runtime x64 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-lite-win-x64.zip) | [下载 ZIP](https://gitee.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-lite-win-x64.zip) |
+| 现代免安装完整版 ZIP | Win10／11 x64；包含运行环境，解压即用、适合离线或不便安装组件 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-win-x64.zip) | 不上传带环境的完整版，节约容量 |
+| Win7 兼容预览 ZIP | Win7 SP1／Win10／Win11 x64；需预装 .NET Framework 4.8 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-compatibility-preview-net48-win-x64.zip) | [下载 ZIP](https://gitee.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-compatibility-preview-net48-win-x64.zip) |
 
 Gitee 代码由 GitHub 镜像同步；发行附件由 GitHub Actions 单独复制，**从 v1.2.4 起只同步在线安装包、轻量 ZIP、兼容 ZIP 和各自校验文件，不上传带环境的免安装完整版**，既有历史附件不自动删除。刚发布时可能有同步延迟，可查看 [Gitee 发行列表](https://gitee.com/james7whm/nba-live/releases)。两个渠道同名附件应有相同 SHA256，不要将平台生成的源码 ZIP 当作应用包。
 
@@ -28,7 +83,7 @@ Gitee 代码由 GitHub 镜像同步；发行附件由 GitHub Actions 单独复�
 - 轻量版／在线安装版的一键更新只获取轻量 ZIP；完整版只获取完整版 ZIP；兼容版只获取兼容 ZIP。组件版本不够时轻量更新会保留当前程序，提示使用在线安装器补齐组件。完整版在 Gitee 不提供新版附件，会尝试 GitHub。
 - 在线安装器和主程序目前尚无可信代码签名，可能出现 SmartScreen「发布者未知」提示；安装包不会自动消除该提示。核对来源及 SHA256 后自行决定是否运行，无需关闭系统防护。
 
-**本版新增：** 在线安装器、现代轻量 ZIP 和按形态匹配的更新通道；减少完整版语言资源及部分界面缓存。设置与托盘继续提供更新提醒和一键升级，只有点击「下载并更新」才下载、校验并重启。v1.2.1 及更早版本需手动升级一次，使用方式与恢复说明见 [应用更新](docs/UPDATES.md)。
+**本版新增：** 球队与历史赛季、季后赛对阵图、附加赛路线及单场统计；修正赛季下拉箭头与加载提示。继续提供在线安装器、现代轻量 ZIP 和按形态匹配的更新通道。设置与托盘只有在点击「下载并更新」后才下载、校验并重启。v1.2.1 及更早版本需手动升级一次，使用方式与恢复说明见 [应用更新](docs/UPDATES.md)。
 
 ## 功能概览
 
@@ -44,6 +99,8 @@ Gitee 代码由 GitHub 镜像同步；发行附件由 GitHub Actions 单独复�
 | 球员单场详情 | 点击球员行查看全场／分节与加时统计、投篮落点、命中率及出手方式 |
 | 应用更新 | 安静提醒、国内源优先、手动确认下载与一键升级、失败恢复旧版 |
 | 球队得分 | 常规节／加时分节表，球队色累计比分曲线与时点比分提示 |
+| 球队与历史赛季 | 当季东西部／赛区、历史常规赛与季后赛、球队概览、场均和赛程 |
+| 季后赛与附加赛 | 完整晋级图、主队路径、单场赛果与统计、2020特殊赛制 |
 | 回顾与收藏 | 整理新增事件、查看本地规则摘要，手动收藏精彩原文 |
 | 双主题 | 默认暖白、可选炭灰；30 支球队 Logo、自定义日历与统一窗口样式 |
 
@@ -62,7 +119,7 @@ Gitee 代码由 GitHub 镜像同步；发行附件由 GitHub Actions 单独复�
 
 ## 界面预览
 
-以下均为**当前 WPF 程序实际渲染的界面截图，使用虚构演示数据**，不代表真实比赛、球员数据或实时服务状态。截图展示窗口内容；系统标题栏与桌面背景未包含在内。
+本节均为**当前 WPF 程序实际渲染的界面截图，使用虚构演示数据**，不代表真实比赛、球员数据或实时服务状态。上方单独标注的历史赛季截图使用真实归档。截图展示窗口内容；系统标题栏与桌面背景未包含在内。
 
 ### 悬浮直播与胶囊
 
@@ -240,7 +297,7 @@ Gitee 代码由 GitHub 镜像同步；发行附件由 GitHub Actions 单独复�
 
 命令行运行 `NbaLive.exe --demo`，使用明确标识的虚构数据，每 5 秒添加一条动态；不访问网络，配置与真实模式隔离。正式启动默认不会出现演示数据。真实模式与演示模式各限一个实例；同时运行时可给演示模式设置不同快捷键，避免注册冲突。
 
-开发检查可加 `--settings`、`--statistics`、`--history`、`--recap`、`--bookmarks` 自动打开对应窗口，或加 `--inspect-overlay` 临时让悬浮窗口显示在任务栏以便可访问性工具定位；这些参数用于首次启动测试进程，默认启动不启用。搭配 `--demo-opening` 可预览开赛初首发参考转为换人名单，搭配 `--demo-finished` 可预览赛后首发；这两个参数仅在 `--demo` 模式生效，均为虚构数据。
+开发检查可加 `--settings`、`--statistics`、`--teams`、`--history`、`--recap`、`--bookmarks` 自动打开对应窗口，或加 `--inspect-overlay` 临时让悬浮窗口显示在任务栏以便可访问性工具定位；这些参数用于首次启动测试进程，默认启动不启用。搭配 `--demo-opening` 可预览开赛初首发参考转为换人名单，搭配 `--demo-finished` 可预览赛后首发；这两个参数仅在 `--demo` 模式生效，均为虚构数据。
 
 `--demo --demo-picker` 可预览尚未选择比赛的初始界面，先打开演示比赛列表，选择后才开始虚构直播；`--demo-picker` 对真实模式无效，不会更改真实配置或订阅。
 

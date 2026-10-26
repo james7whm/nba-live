@@ -29,6 +29,7 @@ internal sealed class AppController : IDisposable
     private SettingsWindow? _settingsWindow;
     private HistoryWindow? _history;
     private StatisticsWindow? _statistics;
+    private TeamInsightsWindow? _teams;
     private RecapWindow? _recapWindow;
     private BookmarksWindow? _bookmarksWindow;
     private UpdateWindow? _updateWindow;
@@ -113,6 +114,7 @@ internal sealed class AppController : IDisposable
                 case 19: ApplyPreferences(_settings with { TextDelivery = TextDelivery.Latest }); Save(); break;
                 case 20: ApplyPreferences(_settings with { TextDelivery = TextDelivery.Paged }); Save(); break;
                 case 21: OpenUpdates(); break;
+                case 22: ShowTeams(); break;
             }
         };
         _hotkeys = new(new WindowInteropHelper(Overlay).Handle);
@@ -196,6 +198,7 @@ internal sealed class AppController : IDisposable
         if (_picker is not null) { if (!_allHidden) Ui.Present(_picker); return; }
         _picker = new(_source, _settings.FavoriteTeam);
         _picker.Selected += async game => await Select(game);
+        _picker.TeamsRequested+=ShowTeams;
         _picker.Closed += (_, _) => _picker = null;
         if (_allHidden) _hiddenWindows.Add(_picker); else Ui.Present(_picker);
     }
@@ -280,6 +283,27 @@ internal sealed class AppController : IDisposable
         _bookmarksWindow.Show();
     }
     internal void ShowStatistics() => OpenStatistics();
+    internal void ShowTeams()=>OpenTeams(null);
+    private void OpenTeams(string? requestedTeam)
+    {
+        RestoreWindows();
+        if(_teams is not null)
+        {
+            if(requestedTeam is not null)_teams.OpenTeam(requestedTeam);
+            Ui.Present(_teams);return;
+        }
+        var coordinator=new TeamInsightsCoordinator(_webSource is not null?new HistoricalTeamSource(_webSource):new DemoTeamInsightsSource());
+        if(TeamScope.ValidSeason(_settings.LastTeamSeason))_=coordinator.SelectScope(new(_settings.LastTeamSeason,_settings.LastTeamPhase));
+        var window=new TeamInsightsWindow(coordinator,_settings,_demo);_teams=window;
+        window.TeamSelected+=key=>{_settings=_settings with {LastBrowsedTeam=key};Save();};
+        window.ScopeSelected+=scope=>{_settings=_settings with {LastTeamSeason=scope.Season,LastTeamPhase=scope.Phase};Save();};
+        window.BracketModeSelected+=value=>{_settings=_settings with {TeamBracketMode=value};Save();};
+        window.PlayInModeSelected+=value=>{_settings=_settings with {PlayInBracketMode=value};Save();};
+        window.Closed+=(_,_)=>{if(ReferenceEquals(_teams,window))_teams=null;};
+        var initial=new[]{requestedTeam,_settings.LastBrowsedTeam,_settings.FavoriteTeam,_session.State.SelectedGame?.Home}.FirstOrDefault(key=>TeamCatalog.Resolve(key) is not null);
+        if(initial is not null)window.OpenTeam(initial,requestedTeam is not null);
+        Ui.Present(window);
+    }
     private async void OpenStatistics()
     {
         RestoreWindows();
@@ -290,6 +314,7 @@ internal sealed class AppController : IDisposable
             return _store.Save(_settings) ? null : "统计布局已在本次生效，但配置保存失败。";
         });
         _statistics = window;
+        window.TeamRequested+=team=>OpenTeams(team);
         window.ConfigureDetails(_webSource is not null ? new PlayerGameDetailSource(_webSource) : new DemoPlayerDetailSource());
         window.SetLiveState(_session.StructuredState);
         window.Closed += async (_, _) =>
@@ -372,7 +397,7 @@ internal sealed class AppController : IDisposable
             window.Hide();
         }
     }
-    private IEnumerable<Window> Windows() => new Window?[] { Overlay, _picker, _statistics, _settingsWindow, _history, _recapWindow, _bookmarksWindow, _updateWindow }.OfType<Window>();
+    private IEnumerable<Window> Windows() => new Window?[] { Overlay, _picker, _statistics, _teams, _settingsWindow, _history, _recapWindow, _bookmarksWindow, _updateWindow }.OfType<Window>();
     private void RestoreWindows()
     {
         if (_disposed) return;
@@ -405,6 +430,7 @@ internal sealed class AppController : IDisposable
         _updates.Dispose(); _updateSource.Dispose();
         _session.Dispose();
         _statistics?.Close();
+        _teams?.Close();
         _recapWindow?.Close();
         _bookmarksWindow?.Close();
         _statisticsCoordinator.Dispose();
