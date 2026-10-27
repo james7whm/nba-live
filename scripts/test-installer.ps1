@@ -1,4 +1,4 @@
-param([string]$Version='1.3.0', [string]$InstallerPath='')
+param([string]$Version='1.3.1', [string]$InstallerPath='')
 $ErrorActionPreference='Stop'
 if($env:GITHUB_ACTIONS -ne 'true' -or !$env:RUNNER_TEMP){throw 'Run only on a disposable GitHub Windows runner; this test installs a Microsoft runtime.'}
 if($Version -notmatch '^\d+\.\d+\.\d+$'){throw 'Invalid version'}

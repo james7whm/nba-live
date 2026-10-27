@@ -8,7 +8,9 @@
 
 原生 Windows NBA 悬浮文字直播工具。默认 **360×110 DIP**，提供置顶、胶囊收展、球员统计和比赛回顾；没有声音、闪烁或滚动动画，直播更新不会抢走键盘焦点。
 
-当前版本 **1.3.0**。[查看更新说明](docs/releases/1.3.0.md)。新用户建议选择在线安装包，原有本地配置与收藏继续保留。
+当前版本 **1.3.1**。[查看更新说明](docs/releases/1.3.1.md)。新用户建议选择在线安装包，原有本地配置与收藏继续保留。
+
+**v1.3.1 修复：球员详情编号匹配、加载失败提示与手动重试。** 保留现有关注及外观配置。
 
 **v1.3.0 新增：球队与排名、历史赛季、季后赛及附加赛对阵图。** 支持赛季搜索、常规赛／附加赛／季后赛切换、当季排名与赛区、球队场均、近期赛果及系列赛。季后赛可查看完整晋级图，附加赛提供出线路线、单场比分、分节、球队对比和完整球员表，并区分2020特殊赛制。暖白／炭灰双主题，支持从选赛页、统计页球队名称及托盘打开。使用方式与数据范围见 [球队面板说明](docs/TEAM-INSIGHTS.md) 和 [附加赛说明](docs/PLAY-IN.md)。
 
@@ -67,10 +69,10 @@
 
 | 形态 | 适用场景 | GitHub | Gitee 国内源 |
 | --- | --- | --- | --- |
-| **在线安装包（推荐）** | Win10／11 x64；检测组件，缺少时经确认从微软下载 | [下载 EXE](https://github.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-online-setup-win-x64.exe) | [下载 EXE](https://gitee.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-online-setup-win-x64.exe) |
-| 现代轻量 ZIP | Win10／11 x64；须先安装 .NET 10 Desktop Runtime x64 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-lite-win-x64.zip) | [下载 ZIP](https://gitee.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-lite-win-x64.zip) |
-| 现代免安装完整版 ZIP | Win10／11 x64；包含运行环境，解压即用、适合离线或不便安装组件 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-win-x64.zip) | 不上传带环境的完整版，节约容量 |
-| Win7 兼容预览 ZIP | Win7 SP1／Win10／Win11 x64；需预装 .NET Framework 4.8 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-compatibility-preview-net48-win-x64.zip) | [下载 ZIP](https://gitee.com/james7whm/nba-live/releases/download/v1.3.0/NbaLive-1.3.0-compatibility-preview-net48-win-x64.zip) |
+| **在线安装包（推荐）** | Win10／11 x64；检测组件，缺少时经确认从微软下载 | [下载 EXE](https://github.com/james7whm/nba-live/releases/download/v1.3.1/NbaLive-1.3.1-online-setup-win-x64.exe) | [下载 EXE](https://gitee.com/james7whm/nba-live/releases/download/v1.3.1/NbaLive-1.3.1-online-setup-win-x64.exe) |
+| 现代轻量 ZIP | Win10／11 x64；须先安装 .NET 10 Desktop Runtime x64 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.3.1/NbaLive-1.3.1-lite-win-x64.zip) | [下载 ZIP](https://gitee.com/james7whm/nba-live/releases/download/v1.3.1/NbaLive-1.3.1-lite-win-x64.zip) |
+| 现代免安装完整版 ZIP | Win10／11 x64；包含运行环境，解压即用、适合离线或不便安装组件 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.3.1/NbaLive-1.3.1-win-x64.zip) | 不上传带环境的完整版，节约容量 |
+| Win7 兼容预览 ZIP | Win7 SP1／Win10／Win11 x64；需预装 .NET Framework 4.8 | [下载 ZIP](https://github.com/james7whm/nba-live/releases/download/v1.3.1/NbaLive-1.3.1-compatibility-preview-net48-win-x64.zip) | [下载 ZIP](https://gitee.com/james7whm/nba-live/releases/download/v1.3.1/NbaLive-1.3.1-compatibility-preview-net48-win-x64.zip) |
 
 Gitee 代码由 GitHub 镜像同步；发行附件由 GitHub Actions 单独复制，**从 v1.2.4 起只同步在线安装包、轻量 ZIP、兼容 ZIP 和各自校验文件，不上传带环境的免安装完整版**，既有历史附件不自动删除。刚发布时可能有同步延迟，可查看 [Gitee 发行列表](https://gitee.com/james7whm/nba-live/releases)。两个渠道同名附件应有相同 SHA256，不要将平台生成的源码 ZIP 当作应用包。
 

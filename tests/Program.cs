@@ -102,12 +102,19 @@ if (args.Contains("--probe-player-detail"))
 {
     var gameIndex = Array.IndexOf(args, "--game"); var playerIndex = Array.IndexOf(args, "--player");
     if (gameIndex < 0 || playerIndex < 0) throw new ArgumentException("--probe-player-detail --game ID --player ID");
-    using var source = new WebGameSource(); var stats = await source.GetBoxScore(args[gameIndex + 1], default);
+    using var source = new WebGameSource(); var fileIndex = Array.IndexOf(args, "--box-score-file");
+    var stats = fileIndex >= 0 ? new BoxScoreParser().Parse(File.ReadAllText(args[fileIndex + 1]), args[gameIndex + 1], DateTimeOffset.UtcNow)
+        : await source.GetBoxScore(args[gameIndex + 1], default);
     var team = stats.Away.Players.Any(p => PlayerGameDetailParser.LegacyNumber(p.Id) == args[playerIndex + 1]) ? stats.Away : stats.Home;
     var query = new PlayerDetailQuery(stats.Game, team.Team, team.Players.Single(p => PlayerGameDetailParser.LegacyNumber(p.Id) == args[playerIndex + 1])) { StatisticsFetchedAt = stats.FetchedAt };
     var adapter = new PlayerGameDetailSource(source); var snapshot = await adapter.GetDetail(query, default);
     Console.WriteLine(JsonSerializer.Serialize(snapshot));
-    if (snapshot.Portrait is { } uri) Console.WriteLine(JsonSerializer.Serialize(new { PortraitBytes = (await adapter.GetPortrait(uri, default)).Length }));
+    if (snapshot.Portrait is { } uri)
+    {
+        try { Console.WriteLine(JsonSerializer.Serialize(new { PortraitBytes = (await adapter.GetPortrait(uri, default)).Length })); }
+        catch (Exception ex) when (ex is HttpRequestException or IOException or OperationCanceledException)
+        { Console.WriteLine(JsonSerializer.Serialize(new { PortraitUnavailable = ex.GetType().Name })); }
+    }
     return;
 }
 if (args.Contains("--probe-statistics"))

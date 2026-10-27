@@ -19,15 +19,32 @@ public sealed class PlayerGameDetailSource(WebGameSource transport) : IPlayerGam
             match = await new AnchorSource(transport).Resolve(query.Game, ct) ?? throw new SourceFormatException("未能唯一对应本场比赛");
             _matches.Clear(); _matchPlayers.Clear(); _teamPlayers.Clear(); _matches[query.Game.Id] = match;
         }
-        if (!_matchPlayers.TryGetValue(match.Id, out var roster))
-            _matchPlayers[match.Id] = roster = await transport.ReadMobile(new(Api + "playerMatchStats?matchId=" + Uri.EscapeDataString(match.Id)), false, ct);
-        var (teamId, ids) = PlayerGameDetailParser.MatchPlayers(roster, query, match.Id);
-        var mobileId = query.Player.Id;
-        if (!ids.Contains(mobileId))
+        string roster, teamId, mobileId;
+        for (var attempt = 0; ; attempt++)
         {
-            if (!_teamPlayers.TryGetValue(teamId, out var team))
-                _teamPlayers[teamId] = team = await transport.ReadMobile(new(Api + "teamPlayerList?competitionType=nba&competitionLeagueType=nba&leagueType=nba&teamId=" + Uri.EscapeDataString(teamId)), false, ct);
-            mobileId = PlayerGameDetailParser.ResolvePlayer(team, query.Player.Id, teamId, ids);
+            ct.ThrowIfCancellationRequested();
+            try
+            {
+                if (!_matchPlayers.TryGetValue(match.Id, out var cachedRoster))
+                    _matchPlayers[match.Id] = cachedRoster = await transport.ReadMobile(new(Api + "playerMatchStats?matchId=" + Uri.EscapeDataString(match.Id)), false, ct);
+                roster = cachedRoster;
+                var mapping = PlayerGameDetailParser.MatchPlayers(roster, query, match.Id);
+                teamId = mapping.TeamId; mobileId = query.Player.Id;
+                if (!mapping.PlayerIds.Contains(mobileId))
+                {
+                    if (!_teamPlayers.TryGetValue(teamId, out var team))
+                        _teamPlayers[teamId] = team = await transport.ReadMobile(new(Api + "teamPlayerList?competitionType=nba&competitionLeagueType=nba&leagueType=nba&teamId=" + Uri.EscapeDataString(teamId)), false, ct);
+                    mobileId = PlayerGameDetailParser.ResolvePlayer(team, query.Player.Id, teamId, mapping.PlayerIds);
+                }
+                break;
+            }
+            catch (SourceFormatException)
+            {
+                // A cached pregame roster or a corrected ID must not make a failure permanent.
+                // Retry the roster pair once; leave it invalidated if the refreshed mapping still fails.
+                _matchPlayers.Remove(match.Id); _teamPlayers.Clear();
+                if (attempt > 0) throw;
+            }
         }
         var json = await transport.ReadMobile(new(Api + "playerMatchShootPointsStats?matchId=" + Uri.EscapeDataString(match.Id) + "&playerId=" + Uri.EscapeDataString(mobileId)), false, ct);
         ct.ThrowIfCancellationRequested();

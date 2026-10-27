@@ -44,6 +44,22 @@ public interface IPlayerPortraitSource
     Task<byte[]> GetPortrait(Uri uri, CancellationToken ct);
 }
 
+// Explicitly verified cross-source aliases. Never infer identity from a player's name or statistics.
+internal static class PlayerDetailIdentity
+{
+    // Verified against game 169007 (2026-10-27), its team roster and single-game detail.
+    private static readonly (string WebLegacy, string DetailLegacy, string MobileId)[] Aliases =
+    [
+        ("153410", "62077", "1519326309480660992")
+    ];
+
+    internal static bool Matches(string originalId, string detailLegacy, string mobileId)
+    {
+        var legacy = PlayerGameDetailParser.LegacyNumber(originalId);
+        return detailLegacy == legacy || Aliases.Any(a => a.WebLegacy == legacy && a.DetailLegacy == detailLegacy && a.MobileId == mobileId);
+    }
+}
+
 public static class PlayerGameDetailParser
 {
     public static string LegacyNumber(string id)
@@ -85,8 +101,9 @@ public static class PlayerGameDetailParser
         using var doc = RosterDocument(json); var root = Get(doc.RootElement, "result");
         var list = Get(root, "list");
         if (S(Get(root, "info"), "teamId") != teamId || list.ValueKind != JsonValueKind.Array) throw new SourceFormatException("球员编号映射不可用");
-        var ids = list.EnumerateArray().Where(p => S(p, "player_id") == LegacyNumber(originalId)).Select(p => S(p, "playerId")).Distinct().ToArray();
-        if (ids.Length != 1 || !matchPlayers.Contains(ids[0])) throw new SourceFormatException("未能唯一对应本场球员编号");
+        var ids = list.EnumerateArray().Where(p => PlayerDetailIdentity.Matches(originalId, S(p, "player_id"), S(p, "playerId")))
+            .Select(p => S(p, "playerId")).Where(id => id.Length > 0 && matchPlayers.Contains(id)).Distinct().ToArray();
+        if (ids.Length != 1) throw new SourceFormatException("未能唯一对应本场球员编号");
         return ids[0];
     }
     public static bool DidNotPlay(string json, string playerId)
@@ -102,7 +119,7 @@ public static class PlayerGameDetailParser
     public static PlayerGameDetailSnapshot Parse(string json, PlayerDetailQuery query, string matchId, string playerId, string teamId, DateTimeOffset now)
     {
         using var doc = Document(json); var root = Get(doc.RootElement, "result");
-        if (S(root, "playerId") != playerId || (S(root, "nbaPid") != LegacyNumber(query.Player.Id) && playerId != query.Player.Id) ||
+        if (S(root, "playerId") != playerId || (!PlayerDetailIdentity.Matches(query.Player.Id, S(root, "nbaPid"), playerId) && playerId != query.Player.Id) ||
             !SameTeam(S(root, "teamName"), query.Team) || !SameTeam(S(root, "awayTeamName"), query.Game.Away) || !SameTeam(S(root, "homeTeamName"), query.Game.Home) ||
             (S(root, "matchId").Length > 0 && S(root, "matchId") != matchId)) throw new SourceFormatException("球员详情身份不匹配");
         var date = System.Text.RegularExpressions.Regex.Match(S(root, "matchTime"), @"\d{4}-\d{2}-\d{2}");

@@ -38,6 +38,8 @@ internal static class Program
                     if(Environment.GetCommandLineArgs().Contains("--teams-only")) { total+=await TeamInsightsRegression.Run(settings); total+=await PlayInRegression.Run(settings); continue; }
                     if(Environment.GetCommandLineArgs().Contains("--updates-only")) { total+=await UpdateRegression.Run(settings); continue; }
                     if(Environment.GetCommandLineArgs().Contains("--real-player-detail")) { total+=await PlayerDetailRegression.RunLive(settings); continue; }
+                    if(Environment.GetCommandLineArgs().Contains("--real-player-alias")) { total+=await PlayerDetailRegression.RunLive(settings, true); continue; }
+                    if(Environment.GetCommandLineArgs().Contains("--player-panel-only")) { total+=await PlayerDetailRegression.Run(settings); continue; }
                     if(!Environment.GetCommandLineArgs().Contains("--player-detail-only"))
                     {
                     var overlay=(Window)Activator.CreateInstance(assembly.GetType("NbaLive.OverlayWindow")!,BindingFlags.NonPublic|BindingFlags.Instance,null,[settings],null)!;

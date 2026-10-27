@@ -97,6 +97,7 @@ public sealed class PlayerDetailCoordinator(IPlayerGameDetailSource source, Func
             {
                 if (!Current(generation, ct)) return;
                 Publish(State with { Message = ex is SourceFormatException ? "详情数据源异常 · " + ex.Message : "详情连接中断，稍后重试", HasError = true, IsLoading = false });
+                if (ex is SourceFormatException && State.Query?.Game.Status is GameStatus.Finished or GameStatus.Cancelled) return;
                 wait = TimeSpan.FromSeconds(new[] { 5, 10, 20, 30 }[Math.Min(failures++, 3)]);
             }
             try { await _delay(wait, ct); } catch (OperationCanceledException) when (ct.IsCancellationRequested) { return; }

@@ -48,6 +48,23 @@ internal static class PlayerDetailRegression
             Check(shots.Count == 13 && shots.Count(s => s.Made) == 9, "real shot coordinates rendered");
             Check(((FrameworkElement)court).ActualHeight <= ((ScrollViewer)Field(panel, "_scroll")).ViewportHeight + 1, "whole court fits scroll viewport");
             Check(Find<TextBlock>(panel).Any(t => t.Text == "7/10") && Find<TextBlock>(panel).Any(t => t.Text == "22"), "two pointers and points displayed");
+            var detailCoordinator = (PlayerDetailCoordinator)Field(window, "_detailCoordinator");
+            var initial = new TaskCompletionSource<PlayerGameDetailSnapshot>();
+            detailCoordinator.Close(); details.Read = (_, _) => initial.Task;
+            Call(window, "OpenDetail", game.Away, player); await Pump();
+            Check(Find<TextBlock>(panel).Any(t => t.Text == "正在读取本场统计与投篮分布…"), "empty panel shows loading");
+            initial.SetException(new SourceFormatException("未能唯一对应本场球员编号")); await Pump();
+            Check(Find<TextBlock>(panel).Any(t => t.Text == "本场详情暂不可用，可稍后刷新。") && !Find<TextBlock>(panel).Any(t => t.Text.Contains("正在读取")), "failed load replaces body as well as footer");
+            Shot(window, "detail-error-" + settings.Theme);
+            var retry = new TaskCompletionSource<PlayerGameDetailSnapshot>(); details.Read = (_, _) => retry.Task;
+            detailCoordinator.Refresh(); await Pump();
+            Check(!Find<TextBlock>(panel).Any(t => t.Text.Contains("暂不可用")) && Find<TextBlock>(panel).Any(t => t.Text == "正在读取本场统计与投篮分布…"), "manual retry clears error body");
+            retry.SetResult(snapshot); await Pump();
+            var figure = ((Panel)Field(panel, "_figures")).Children[0];
+            details.Read = (_, _) => Task.FromException<PlayerGameDetailSnapshot>(new System.Net.Http.HttpRequestException());
+            detailCoordinator.Refresh(); await Pump();
+            Check(ReferenceEquals(((Panel)Field(panel, "_figures")).Children[0], figure) && Find<TextBlock>(panel).Any(t => t.Text == "22"), "failure retains valid figures without rebuilding reading content");
+            details.Read = null; detailCoordinator.Refresh(); await Pump();
             Shot(window, "towns-" + settings.Theme);
             var tabs = (Panel)Field(panel, "_tabs"); tabs.Children.OfType<Button>().Single(b => Equals(b.Content, "3")).RaiseEvent(new RoutedEventArgs(Button.ClickEvent)); await Pump();
             Check((int)panel.GetType().GetProperty("SelectedPeriod", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(panel)! == 3, "quarter selected");
@@ -73,10 +90,12 @@ internal static class PlayerDetailRegression
         finally { window.Close(); }
         return checks;
     }
-    internal static async Task<int> RunLive(AppSettings settings)
+    internal static async Task<int> RunLive(AppSettings settings, bool alias = false)
     {
-        using var source = new WebGameSource(); var box = await source.GetBoxScore("168869", default);
-        var player = box.Away.Players.Single(p => PlayerGameDetailParser.LegacyNumber(p.Id) == "150037");
+        using var source = new WebGameSource(); var args = Environment.GetCommandLineArgs(); var fileIndex = Array.IndexOf(args, "--box-score-file");
+        var box = fileIndex >= 0 ? new BoxScoreParser().Parse(File.ReadAllText(args[fileIndex + 1]), alias ? "169007" : "168869", DateTimeOffset.UtcNow)
+            : await source.GetBoxScore(alias ? "169007" : "168869", default);
+        var player = box.Away.Players.Single(p => PlayerGameDetailParser.LegacyNumber(p.Id) == (alias ? "153410" : "150037"));
         using var statistics = new StatisticsCoordinator(new Stats(box)); await statistics.SetGame(box.Game); await statistics.SetDemand(StatisticsConsumer.Window, true);
         var window = (Window)Activator.CreateInstance(Assembly.GetType("NbaLive.StatisticsWindow")!, BindingFlags.NonPublic | BindingFlags.Instance, null,
             [statistics, false, settings, new Func<FavoritePlayer, string?>(_ => null), new Func<StatisticsPreset, StatisticsTableLayout[], string?>((_, _) => null)], null)!;
@@ -84,20 +103,28 @@ internal static class PlayerDetailRegression
         try
         {
             Call(window, "OpenDetail", box.Away.Team, player); var coordinator = (PlayerDetailCoordinator)Field(window, "_detailCoordinator");
-            for (var i = 0; i < 160 && coordinator.State.Snapshot is null && !coordinator.State.HasError; i++) await Pump();
-            if (coordinator.State.Snapshot?.Shots.Count != 13) throw new Exception("Actual detail source failed: " + coordinator.State.Message);
+            for (var i = 0; i < 300 && coordinator.State.Snapshot is null; i++)
+            {
+                if (coordinator.State.HasError && coordinator.State.Message.StartsWith("详情数据源异常", StringComparison.Ordinal)) break;
+                await Pump();
+            }
+            if (coordinator.State.Snapshot?.Shots.Count != (alias ? 19 : 13)) throw new Exception("Actual detail source failed: " + coordinator.State.Message);
+            if (alias && (coordinator.State.Snapshot.Find(0)!.Statistics is not { Points: 31, Rebounds: 12, Assists: 6, FieldGoals: "9-19" } ||
+                coordinator.State.Snapshot.Number != "1" || coordinator.State.Snapshot.Shots.Count(s => s.Made) != 9)) throw new Exception("Alias detail totals differ from verified game");
             for (var i = 0; i < 30 && coordinator.State.Portrait is null; i++) await Pump();
             var panel = (FrameworkElement)Field(window, "_detail"); var image = (Border)Field(panel, "_portrait");
-            if (image.Background is not ImageBrush brush || brush.ImageSource is null) throw new Exception("Actual portrait was not decoded");
-            if (settings.Theme == AppTheme.Warm)
+            var portrait = (image.Background as ImageBrush)?.ImageSource as BitmapSource;
+            if (portrait is null && (!alias || ((FrameworkElement)Field(panel, "_jersey")).Visibility != Visibility.Visible)) throw new Exception("Actual portrait or jersey fallback was not rendered");
+            if (settings.Theme == AppTheme.Warm && portrait is not null)
             {
-                Directory.CreateDirectory("artifacts/player-detail-review"); var png = new PngBitmapEncoder(); png.Frames.Add(BitmapFrame.Create((BitmapSource)brush.ImageSource));
+                Directory.CreateDirectory("artifacts/player-detail-review"); var png = new PngBitmapEncoder(); png.Frames.Add(BitmapFrame.Create(portrait));
                 using var file = File.Create("artifacts/player-detail-review/decoded-avatar.png"); png.Save(file);
             }
             var scroll = (ScrollViewer)Field(panel, "_scroll"); scroll.ScrollToVerticalOffset(65); await Pump();
-            Shot(window, "actual-towns-" + settings.Theme);
-            scroll.ScrollToVerticalOffset(300); await Pump(); Shot(window, "actual-towns-shooting-" + settings.Theme);
-            scroll.ScrollToBottom(); await Pump(); Shot(window, "actual-towns-bottom-" + settings.Theme);
+            var name = alias ? "actual-lendeborg" : "actual-towns";
+            Shot(window, name + "-" + settings.Theme);
+            scroll.ScrollToVerticalOffset(300); await Pump(); Shot(window, name + "-shooting-" + settings.Theme);
+            scroll.ScrollToBottom(); await Pump(); Shot(window, name + "-bottom-" + settings.Theme);
             return 2;
         }
         finally { window.Close(); }
@@ -107,6 +134,7 @@ internal static class PlayerDetailRegression
     sealed class Detail(PlayerGameDetailSnapshot snapshot) : IPlayerGameDetailSource
     {
         public int Calls;
-        public Task<PlayerGameDetailSnapshot> GetDetail(PlayerDetailQuery query, CancellationToken ct) { Calls++; return Task.FromResult(snapshot with { Query = query, Name = query.Player.Name }); }
+        public Func<PlayerDetailQuery, CancellationToken, Task<PlayerGameDetailSnapshot>>? Read;
+        public Task<PlayerGameDetailSnapshot> GetDetail(PlayerDetailQuery query, CancellationToken ct) { Calls++; return Read is { } read ? read(query, ct) : Task.FromResult(snapshot with { Query = query, Name = query.Player.Name }); }
     }
 }

@@ -94,7 +94,7 @@ internal sealed class PlayerDetailPanel : Border
         }
         UpdateStar(); _status.Foreground = Ui.Brush(state.HasError ? "RedInk" : "MutedInk");
         _status.Text = (demo ? "演示数据 · " : "") + state.Message + (state.Snapshot is { } fetched ? "\n更新 " + MatchTime.Format(fetched.FetchedAt) : "");
-        if (!ReferenceEquals(_rendered, state.Snapshot) || changed)
+        if (state.Snapshot is null || !ReferenceEquals(_rendered, state.Snapshot) || changed)
         {
             _rendered = state.Snapshot; BuildFigures();
         }

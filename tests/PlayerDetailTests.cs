@@ -10,6 +10,9 @@ internal static class PlayerDetailTests
     internal static readonly PlayerStatistics Player = new("karlanthonytowns-150037.html", "卡尔-安东尼-唐斯", true, "C", "37", "9-13", "2-3", "2-3", 3, 7, 10, 3, 5, 1, 4, 0, 22, 2);
     internal static readonly PlayerDetailQuery Query = new(Game, "尼克斯", Player);
     const string Match = "1537445625157648384", MobilePlayer = "1901000000468026", Team = "1901000000501273";
+    const string LendeMatch = "1537808027304853504", LendeMobile = "1519326309480660992", LendeTeam = "1901000000501331";
+    static readonly PlayerDetailQuery LendeQuery = new(new("169007", "勇士", "掘金", 134, 114, GameStatus.Finished, "已结束", new(2026, 10, 27)), "勇士",
+        Player with { Id = "yaxellendeborg-153410.html", Name = "亚克塞尔-伦德博格", JerseyNumber = "1", Points = 31, Rebounds = 12, Assists = 6, FieldGoals = "9-19", ThreePointers = "1-8" });
     static string Fixture(string name) => File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", name));
     static string Detail => Fixture("player-detail-towns.json");
     static PlayerGameDetailSnapshot Parse(string? json = null, PlayerDetailQuery? query = null) => PlayerGameDetailParser.Parse(json ?? Detail, query ?? Query, Match, MobilePlayer, Team, DateTimeOffset.UtcNow);
@@ -21,6 +24,126 @@ internal static class PlayerDetailTests
     static Task Park(TimeSpan _, CancellationToken ct) => Task.Delay(Timeout.Infinite, ct);
     internal static readonly (string Name, Func<Task> Run)[] Cases =
     [
+        ("Player detail resolves verified Lendeborg alias and validates complete game detail", () => Sync(() =>
+        {
+            var box = new BoxScoreParser().Parse(Fixture("player-detail-lendeborg-box.html"), "169007", DateTimeOffset.UtcNow);
+            var original = box.Away.Players.Single(p => PlayerGameDetailParser.LegacyNumber(p.Id) == "153410");
+            Check(box.Game.Away == "勇士" && box.Game.Home == "掘金" && box.Game.AwayScore == 134 && box.Game.HomeScore == 114 && box.Game.Date == LendeQuery.Game.Date, "web game identity and date");
+            Check(original.Points == 31 && original.Rebounds == 12 && original.Assists == 6 && original.FieldGoals == "9-19", "web and mobile totals agree");
+            var mapping = PlayerGameDetailParser.MatchPlayers(Fixture("player-detail-lendeborg-roster.json"), LendeQuery, LendeMatch);
+            var id = PlayerGameDetailParser.ResolvePlayer(Fixture("player-detail-lendeborg-team.json"), LendeQuery.Player.Id, mapping.TeamId, mapping.PlayerIds);
+            var detail = PlayerGameDetailParser.Parse(Fixture("player-detail-lendeborg.json"), LendeQuery, LendeMatch, id, mapping.TeamId, DateTimeOffset.UtcNow);
+            var full = detail.Find(0)!.Statistics; var quarters = detail.Periods.Where(p => p.Period > 0).ToArray();
+            Check(id == LendeMobile && mapping.TeamId == LendeTeam && detail.Number == "1", "verified mobile ID and jersey");
+            Check(full.Points == 31 && full.Rebounds == 12 && full.Assists == 6 && full.FieldGoals == "9-19", "actual game totals");
+            Check(detail.Shots.Count == 19 && detail.Shots.Count(s => s.Made) == 9 && quarters.Sum(p => p.Statistics.Points) == 31 &&
+                quarters.Sum(p => p.Statistics.Rebounds) == 12 && quarters.Sum(p => p.Statistics.Assists) == 6, "quarters and shots reconcile");
+            Check(detail.Query.Player.Id == LendeQuery.Player.Id && full.Id == LendeQuery.Player.Id, "original identity retained for table and favorites");
+        })),
+        ("Player alias rejects ambiguous candidates, wrong mobile IDs and players outside current roster", () => Sync(() =>
+        {
+            var json = JsonNode.Parse(Fixture("player-detail-lendeborg-team.json"))!;
+            var list = json["result"]!["list"]!.AsArray();
+            var alias = list.Single(p => p!["playerId"]!.ToString() == LendeMobile)!;
+            var original = alias.DeepClone(); original["playerId"] = "other-mobile"; original["player_id"] = 153410; list.Add(original);
+            Reject(() => PlayerGameDetailParser.ResolvePlayer(json.ToJsonString(), LendeQuery.Player.Id, LendeTeam, [LendeMobile, "other-mobile"]));
+            Check(PlayerGameDetailParser.ResolvePlayer(json.ToJsonString(), LendeQuery.Player.Id, LendeTeam, [LendeMobile]) == LendeMobile, "only this match's roster is eligible");
+            Reject(() => PlayerGameDetailParser.ResolvePlayer(Fixture("player-detail-lendeborg-team.json"), LendeQuery.Player.Id, "wrong-team", [LendeMobile]));
+            Reject(() => PlayerGameDetailParser.ResolvePlayer(Fixture("player-detail-lendeborg-team.json"), LendeQuery.Player.Id, LendeTeam, []));
+            list.Remove(original); alias["playerId"] = "other-mobile";
+            Reject(() => PlayerGameDetailParser.ResolvePlayer(json.ToJsonString(), LendeQuery.Player.Id, LendeTeam, ["other-mobile"]));
+        })),
+        ("Player alias never bypasses detail response player, legacy, date or team checks", () => Sync(() =>
+        {
+            void Invalid(Action<JsonNode> edit, string mobile = LendeMobile)
+            {
+                var json = JsonNode.Parse(Fixture("player-detail-lendeborg.json"))!; edit(json["result"]!);
+                Reject(() => PlayerGameDetailParser.Parse(json.ToJsonString(), LendeQuery, LendeMatch, mobile, LendeTeam, DateTimeOffset.UtcNow));
+            }
+            Invalid(r => r["nbaPid"] = 62078); Invalid(r => r["playerId"] = "other-mobile");
+            Invalid(r => r["playerId"] = "other-mobile", "other-mobile");
+            Invalid(r => r["teamName"] = "掘金"); Invalid(r => r["matchTime"] = "已结束 2026-10-26");
+        })),
+        ("Player mapping refreshes both stale rosters once then caches successful mapping", async () =>
+        {
+            var paths = new List<string>(); var rosters = 0; var teams = 0;
+            using var transport = new WebGameSource(new Handler((request, _) =>
+            {
+                var path = request.RequestUri!.AbsolutePath.Split('/').Last(); paths.Add(path);
+                var body = path switch
+                {
+                    "scheduleList" => Schedule(),
+                    "playerMatchStats" => ++rosters == 1 ? Fixture("player-detail-lendeborg-roster.json").Replace(LendeMobile, "absent-player") : Fixture("player-detail-lendeborg-roster.json"),
+                    "teamPlayerList" => ++teams == 1 ? "{\"result\":{\"info\":{\"teamId\":\"" + LendeTeam + "\"},\"list\":[]}}" : Fixture("player-detail-lendeborg-team.json"),
+                    _ => Fixture("player-detail-lendeborg.json")
+                };
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(body) });
+            }));
+            var source = new PlayerGameDetailSource(transport); var detail = await source.GetDetail(LendeQuery, default); await source.GetDetail(LendeQuery, default);
+            Check(detail.Find(0)!.Statistics.Points == 31 && rosters == 2 && teams == 2, "both rosters refreshed and reused");
+            Check(paths.Count(p => p == "playerMatchShootPointsStats") == 2 && paths.Count(p => p == "scheduleList") == 1, "no duplicate detail or match requests");
+        }),
+        ("Permanent mapping failure is bounded and manual retry does not reuse the failed rosters", async () =>
+        {
+            var rosters = 0; var teams = 0; var details = 0; var recovered = false;
+            using var transport = new WebGameSource(new Handler((request, _) =>
+            {
+                var path = request.RequestUri!.AbsolutePath.Split('/').Last();
+                var body = path switch
+                {
+                    "scheduleList" => Schedule(),
+                    "playerMatchStats" => ReadRoster(), "teamPlayerList" => ReadTeam(), _ => ReadDetail()
+                };
+                string ReadRoster() { rosters++; return Fixture("player-detail-lendeborg-roster.json"); }
+                string ReadTeam() { teams++; return recovered ? Fixture("player-detail-lendeborg-team.json") : "{\"result\":{\"info\":{\"teamId\":\"" + LendeTeam + "\"},\"list\":[]}}"; }
+                string ReadDetail() { details++; return Fixture("player-detail-lendeborg.json"); }
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(body) });
+            }));
+            var source = new PlayerGameDetailSource(transport); var failed = false;
+            try { await source.GetDetail(LendeQuery, default); } catch (SourceFormatException) { failed = true; }
+            Check(failed && rosters == 2 && teams == 2 && details == 0, "failure retries only once and never fetches guessed detail");
+            recovered = true; await source.GetDetail(LendeQuery, default);
+            Check(rosters == 3 && teams == 3 && details == 1, "manual retry fetches clean rosters");
+        }),
+        ("Cancelling a mapping refresh cannot start detail requests or another retry", async () =>
+        {
+            using var cancel = new CancellationTokenSource(); var rosters = 0; var teams = 0; var details = 0;
+            using var transport = new WebGameSource(new Handler((request, _) =>
+            {
+                var path = request.RequestUri!.AbsolutePath.Split('/').Last(); string body;
+                if (path == "scheduleList") body = Schedule();
+                else if (path == "playerMatchStats") { if (++rosters == 2) cancel.Cancel(); body = Fixture("player-detail-lendeborg-roster.json"); }
+                else if (path == "teamPlayerList") { teams++; body = "{}"; }
+                else { details++; body = Fixture("player-detail-lendeborg.json"); }
+                return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(body) });
+            }));
+            var cancelled = false;
+            try { await new PlayerGameDetailSource(transport).GetDetail(LendeQuery, cancel.Token); } catch (OperationCanceledException) { cancelled = true; }
+            Check(cancelled && rosters == 2 && teams == 1 && details == 0, "cancelled mapping never continues requests");
+        }),
+        ("Finished player format error stops polling and recovers through manual refresh", async () =>
+        {
+            var calls = 0; var waits = 0; var pending = new TaskCompletionSource<PlayerGameDetailSnapshot>(TaskCreationOptions.RunContinuationsAsynchronously);
+            using var session = new PlayerDetailCoordinator(new Fake((q, _) => ++calls == 1 ? Task.FromException<PlayerGameDetailSnapshot>(new SourceFormatException("未能唯一对应本场球员编号")) : pending.Task),
+                (wait, ct) => { waits++; return Park(wait, ct); });
+            session.Select(Query); await Until(() => session.State.HasError);
+            Check(calls == 1 && waits == 0 && !session.State.IsLoading && session.State.Snapshot is null, "finished identity error stops automatically");
+            session.Refresh(); Check(session.State.IsLoading && !session.State.HasError && calls == 2, "manual retry clears old error");
+            pending.SetResult(Parse()); await Until(() => session.State.Snapshot is not null);
+            Check(!session.State.IsLoading && !session.State.HasError && waits == 0, "manual recovery stops after finished success");
+        }),
+        ("Live format errors and finished network errors retain automatic recovery", async () =>
+        {
+            foreach (var format in new[] { true, false })
+            {
+                var calls = 0; var waits = new List<int>(); var q = format ? Query with { Game = Game with { Status = GameStatus.Live } } : Query;
+                using var session = new PlayerDetailCoordinator(new Fake((selected, _) => ++calls == 1
+                    ? Task.FromException<PlayerGameDetailSnapshot>(format ? new SourceFormatException("unavailable") : new HttpRequestException())
+                    : Task.FromResult(Parse() with { Query = selected })), (wait, ct) => { waits.Add((int)wait.TotalSeconds); return waits.Count == 1 ? Task.CompletedTask : Park(wait, ct); });
+                session.Select(q); await Until(() => session.State.Snapshot is not null);
+                Check(calls == 2 && waits[0] == 5 && !session.State.HasError, "transient recovery remains enabled");
+            }
+        }),
         ("Player detail verifies Towns full game, quarters and 13 real shot coordinates", () => Sync(() =>
         {
             var s = Parse(); var full = s.Find(0)!.Statistics;
@@ -142,6 +265,7 @@ internal static class PlayerDetailTests
             Check(rejected == 2, "portrait limits");
         })
     ];
+    static string Schedule() => JsonSerializer.Serialize(new { success = true, result = new { gameList = new[] { new { day = "20261027", matchList = new[] { new { matchId = LendeMatch, awayTeamName = "勇士", homeTeamName = "掘金" } } } } } });
     static string StaleRoster()
     {
         var json = JsonNode.Parse(Fixture("player-detail-roster.json"))!; json["result"]!["awayPlayers"]![0]!["dnp"] = 1; return json.ToJsonString();
