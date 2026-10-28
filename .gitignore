@@ -6,3 +6,5 @@ artifacts/
 .idea/
 *.user
 **/__pycache__/
+macos/.build/
+macos/.swiftpm/
