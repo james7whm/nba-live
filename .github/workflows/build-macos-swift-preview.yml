@@ -1,6 +1,9 @@
 name: Build native macOS preview
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - codex/macos-swift
 permissions:
   contents: read
 jobs:
