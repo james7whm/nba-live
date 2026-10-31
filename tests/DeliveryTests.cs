@@ -183,7 +183,7 @@ internal static class DeliveryTests
             handler.ReleaseBox.TrySetResult();
             await Task.WhenAll(first, secondary, live);
             try { await cancelled; throw new Exception("Expected cancellation"); } catch (OperationCanceledException) when (cancel.IsCancellationRequested) { }
-            Check(handler.Paths.Count == 3 && handler.Paths[1].Contains("playbyplay") && handler.MaxActive == 1, "one HTTP request, live wins next slot, cancelled waiter never reaches network");
+            Check(handler.Paths.Count == 4 && handler.Paths[1].Contains("playbyplay") && handler.Paths[3].Contains("scheduleList") && handler.MaxActive == 1, "live wins next slot, optional schedule shares the gate, cancelled waiter never reaches network");
         }),
         ("Slow optional jersey metadata is bounded and releases the channel for live text", async () =>
         {

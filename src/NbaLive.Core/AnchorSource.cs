@@ -82,6 +82,32 @@ public static class AnchorParser
         var unique = candidates.DistinctBy(c => c.Id).ToArray();
         return unique.Length == 1 ? unique[0] : null;
     }
+    // A schedule response covers multiple days. Only use a unique date/team match,
+    // and never replace a final score with an incomplete or in-progress response.
+    public static IReadOnlyList<GameInfo> MergeSchedule(string json, IReadOnlyList<GameInfo> games)
+    {
+        using var document = Document(json);
+        var groups = Get(Get(document.RootElement, "result"), "gameList");
+        if (groups.ValueKind != JsonValueKind.Array) throw new SourceFormatException("比赛列表数据异常");
+        var items = new List<(string Day, JsonElement Item)>();
+        foreach (var group in groups.EnumerateArray())
+        {
+            var matches = Get(group, "matchList");
+            if (matches.ValueKind != JsonValueKind.Array) continue;
+            foreach (var item in matches.EnumerateArray()) items.Add((Str(group, "day"), item));
+        }
+        return games.Select(game =>
+        {
+            var matches = items.Where(x => x.Day == game.Date.ToString("yyyyMMdd", CultureInfo.InvariantCulture) &&
+                SameTeam(Str(x.Item, "awayTeamName"), game.Away) && SameTeam(Str(x.Item, "homeTeamName"), game.Home)).ToArray();
+            if (matches.Length != 1) return game;
+            var updated = ReadGame(matches[0].Item, game);
+            if (updated.Status is not (GameStatus.Live or GameStatus.Finished) ||
+                updated.AwayScore is null || updated.HomeScore is null ||
+                game.Status == GameStatus.Finished && updated.Status != GameStatus.Finished) return game;
+            return updated;
+        }).ToArray();
+    }
     public static MobileMatch Match(string json, MobileMatch match)
     {
         using var document = Document(json); var item = Get(document.RootElement, "result");

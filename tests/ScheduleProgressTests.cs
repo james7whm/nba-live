@@ -78,12 +78,24 @@ internal static class ScheduleProgressTests
                 }
             }
         })),
-        ("Native HTTP schedule uses the real live-card parser without per-game requests", async () =>
+        ("Mobile schedule corrects stale live score while preserving identity and refusing ambiguous matches", () => Sync(() =>
+        {
+            var old = new GameInfo("168866", "尼克斯", "76人", 90, 94, GameStatus.Live, "第四节剩30.0秒", Date);
+            const string item = "{\"matchId\":\"1537808028357623808\",\"awayTeamName\":\"尼克斯\",\"homeTeamName\":\"76人\",\"awayScore\":93,\"homeScore\":98,\"matchStatus\":\"COMPLETED\"}";
+            string Schedule(string entries) => "{\"success\":true,\"result\":{\"gameList\":[{\"day\":\"20261022\",\"matchList\":[" + entries + "]}]}}";
+            var updated = AnchorParser.MergeSchedule(Schedule(item), [old]).Single();
+            Check(updated is { Id: "168866", Status: GameStatus.Finished, AwayScore: 93, HomeScore: 98, Progress: "已结束" }, "fresh final replaces stale score");
+            Check(AnchorParser.MergeSchedule(Schedule(item + "," + item), [old]).Single() == old, "ambiguous matches do not override");
+            Check(AnchorParser.MergeSchedule(Schedule(item.Replace("\"homeScore\":98", "\"homeScore\":null")), [old]).Single() == old, "incomplete score does not override");
+            var final = old with { Status = GameStatus.Finished, Progress = "已结束" };
+            Check(AnchorParser.MergeSchedule(Schedule(item.Replace("COMPLETED", "INPROGRESS")), [final]).Single() == final, "final is not downgraded");
+        })),
+        ("Schedule falls back to webpage when optional mobile request fails", async () =>
         {
             var handler = new ScheduleHandler();
             using var source = new WebGameSource(handler);
             var games = await source.GetGames(Date, CancellationToken.None);
-            Check(handler.Calls == 1 && games.Single(g => g.Id == "168866") is { Status: GameStatus.Live, Progress: "第二节剩2:28" }, "actual source path retains live identity and clock in one read");
+            Check(handler.Calls == 2 && games.Single(g => g.Id == "168866") is { Status: GameStatus.Live, Progress: "第二节剩2:28" }, "web schedule remains available after mobile failure");
         })
     ];
     private static string Fixture() => File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "games-live-2026-10-22.html"));
@@ -97,6 +109,7 @@ internal static class ScheduleProgressTests
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
         {
             Calls++;
+            if (request.RequestUri!.Host == "games.mobileapi.hupu.com") throw new HttpRequestException("offline");
             Check(request.RequestUri!.AbsolutePath == "/games/2026-10-22", "one schedule endpoint");
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(Fixture()) });
         }

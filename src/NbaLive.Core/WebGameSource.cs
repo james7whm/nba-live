@@ -143,6 +143,18 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
     public async Task<IReadOnlyList<GameInfo>> GetGames(DateOnly date, CancellationToken cancellationToken)
     {
         var games = _parser.ParseGames(await Read($"/games/{date:yyyy-MM-dd}", cancellationToken), date);
+        if (date == MatchTime.Today || games.Any(g => g.Status == GameStatus.Live))
+        {
+            try
+            {
+                var json = await ReadMobile(new Uri("http://games.mobileapi.hupu.com/1/7.5.59/basketballapi/scheduleList?competitionTag=nba&time_zone=Asia%2FShanghai"), false, cancellationToken);
+                games = AnchorParser.MergeSchedule(json, games);
+            }
+            catch (Exception ex) when (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !cancellationToken.IsCancellationRequested)
+            {
+                // The optional mobile schedule must not make the original list unavailable.
+            }
+        }
         foreach (var game in games) _knownGames[game.Id] = game;
         return games;
     }

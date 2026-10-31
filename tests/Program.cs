@@ -275,6 +275,7 @@ var tests = new (string Name, Func<Task> Run)[]
             "<div class='team_vs_a_1'><div class='txt'><a>客队</a></div></div><div class='team_vs_a_2'><div class='txt'><a>主队</a></div></div>" +
             "<div class='team_vs_b'>未开始 09:30</div><a href='/games/boxscore/1'>比赛前瞻</a></div></div></div>";
         var handler = new FakeHttpHandler([new(System.Net.HttpStatusCode.OK) { Content = new StringContent(list) },
+            new(System.Net.HttpStatusCode.ServiceUnavailable), // optional mobile schedule
             new(System.Net.HttpStatusCode.OK) { Content = new StringContent("") }, new(System.Net.HttpStatusCode.NotFound),
             new(System.Net.HttpStatusCode.Found) { Headers = { Location = new Uri(SourcePages.BaseUri, "games/boxscore/1") } },
             new(System.Net.HttpStatusCode.OK) { Content = new StringContent(Page(Rows(Row("1", "12:00", "第一节开始")))) }]);
