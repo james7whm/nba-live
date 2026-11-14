@@ -23,6 +23,10 @@ public static class CourtLineups
             return All(CourtPresence.OffCourt, "比赛已结束或取消");
         if (game.Status == GameStatus.Finished || current.Status == GameStatus.Finished) return Starters("比赛已结束");
         if (current.Status == GameStatus.Scheduled) return Starters("比赛尚未开始");
+        if (current.Status == GameStatus.Live && team.CourtFetchedAt is { } observed && now >= observed && now - observed <= TimeSpan.FromSeconds(45) &&
+            team.Players.Count(p => p.OnCourt == true) == 5 && team.Players.All(p => p.OnCourt.HasValue))
+            return team.Players.ToDictionary(p => p.Id, p => new PlayerCourtState(p.OnCourt == true ? CourtPresence.OnCourt : CourtPresence.OffCourt,
+                $"移动端球员统计在场标记 · {MatchTime.Format(observed)}"));
         var sameGame = live?.Snapshot?.Game.Id == game.Id;
         var history = sameGame ? live!.History : [];
         var period = Math.Max(GamePageParser.Period(current.Progress), history.Select(e => e.Period).DefaultIfEmpty(0).Max());

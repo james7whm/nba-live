@@ -71,7 +71,7 @@ public sealed class LiveSession(IGameSource source,
                     _revision++;
                 }
                 if (addedKeys.Count > 0) _lastEventObservedAt = snapshot.FetchedAt;
-                Publish(new(snapshot, _orderedHistory, snapshot.Game.Status == GameStatus.Finished ? "比赛已结束" :
+                Publish(new(snapshot, _orderedHistory, snapshot.StructuredUnavailable ? "赛况实录暂不可用，可查看主播文字直播" : snapshot.Game.Status == GameStatus.Finished ? "比赛已结束" :
                     snapshot.Entries.Count == 0 ? "等待文字直播" : "", false, false)
                 {
                     SelectedGame = snapshot.Game,

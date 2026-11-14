@@ -7,6 +7,7 @@ namespace NbaLive.Core;
 
 public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
 {
+    private const string MobileApi = "http://games.mobileapi.hupu.com/1/7.5.59/basketballapi/";
     private readonly HttpClient _client;
     private readonly GamePageParser _parser = new();
     private readonly PriorityRequestGate _requests = new();
@@ -142,19 +143,28 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
 
     public async Task<IReadOnlyList<GameInfo>> GetGames(DateOnly date, CancellationToken cancellationToken)
     {
-        var games = _parser.ParseGames(await Read($"/games/{date:yyyy-MM-dd}", cancellationToken), date);
-        if (date == MatchTime.Today || games.Any(g => g.Status == GameStatus.Live))
+        IReadOnlyList<GameInfo>? games = null;
+        Exception? webFailure = null;
+        try { games = _parser.ParseGames(await Read($"/games/{date:yyyy-MM-dd}", cancellationToken), date); }
+        catch (Exception ex) when (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !cancellationToken.IsCancellationRequested) { webFailure = ex; }
+        if (games is null) games = [];
+        if (date == MatchTime.Today || games.Count == 0 || games.Any(g => g.Status == GameStatus.Live))
         {
             try
             {
                 var json = await ReadMobile(new Uri("http://games.mobileapi.hupu.com/1/7.5.59/basketballapi/scheduleList?competitionTag=nba&time_zone=Asia%2FShanghai"), false, cancellationToken);
-                games = AnchorParser.MergeSchedule(json, games);
+                var mobile = MobileSchedule.Games(json, date);
+                if (mobile is { Count: > 0 }) games = MobileSchedule.Combine(games, mobile);
+                else if (mobile is null && webFailure is not null) throw new SourceFormatException("赛程日期不在移动端返回范围内");
+                else if (mobile is null) games = AnchorParser.MergeSchedule(json, games);
+                webFailure = null;
             }
-            catch (Exception ex) when (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !cancellationToken.IsCancellationRequested)
+            catch (Exception ex) when (games.Count > 0 && (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !cancellationToken.IsCancellationRequested))
             {
                 // The optional mobile schedule must not make the original list unavailable.
             }
         }
+        if (webFailure is not null) System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(webFailure).Throw();
         foreach (var game in games) _knownGames[game.Id] = game;
         return games;
     }
@@ -162,6 +172,13 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
     public async Task<LiveSnapshot> GetSnapshot(string gameId, CancellationToken cancellationToken)
     {
         if (gameId.Length == 0 || !gameId.All(RuntimeCompat.IsAsciiDigit)) throw new ArgumentException("比赛编号必须是数字。", nameof(gameId));
+        if (MobileSchedule.IsMobileId(gameId))
+        {
+            var json = await ReadMobile(new Uri(MobileApi + "singleMatch?matchId=" + Uri.EscapeDataString(gameId)), true, cancellationToken);
+            _knownGames.TryGetValue(gameId, out var known);
+            var game = MobileSchedule.Match(json, gameId, known); _knownGames[gameId] = game;
+            return new LiveSnapshot(game, [], DateTimeOffset.UtcNow) { StructuredUnavailable = true };
+        }
         string html;
         try { html = await Read($"/games/playbyplay/{gameId}", cancellationToken); }
         catch (HttpRequestException ex) when (RuntimeCompat.StatusCode(ex) == HttpStatusCode.NotFound &&
@@ -182,6 +199,12 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
     public async Task<BoxScoreSnapshot> GetBoxScore(string gameId, CancellationToken cancellationToken)
     {
         if (gameId.Length == 0 || !gameId.All(RuntimeCompat.IsAsciiDigit)) throw new ArgumentException("比赛编号必须是数字。", nameof(gameId));
+        if (MobileSchedule.IsMobileId(gameId))
+        {
+            if (!_knownGames.TryGetValue(gameId, out var game)) game = (await GetSnapshot(gameId, cancellationToken)).Game;
+            var json = await ReadMobile(new Uri(MobileApi + "playerMatchStats?matchId=" + Uri.EscapeDataString(gameId)), false, cancellationToken);
+            return MobileSchedule.BoxScore(json, game, DateTimeOffset.UtcNow);
+        }
         string html;
         try { html = await Read(SourcePages.BoxScore(gameId).AbsolutePath, cancellationToken); }
         catch (HttpRequestException ex) when (RuntimeCompat.StatusCode(ex) == HttpStatusCode.NotFound &&

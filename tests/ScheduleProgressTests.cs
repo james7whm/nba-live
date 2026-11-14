@@ -6,6 +6,49 @@ internal static class ScheduleProgressTests
     private static readonly DateOnly Date = new(2026, 10, 22);
     internal static readonly (string Name, Func<Task> Run)[] Cases =
     [
+        ("Empty web schedule falls back to mobile identifiers and keeps match identity", async () =>
+        {
+            var handler = new MobileScheduleHandler();
+            using var source = new WebGameSource(handler);
+            var games = await source.GetGames(Date, CancellationToken.None);
+            var game = games.Single();
+            Check(game.Id == MobileScheduleHandler.Match && game is { Away: "勇士", Home: "掘金", Status: GameStatus.Live, AwayScore: 80, HomeScore: 77 }, "mobile game is returned with lossless id");
+            var live = await source.GetSnapshot(game.Id, CancellationToken.None);
+            Check(live.StructuredUnavailable && live.Game.Id == game.Id, "mobile score never fabricates structured events");
+            var stats = await source.GetBoxScore(game.Id, CancellationToken.None);
+            Check(stats.Away.Total?.Points == 134 && stats.Home.Total?.Points == 114 && stats.Away.Players.Any(p => p.Name.Contains("库里") && p.JerseyNumber == "30"), "mobile box score uses game-scoped players and total");
+            Check(await new AnchorSource(source).Resolve(game, CancellationToken.None) is { Id: MobileScheduleHandler.Match }, "anchor session reuses mobile id");
+        }),
+        ("Mobile schedule distinguishes missing dates, duplicates and mismatched identities", () => Sync(() =>
+        {
+            Check(MobileSchedule.Games(MobileScheduleHandler.Schedule, Date.AddDays(1)) is null, "out of range date is not treated as empty");
+            Check(MobileSchedule.Games(MobileScheduleHandler.Schedule, Date)!.Count == 1, "matching date returns games");
+            var mobile = MobileSchedule.Games(MobileScheduleHandler.Schedule, Date)!.Single();
+            var web = mobile with { Id = "168866", AwayScore = 70, HomeScore = 60 };
+            var combined = MobileSchedule.Combine([web], [mobile]).Single();
+            Check(combined.Id == web.Id && combined.AwayScore == 80 && combined.HomeScore == 77, "mobile score keeps previously saved web identity");
+            var final = web with { Status = GameStatus.Finished };
+            Check(MobileSchedule.Combine([final], [mobile]).Single() == final, "final result is not downgraded");
+            try { MobileSchedule.Combine([web, web with { Id = "168867" }], [mobile]); throw new Exception("expected ambiguous mapping rejection"); }
+            catch (SourceFormatException) { }
+            try { MobileSchedule.Match(MobileScheduleHandler.MatchJson, "1537808027304853505"); throw new Exception("expected mismatch"); }
+            catch (SourceFormatException) { }
+            var duplicate = MobileScheduleHandler.Schedule.Replace(MobileScheduleHandler.Item, MobileScheduleHandler.Item + "," + MobileScheduleHandler.Item);
+            try { MobileSchedule.Games(duplicate, Date); throw new Exception("expected duplicate rejection"); }
+            catch (SourceFormatException) { }
+        })),
+        ("Mobile lineup requires five complete and fresh on-court marks", () => Sync(() =>
+        {
+            var game = new GameInfo(MobileScheduleHandler.Match, "勇士", "掘金", 80, 77, GameStatus.Live, "第三节", Date);
+            var roster = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "player-detail-lendeborg-roster.json"));
+            var now = DateTimeOffset.UtcNow;
+            var stats = MobileSchedule.BoxScore(roster, game, now);
+            var team = stats.Away with { Players = stats.Away.Players.Select((p, i) => p with { OnCourt = i < 5 }).ToArray() };
+            Check(CourtLineups.Resolve(team, game, null, now).Values.Count(x => x.Presence == CourtPresence.OnCourt) == 5, "five fresh marks are shown");
+            Check(CourtLineups.Resolve(team, game, null, now.AddMinutes(1)).Values.All(x => x.Presence == CourtPresence.Unknown), "stale marks are not shown");
+            var incomplete = team with { Players = team.Players.Select((p, i) => i == 0 ? p with { OnCourt = null } : p).ToArray() };
+            Check(CourtLineups.Resolve(incomplete, game, null, now).Values.All(x => x.Presence == CourtPresence.Unknown), "incomplete lineup is not guessed");
+        })),
         ("Real mixed schedule reads live team_vs_c status and remaining clocks", () => Sync(() =>
         {
             var games = new GamePageParser().ParseGames(Fixture(), Date);
@@ -112,6 +155,21 @@ internal static class ScheduleProgressTests
             if (request.RequestUri!.Host == "games.mobileapi.hupu.com") throw new HttpRequestException("offline");
             Check(request.RequestUri!.AbsolutePath == "/games/2026-10-22", "one schedule endpoint");
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(Fixture()) });
+        }
+    }
+    private sealed class MobileScheduleHandler : HttpMessageHandler
+    {
+        internal const string Match = "1537808027304853504";
+        internal const string Item = "{\"matchId\":\"1537808027304853504\",\"awayTeamName\":\"勇士\",\"homeTeamName\":\"掘金\",\"awayScore\":80,\"homeScore\":77,\"matchStatus\":\"INPROGRESS\",\"matchTime\":\"2026-10-22 08:00:00\"}";
+        internal const string Schedule = "{\"success\":true,\"result\":{\"gameList\":[{\"day\":\"20261022\",\"matchList\":[" + Item + "]}]}}";
+        internal const string MatchJson = "{\"success\":true,\"result\":" + Item + "}";
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
+        {
+            var path = request.RequestUri!.AbsolutePath;
+            var body = path.Contains("scheduleList") ? Schedule : path.Contains("singleMatch") ? MatchJson :
+                path.Contains("playerMatchStats") ? File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "player-detail-lendeborg-roster.json")) :
+                "<div class='gamecenter_livestart'>0场比赛</div>";
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(body) });
         }
     }
 }

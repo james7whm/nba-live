@@ -31,7 +31,10 @@ public sealed record LiveEntry(string? SourceId, int Period, string Clock, strin
     public static string Normalize(string value) => Regex.Replace(value, @"\s+", " ").Trim();
 }
 
-public sealed record LiveSnapshot(GameInfo Game, IReadOnlyList<LiveEntry> Entries, DateTimeOffset FetchedAt);
+public sealed record LiveSnapshot(GameInfo Game, IReadOnlyList<LiveEntry> Entries, DateTimeOffset FetchedAt)
+{
+    public bool StructuredUnavailable { get; init; }
+}
 
 public interface IGameSource
 {

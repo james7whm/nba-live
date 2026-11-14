@@ -8,11 +8,13 @@ public sealed record PlayerStatistics(string Id, string Name, bool IsStarter, st
 {
     public string Role => IsStarter ? "首发" : "替补";
     public string? JerseyNumber { get; init; }
+    public bool? OnCourt { get; init; }
 }
 
 public sealed record TeamStatistics(string Team, IReadOnlyList<PlayerStatistics> Players, PlayerStatistics? Total)
 {
     public string? RosterSlug { get; init; }
+    public DateTimeOffset? CourtFetchedAt { get; init; }
 }
 public sealed record BoxScoreSnapshot(GameInfo Game, TeamStatistics Away, TeamStatistics Home, DateTimeOffset FetchedAt)
 {

@@ -26,8 +26,9 @@ public sealed class AnchorSource(WebGameSource transport) : IAnchorSource
     // This legacy public metadata endpoint is verified over HTTP; its TLS endpoint is unavailable locally.
     private const string Mobile = "http://games.mobileapi.hupu.com/1/7.5.59/basketballapi/";
     private const string Live = "https://live-api.liangle.com/1/7.5.59/live/";
-    public async Task<MobileMatch?> Resolve(GameInfo game, CancellationToken ct) => AnchorParser.Resolve(
-        await transport.ReadMobile(new(Mobile + "scheduleList?competitionTag=nba&time_zone=Asia%2FShanghai"), false, ct), game);
+    public async Task<MobileMatch?> Resolve(GameInfo game, CancellationToken ct) => MobileSchedule.IsMobileId(game.Id)
+        ? new MobileMatch(game.Id, game)
+        : AnchorParser.Resolve(await transport.ReadMobile(new(Mobile + "scheduleList?competitionTag=nba&time_zone=Asia%2FShanghai"), false, ct), game);
     public async Task<MobileMatch> GetMatch(MobileMatch match, CancellationToken ct) => AnchorParser.Match(
         await transport.ReadMobile(new(Mobile + "singleMatch?matchId=" + Uri.EscapeDataString(match.Id)), false, ct), match);
     public async Task<AnchorRoom?> GetRoom(MobileMatch match, CancellationToken ct) => AnchorParser.Room(
@@ -115,7 +116,7 @@ public static class AnchorParser
             throw new SourceFormatException("比赛数据不匹配");
         return match with { Game = ReadGame(item, match.Game) };
     }
-    private static GameInfo ReadGame(JsonElement item, GameInfo original)
+    internal static GameInfo ReadGame(JsonElement item, GameInfo original)
     {
         var status = Str(item, "matchStatus").ToUpperInvariant() switch
         {
