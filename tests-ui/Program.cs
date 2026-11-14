@@ -31,6 +31,7 @@ internal static class Program
                     var source=(IGameSource)Activator.CreateInstance(assembly.GetType("NbaLive.DemoSource")!,BindingFlags.NonPublic|BindingFlags.Public|BindingFlags.Instance,null,[false,false],null)!;
                     var live=await source.GetSnapshot("0",CancellationToken.None);
                     var settings=new AppSettings {Theme=theme};
+                    if(Environment.GetCommandLineArgs().Contains("--chat-only")) { total += await ChatRegression.Run(settings); continue; }
                     if(Environment.GetCommandLineArgs().Contains("--real-team-seasons")) { total+=await TeamInsightsRegression.RunLiveHistory(settings); continue; }
                     if(Environment.GetCommandLineArgs().Contains("--real-play-in")) { total+=await PlayInRegression.Live(settings); continue; }
                     if(Environment.GetCommandLineArgs().Contains("--play-in-only")) { total+=await PlayInRegression.Run(settings); continue; }

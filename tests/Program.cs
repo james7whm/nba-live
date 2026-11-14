@@ -38,6 +38,14 @@ if(args.Contains("--probe-team-seasons"))
     return;
 }
 
+if (args.Contains("--probe-chat-standings"))
+{
+    using var source = new WebGameSource();
+    var rankings = await source.GetConferenceStandings(CancellationToken.None);
+    foreach (var conference in new[] { "东部", "西部" })
+        Console.WriteLine($"{conference} {rankings.Season}: " + string.Join(" / ", ChatProfile.TeamsInConference(conference, rankings).Take(3).Select(t => t.Name)));
+    return;
+}
 if (args.Contains("--probe-teams"))
 {
     try

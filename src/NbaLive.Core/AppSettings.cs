@@ -9,6 +9,9 @@ public sealed record FavoritePlayer(string Id, string Name);
 
 public sealed record AppSettings
 {
+    public string ChatNickname { get; init; } = "";
+    public int ChatAvatar { get; init; }
+    public string ChatTeam { get; init; } = "";
     public string LastBrowsedTeam { get; init; } = "";
     public string LastTeamSeason {get;init;} = "";
     public TeamPhase LastTeamPhase {get;init;}
@@ -38,6 +41,9 @@ public sealed record AppSettings
     public StatisticsTableLayout[] StatisticsLayouts { get; init; } = [];
     public AppSettings Validate() => this with
     {
+        ChatNickname = ChatProfile.NormalizeNickname(ChatNickname),
+        ChatAvatar = RuntimeCompat.Clamp(ChatAvatar, 0, 77),
+        ChatTeam = TeamCatalog.Resolve(ChatTeam)?.Key ?? "",
         LastBrowsedTeam = TeamCatalog.Resolve(LastBrowsedTeam)?.Key ?? "",
         LastTeamSeason = TeamScope.ValidSeason(LastTeamSeason)?LastTeamSeason:"",
         LastTeamPhase = Enum.IsDefined(typeof(TeamPhase),LastTeamPhase)?LastTeamPhase:TeamPhase.Regular,

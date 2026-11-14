@@ -69,6 +69,7 @@ internal sealed class OverlayWindow : Window
     internal event Action? SettingsRequested;
     internal event Action? HideRequested;
     internal event Action? RecapRequested;
+    internal event Action? ChatRequested;
     internal event Action? CapsuleRequested;
     internal event Action? FollowedFilterRequested;
     internal event Action<TextSourcePreference>? SourceRequested;
@@ -139,14 +140,14 @@ internal sealed class OverlayWindow : Window
         Grid.SetColumnSpan(_status, 2); footer.Children.Add(_status); footer.Children.Add(_pending);
         _toolbar = new() { Visibility = Visibility.Hidden };
         _toolbar.ColumnDefinitions.Add(new() { Width = new(18) });
-        for (var column = 1; column <= 4; column++) _toolbar.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
+        for (var column = 1; column <= 5; column++) _toolbar.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });
         var drag = new TextBlock { Text = "⠿", Cursor = Cursors.SizeAll, Padding = new(4, 0, 5, 0), ToolTip = "拖动到屏幕角落" };
         drag.MouseLeftButtonDown += (_, e) => { if (e.ButtonState == MouseButtonState.Pressed) DragOverlay(); };
         drag.VerticalAlignment = VerticalAlignment.Center; _toolbar.Children.Add(drag);
         void AddAction(Button button, int column)
         {
             Grid.SetColumn(button, column); _toolbar.Children.Add(button);
-            if (column < 4)
+            if (column < 5)
             {
                 var divider = new Border { Width = 1, Height = 11, Background = Ui.Brush("LineBrush"),
                     HorizontalAlignment = HorizontalAlignment.Right, VerticalAlignment = VerticalAlignment.Center, IsHitTestVisible = false };
@@ -155,8 +156,9 @@ internal sealed class OverlayWindow : Window
         }
         _modeButton = Tool("文字 ▾", OpenContentMenu); AddAction(_modeButton, 1);
         _recapButton = Tool("回顾", () => RecapRequested?.Invoke()); AddAction(_recapButton, 2);
-        AddAction(Tool("更多", OpenMoreMenu), 3);
-        AddAction(Tool("隐藏", () => HideRequested?.Invoke()), 4);
+        AddAction(Tool("聊天", () => ChatRequested?.Invoke(), "打开本场聊天室"), 3);
+        AddAction(Tool("更多", OpenMoreMenu), 4);
+        AddAction(Tool("隐藏", () => HideRequested?.Invoke()), 5);
         Grid.SetColumn(_toolbar, 1); footer.Children.Add(_toolbar);
         _capsule = new Grid { Margin = new(10, 0, 10, 0) };
         _capsule.ColumnDefinitions.Add(new() { Width = new(1, GridUnitType.Star) });

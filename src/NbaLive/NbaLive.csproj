@@ -35,6 +35,9 @@
     <None Update="Assets/TrayLight.ico" Link="TrayLight.ico" CopyToOutputDirectory="PreserveNewest" />
     <None Update="Assets/TrayDark.ico" Link="TrayDark.ico" CopyToOutputDirectory="PreserveNewest" />
     <Resource Include="Assets/Tray.ico" />
+    <Resource Include="Assets/ChatAvatars.png" />
+    <Resource Include="Assets/PlayerAvatars/*.png" />
+    <Resource Include="Assets/Emoji/*.png" />
     <Resource Include="Assets/Teams/*.png" />
   </ItemGroup>
   <ItemGroup><RuntimeHostConfigurationOption Include="System.GC.ConserveMemory" Value="6" /></ItemGroup>

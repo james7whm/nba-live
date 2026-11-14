@@ -33,6 +33,7 @@ internal sealed class AppController : IDisposable
     private RecapWindow? _recapWindow;
     private BookmarksWindow? _bookmarksWindow;
     private UpdateWindow? _updateWindow;
+    private ChatWindow? _chat;
     private readonly UpdateSource _updateSource;
     private readonly UpdateCoordinator _updates;
     private readonly bool _preview;
@@ -70,6 +71,7 @@ internal sealed class AppController : IDisposable
         Overlay.SettingsRequested += OpenSettings;
         Overlay.HideRequested += ToggleVisibility;
         Overlay.RecapRequested += OpenRecap;
+        Overlay.ChatRequested += OpenChat;
         Overlay.CapsuleRequested += ToggleCapsule;
         Overlay.FollowedFilterRequested += ToggleFollowedFilter;
         Overlay.SourceRequested += source => { ApplyPreferences(_settings with { TextSource = source }); Save(); };
@@ -115,6 +117,7 @@ internal sealed class AppController : IDisposable
                 case 20: ApplyPreferences(_settings with { TextDelivery = TextDelivery.Paged }); Save(); break;
                 case 21: OpenUpdates(); break;
                 case 22: ShowTeams(); break;
+                case 23: OpenChat(); break;
             }
         };
         _hotkeys = new(new WindowInteropHelper(Overlay).Handle);
@@ -159,6 +162,7 @@ internal sealed class AppController : IDisposable
         Overlay.Render(state, _demo);
         UpdateUnread();
         _history?.Update(state, _demo);
+        _chat?.SetGame(state.Snapshot?.Game ?? state.SelectedGame);
         if (_tray is not null) _tray.Text = _demo ? "NBA 直播条 · 演示数据" : state.HasError ? $"NBA 直播条 · {state.Message}" : "NBA 直播条";
     }
     private void OnStructuredState(SessionState state)
@@ -222,7 +226,8 @@ internal sealed class AppController : IDisposable
                 // Preserve the current match and position if they changed while settings were open.
                 ApplyPreferences(candidate with { X = _settings.X, Y = _settings.Y, LastGameId = _settings.LastGameId,
                     FollowedPlayers = _settings.FollowedPlayers, StatisticsPreset = _settings.StatisticsPreset, StatisticsLayouts = _settings.StatisticsLayouts,
-                    SkippedUpdateVersion = _settings.SkippedUpdateVersion });
+                    SkippedUpdateVersion = _settings.SkippedUpdateVersion, ChatNickname = _settings.ChatNickname,
+                    ChatAvatar = _settings.ChatAvatar, ChatTeam = _settings.ChatTeam });
                 _picker?.SetFavorite(_settings.FavoriteTeam);
                 _error = "";
                 return _store.Save(_settings) ? null : _store.Error;
@@ -273,6 +278,20 @@ internal sealed class AppController : IDisposable
         finally { _installing = false; }
     }
     internal void ShowHistory() => OpenHistory();
+    private void OpenChat()
+    {
+        RestoreWindows();
+        if (_chat is not null) { Ui.Present(_chat); return; }
+        var window = new ChatWindow(_settings, (nickname, avatar, team) =>
+        {
+            _settings = (_settings with { ChatNickname = nickname, ChatAvatar = avatar, ChatTeam = team }).Validate();
+            return _store.Save(_settings) ? null : _store.Error;
+        }, _webSource is not null ? _webSource.GetConferenceStandings : new DemoTeamInsightsSource().GetStandings, _demo);
+        _chat = window;
+        window.SetGame(_session.State.Snapshot?.Game ?? _session.State.SelectedGame);
+        window.Closed += (_, _) => { if (ReferenceEquals(_chat, window)) _chat = null; };
+        Ui.Present(window);
+    }
     internal void ShowBookmarks() => OpenBookmarks();
     private void OpenBookmarks()
     {
@@ -397,7 +416,7 @@ internal sealed class AppController : IDisposable
             window.Hide();
         }
     }
-    private IEnumerable<Window> Windows() => new Window?[] { Overlay, _picker, _statistics, _teams, _settingsWindow, _history, _recapWindow, _bookmarksWindow, _updateWindow }.OfType<Window>();
+    private IEnumerable<Window> Windows() => new Window?[] { Overlay, _picker, _statistics, _teams, _settingsWindow, _history, _recapWindow, _bookmarksWindow, _updateWindow, _chat }.OfType<Window>();
     private void RestoreWindows()
     {
         if (_disposed) return;
@@ -430,6 +449,7 @@ internal sealed class AppController : IDisposable
         _updates.Dispose(); _updateSource.Dispose();
         _session.Dispose();
         _statistics?.Close();
+        _chat?.Close();
         _teams?.Close();
         _recapWindow?.Close();
         _bookmarksWindow?.Close();

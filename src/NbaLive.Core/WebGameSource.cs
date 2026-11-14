@@ -54,6 +54,8 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
         if (path is not ("/standings" or "/standings/division" or "/stats/teams")) throw new ArgumentException("Unsupported team page", nameof(path));
         return Read(path, ct);
     }
+    public async Task<TeamStandingsSnapshot> GetConferenceStandings(CancellationToken ct) =>
+        TeamInsightsParser.Standings(await ReadTeamInsightsPage("/standings", ct), DateTimeOffset.UtcNow);
     internal async Task<string> ReadTeamArchive(Uri uri,CancellationToken ct)
     {
         if(uri.Scheme!="https"||uri.Host is not ("site.api.espn.com" or "sports.core.api.espn.com"))throw new ArgumentException("Unsupported archive endpoint",nameof(uri));

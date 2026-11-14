@@ -10,6 +10,8 @@
 
 ## 第三方软件许可
 
+- **Fluent Emoji**（内置 3D 表情图像）— MIT License，Copyright © Microsoft Corporation；素材取自 https://github.com/microsoft/fluentui-emoji ，固定版本 `1ffb34c752ecf5d402f04cfb4b392c77f57c54bc`。本应用的旋转动效由应用添加。
+
 - **Inno Setup 6**（仅在线安装器）— Inno Setup License，Jordan Russell、Martijn Laan；简体中文翻译由 Zhenghan Yang 等贡献。https://github.com/jrsoftware/issrc · https://jrsoftware.org/files/is/license.txt 。翻译文件取自官方仓库 `is-6_7_2`，保留原文件作者说明；微软运行组件不嵌入应用安装包，安装时从微软下载并适用其许可。
 
 - **AngleSharp 1.8.5** — MIT License. Copyright © Florian Rappl, AngleSharp contributors. https://github.com/AngleSharp/AngleSharp
@@ -23,6 +25,8 @@
 MIT License（上述标注 MIT 的组件，各自版权归属见上文）：
 
 Copyright (c) 2013 - 2026 AngleSharp contributors
+
+Copyright (c) Microsoft Corporation
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

@@ -6,6 +6,23 @@ internal static class ScheduleProgressTests
     private static readonly DateOnly Date = new(2026, 10, 22);
     internal static readonly (string Name, Func<Task> Run)[] Cases =
     [
+        ("Chat profile uses a neutral bystander label and validates saved preferences", () => Sync(() =>
+        {
+            Check(ChatProfile.TeamLabel("") == "纯路人", "missing team gets neutral label");
+            Check(ChatProfile.TeamLabel("尼克斯") == "尼克斯", "selected team label");
+            var valid = new AppSettings { ChatNickname = "  球迷  ", ChatAvatar = 99, ChatTeam = "尼克斯" }.Validate();
+            Check(valid.ChatNickname == "球迷" && valid.ChatAvatar == 77 && ChatProfile.TeamLabel(valid.ChatTeam) == "尼克斯", "valid settings normalize and preserve team");
+            Check(new AppSettings { ChatNickname = "bad\nname", ChatTeam = "unknown" }.Validate() is { ChatNickname: "", ChatTeam: "" }, "invalid values do not enter a profile");
+        })),
+        ("Chat teams follow conference standings and retain complete fallback choices", () => Sync(() =>
+        {
+            TeamStanding Row(string key, int rank) => new(TeamCatalog.Resolve(key)!, rank, 0, 0, null, null, "", "", null, null, null, "");
+            var standings = new TeamStandingsSnapshot("2026-2027", [Row("knicks", 2), Row("76ers", 1), Row("lakers", 1)], DateTimeOffset.UtcNow);
+            var east = ChatProfile.TeamsInConference("东部", standings);
+            Check(east.Count == 15 && east[0].Key == "76ers" && east[1].Key == "knicks" && east.Select(t => t.Key).Distinct().Count() == 15, "east follows rank and fills missing without duplicates");
+            Check(ChatProfile.TeamsInConference("西部", standings)[0].Key == "lakers", "west has separate standings");
+            Check(ChatProfile.TeamsInConference("东部", null).Count == 15, "offline fallback remains selectable");
+        })),
         ("Real mixed schedule reads live team_vs_c status and remaining clocks", () => Sync(() =>
         {
             var games = new GamePageParser().ParseGames(Fixture(), Date);
