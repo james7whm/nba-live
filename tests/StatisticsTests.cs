@@ -110,7 +110,7 @@ internal static class StatisticsTests
         ("Scheduled statistics wait through unpublished 404 and resume when tables appear", async () =>
         {
             var games = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "games-2026-10-21.html")).Replace("已结束", "未开始");
-            using var source = new WebGameSource(new Responses([Response(games), new(HttpStatusCode.NotFound), Response(Fixture())]));
+            using var source = new WebGameSource(new Responses([new(HttpStatusCode.ServiceUnavailable), Response(games), new(HttpStatusCode.NotFound), Response(Fixture())]));
             await source.GetGames(new(2026, 10, 21), CancellationToken.None);
             var waiting = await source.GetBoxScore("168863", CancellationToken.None);
             var ready = await source.GetBoxScore("168863", CancellationToken.None);

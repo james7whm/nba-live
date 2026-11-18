@@ -19,6 +19,16 @@ internal static class ScheduleProgressTests
             Check(stats.Away.Total?.Points == 134 && stats.Home.Total?.Points == 114 && stats.Away.Players.Any(p => p.Name.Contains("库里") && p.JerseyNumber == "30"), "mobile box score uses game-scoped players and total");
             Check(await new AnchorSource(source).Resolve(game, CancellationToken.None) is { Id: MobileScheduleHandler.Match }, "anchor session reuses mobile id");
         }),
+        ("Mobile schedule and score take priority while a verified web id is preserved", async () =>
+        {
+            var handler = new MobileLegacyHandler(); using var source = new WebGameSource(handler);
+            var game = (await source.GetGames(Date, CancellationToken.None)).Single();
+            Check(game.Id == "168866" && game.AwayScore == 80 && game.HomeScore == 77, "mobile values retain uniquely matched legacy id");
+            Check(handler.Paths[0].Contains("scheduleList") && handler.Paths[1] == "/games/2026-10-22", "mobile schedule is requested first");
+            var snapshot = await source.GetSnapshot(game.Id, CancellationToken.None);
+            Check(snapshot.Game.Id == game.Id && snapshot.Game.AwayScore == 80 && snapshot.StructuredUnavailable, "web failure keeps verified mobile score and flags missing text");
+            Check(handler.Paths[2].Contains("singleMatch") && handler.Paths[3].Contains("playbyplay"), "mobile score precedes structured fallback");
+        }),
         ("Mobile schedule distinguishes missing dates, duplicates and mismatched identities", () => Sync(() =>
         {
             Check(MobileSchedule.Games(MobileScheduleHandler.Schedule, Date.AddDays(1)) is null, "out of range date is not treated as empty");
@@ -49,6 +59,39 @@ internal static class ScheduleProgressTests
             var incomplete = team with { Players = team.Players.Select((p, i) => i == 0 ? p with { OnCourt = null } : p).ToArray() };
             Check(CourtLineups.Resolve(incomplete, game, null, now).Values.All(x => x.Presence == CourtPresence.Unknown), "incomplete lineup is not guessed");
         })),
+        ("Mobile statistics preserve verified legacy player identities", () => Sync(() =>
+        {
+            var game = new GameInfo(MobileScheduleHandler.Match, "勇士", "掘金", 80, 77, GameStatus.Live, "第三节", Date);
+            var roster = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "player-detail-lendeborg-roster.json"));
+            var stats = MobileSchedule.BoxScore(roster, game, DateTimeOffset.UtcNow);
+            var sample = stats.Away.Players[0];
+            var mobile = stats.Away with { MobileTeamId = "1901000000501273", Players = [sample with { Id = "1901000000473521" }] };
+            var web = stats.Away with { Players = [sample with { Id = "jalenbrunson-150988.html" }] };
+            var teamRoster = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "player-detail-team.json"));
+            var map = MobileSchedule.LegacyPlayerIds(mobile, web, teamRoster);
+            var merged = MobileSchedule.ApplyLegacyPlayerIds(mobile, map, "knicks");
+            Check(merged.Players.Single().Id == "jalenbrunson-150988.html" && merged.Players.Single().Points == sample.Points && merged.RosterSlug == "knicks", "preserve old identity while using mobile values");
+            try { MobileSchedule.LegacyPlayerIds(mobile with { MobileTeamId = "wrong" }, web, teamRoster); throw new Exception("expected team mismatch"); }
+            catch (SourceFormatException) { }
+        })),
+        ("Legacy games use mobile statistics when both team identity maps are verified", async () =>
+        {
+            var handler = new MobileLegacyStatsHandler(); using var source = new WebGameSource(handler);
+            var game = (await source.GetGames(Date, CancellationToken.None)).Single();
+            var first = await source.GetBoxScore(game.Id, CancellationToken.None);
+            Check(first.Source == "mobile" && first.Game.Id == "168866" && first.Away.Players.Any(p => p.Id == "stephencurry-150001.html" && p.Points == 24), "mobile values preserve old followed-player id");
+            var second = await source.GetBoxScore(game.Id, CancellationToken.None);
+            Check(second.Source == "mobile" && handler.Paths.Count(p => p.Contains("teamPlayerList")) == 2 && handler.Paths.Count(p => p.Contains("playerMatchStats")) == 2, "identity map is reused while statistics refresh");
+        }),
+        ("Unverified mobile player mappings fall back and back off", async () =>
+        {
+            var handler = new MobileLegacyStatsHandler { BadMapping = true }; using var source = new WebGameSource(handler);
+            var game = (await source.GetGames(Date, CancellationToken.None)).Single();
+            var first = await source.GetBoxScore(game.Id, CancellationToken.None);
+            var second = await source.GetBoxScore(game.Id, CancellationToken.None);
+            Check(first.Source == "web" && second.Source == "web" && first.Away.Players.Single().Id == "stephencurry-150001.html", "retain web stats and original identity when mapping is unavailable");
+            Check(handler.Paths.Count(p => p.Contains("playerMatchStats")) == 1 && handler.Paths.Count(p => p.Contains("boxscore")) == 2, "back off and reuse already fetched web page");
+        }),
         ("Real mixed schedule reads live team_vs_c status and remaining clocks", () => Sync(() =>
         {
             var games = new GamePageParser().ParseGames(Fixture(), Date);
@@ -169,6 +212,40 @@ internal static class ScheduleProgressTests
             var body = path.Contains("scheduleList") ? Schedule : path.Contains("singleMatch") ? MatchJson :
                 path.Contains("playerMatchStats") ? File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "player-detail-lendeborg-roster.json")) :
                 "<div class='gamecenter_livestart'>0场比赛</div>";
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(body) });
+        }
+    }
+    private sealed class MobileLegacyHandler : HttpMessageHandler
+    {
+        internal readonly List<string> Paths = [];
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
+        {
+            var path = request.RequestUri!.AbsolutePath; Paths.Add(path);
+            if (path.Contains("playbyplay")) return Task.FromResult(new HttpResponseMessage(HttpStatusCode.ServiceUnavailable));
+            var card = Card("168866", "c", "进行中 <p>第三节剩2:28</p>").Replace("客队", "勇士").Replace("主队", "掘金");
+            var body = path.Contains("scheduleList") ? MobileScheduleHandler.Schedule : path.Contains("singleMatch") ? MobileScheduleHandler.MatchJson : Page(card);
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(body) });
+        }
+    }
+    private sealed class MobileLegacyStatsHandler : HttpMessageHandler
+    {
+        internal readonly List<string> Paths = [];
+        internal bool BadMapping;
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
+        {
+            var uri = request.RequestUri!; var path = uri.AbsolutePath; Paths.Add(path);
+            var card = Card("168866", "c", "进行中 <p>第三节剩2:28</p>").Replace("客队", "勇士").Replace("主队", "掘金");
+            var headers = new[] { "首发", "", "时间", "投篮", "3分", "罚球", "前场", "后场", "篮板", "助攻", "犯规", "抢断", "失误", "封盖", "得分", "+/-" };
+            string Table(string id, string player, string legacy) => "<table id='" + id + "'><tr>" + string.Concat(headers.Select(x => "<td>" + x + "</td>")) + "</tr><tr>" +
+                string.Concat(new[] { "<a href='/players/" + legacy + "'>" + player + "</a>", "G", "30", "2-4", "1-2", "1-1", "0", "2", "2", "3", "1", "1", "0", "0", "6", "+1" }.Select(x => "<td>" + x + "</td>")) + "</tr></table>";
+            var box = "<div class='team_a'><div class='message'><h2>80</h2><p><a>勇士</a></p></div></div>" +
+                "<div class='team_b'><div class='message'><h2>77</h2><p><a>掘金</a></p></div></div>" +
+                "<div class='table_list_c'><li><a href='/games/boxscore/168866'><p>进行中 第三节 04:32</p></a></li></div>" +
+                Table("J_away_content", "库里", "stephencurry-150001.html") + Table("J_home_content", "约基奇", "nikolajokic-150002.html") + "<script>window.GM={match_id:'168866'};</script>";
+            string Team(string teamId, string player, int legacy) => "{\"result\":{\"info\":{\"teamId\":\"" + teamId + "\"},\"list\":[{\"playerId\":\"" + player + "\",\"player_id\":" + legacy + "}]}}";
+            var body = path.Contains("scheduleList") ? MobileScheduleHandler.Schedule : path.Contains("playerMatchStats") ? File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "player-detail-lendeborg-roster.json")) :
+                path.Contains("teamPlayerList") ? uri.Query.Contains("1901000000501331") ? Team("1901000000501331", "1901000000442301", BadMapping ? 999999 : 150001) : Team("1901000000501301", "1901000000448416", 150002) :
+                path.Contains("boxscore") ? box : Page(card);
             return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(body) });
         }
     }

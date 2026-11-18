@@ -4,6 +4,32 @@ internal static class ScoringTests
 {
     internal static readonly (string Name, Func<Task> Run)[] Cases =
     [
+        ("Independent score feed validates identity, period totals and score timeline", () => Sync(() =>
+        {
+            var game = new GameInfo("1537445630224367616", "勇士", "马刺", 10, 36, GameStatus.Live, "第一节剩56秒", new DateOnly(2026, 11, 14));
+            const string board = """{"events":[{"id":"401909302","competitions":[{"date":"2026-11-14T02:30Z","competitors":[{"id":"24","homeAway":"home"},{"id":"9","homeAway":"away"}]}]}]}""";
+            Check(GameScoreSource.FindGames(board,game).SequenceEqual(new[]{"401909302"}), "exact teams and Beijing date match");
+            Check(GameScoreSource.FindGames(board,game with { Home="湖人" }).Count == 0, "different team rejected");
+            Check(GameScoreSource.FindGames(board,game with { Date=game.Date.AddDays(1) }).Count == 0, "different date rejected");
+            const string summary = """{"header":{"id":"401909302","competitions":[{"id":"401909302","date":"2026-11-14T02:30Z","competitors":[{"id":"24","homeAway":"home","score":"36","linescores":[{"displayValue":"36"}]},{"id":"9","homeAway":"away","score":"10","linescores":[{"displayValue":"10"}]}]}]},"plays":[{"id":"2","sequenceNumber":"2","period":{"number":1},"clock":{"displayValue":"56.9"},"awayScore":10,"homeScore":36},{"id":"1","sequenceNumber":"1","period":{"number":1},"clock":{"displayValue":"12:00"},"awayScore":0,"homeScore":0}]}""";
+            var score = GameScoreSource.Parse(summary,game,"401909302");
+            Check(score.Periods[0].Away == 10 && score.Periods[0].Home == 36 && score.Periods[1].Away is null, "quarter data with future period missing");
+            Check(score.Points.Count==2 && score.Points[1].Clock=="56.9秒" && score.Points[1].Home==36, "ordered points and subminute clock");
+            var rejected=false; try { GameScoreSource.Parse(summary,game with { Home="湖人" },"401909302"); } catch(SourceFormatException) { rejected=true; }
+            Check(rejected,"summary identity mismatch rejected");
+        })),
+        ("Live 76ers Nets feed keeps all four periods and period end reviews in order", () => Sync(() =>
+        {
+            var json = File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "score-76ers-nets-20261117.json"));
+            var game = new GameInfo("legacy-id", "76人", "篮网", 110, 103, GameStatus.Live, "第四节", new DateOnly(2026, 11, 17));
+            var score = GameScoreSource.Parse(json, game, "401909997");
+            Check(score.Periods.Select(p => p.Away).SequenceEqual(new int?[] { 33, 45, 27, 7 }), "away quarter scores");
+            Check(score.Periods.Select(p => p.Home).SequenceEqual(new int?[] { 26, 33, 36, 11 }), "home quarter scores");
+            Check(score.Points.Any(p => p.Period == 2 && p.Away > 33 && p.Away < 78), "second period has actual scoring points");
+            Check(score.Points.Any(p => p.Period == 4 && p.ElapsedSeconds < 2880 && p.Away == 112), "fourth period stays in the fourth quarter after late third-quarter review");
+            Check(!score.HasGaps && !score.ScoreMismatch, "full sample is contiguous and agrees with its own totals");
+            Check(score.AtOrBefore(GameScoring.PeriodStart(3)) is { Away: 78, Home: 59 }, "third quarter starts from the second quarter final");
+        })),
         ("Archived cumulative scores reconstruct all quarters and the final score", () => Sync(() =>
         {
             var snapshot = new GamePageParser().ParseSnapshot(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "Fixtures", "finished-168863.html")), "168863", DateTimeOffset.UtcNow);

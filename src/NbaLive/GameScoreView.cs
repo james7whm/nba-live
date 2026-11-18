@@ -12,6 +12,10 @@ internal sealed class GameScoreView : Grid
     private readonly TextBlock _message = Ui.Text("等待本场文字比分", 11);
     private IReadOnlyList<LiveEntry>? _history;
     private GameScoringSnapshot? _scoring;
+    private GameScoringSnapshot? _external;
+    private DateTimeOffset? _externalAt;
+    private string _externalNotice = "";
+    internal void SetExternal(GameScoringSnapshot? scoring, DateTimeOffset? at, string notice) { _external = scoring; _externalAt = at; _externalNotice = notice; _history = null; }
     internal GameScoreView()
     {
         Margin = new(18, 12, 18, 12);
@@ -40,9 +44,10 @@ internal sealed class GameScoreView : Grid
             _scoring = null; _history = null; _table.Children.Clear(); _chart.SetData(null, TeamPalette.Unknown, TeamPalette.Unknown);
             _message.Text = "选择比赛后查看分节得分和累计得分图。"; return;
         }
-        if (!ReferenceEquals(_history, history) || _scoring?.Game != game)
+        var external = _external?.Game.Id == game.Id ? _external : null;
+        if (!ReferenceEquals(_history, history) || _scoring?.Game != game || external is not null && !ReferenceEquals(_scoring, external))
         {
-            _history = history; _scoring = GameScoring.Build(game, history);
+            _history = history; _scoring = external ?? GameScoring.Build(game, history);
             var sameStats = statistics.Snapshot?.Game.Id == game.Id ? statistics.Snapshot : null;
             var awayColor = TeamPalette.Resolve(game.Away, sameStats?.Away.RosterSlug);
             var homeColor = TeamPalette.Resolve(game.Home, sameStats?.Home.RosterSlug);
@@ -50,8 +55,14 @@ internal sealed class GameScoreView : Grid
             _chart.SetData(_scoring, awayColor, homeColor);
         }
         var notices = new List<string>();
-        if (matches && live!.HasError) notices.Add($"{live.Message} · 保留最近文字比分");
-        if (matches) notices.Add($"文字比分更新于 {MatchTime.Format(live!.Snapshot!.FetchedAt)}");
+        if (external is not null)
+        {
+            notices.Add($"分节及走势独立采样 · 更新于 {MatchTime.Format(_externalAt!.Value)}，可能与直播略有差异");
+            if (_externalNotice.Length > 0) notices.Add(_externalNotice);
+        }
+        else if (_externalNotice.Length > 0) notices.Add(_externalNotice);
+        if (external is null && matches && live!.HasError) notices.Add($"{live.Message} · 保留最近文字比分");
+        if (external is null && matches) notices.Add($"文字比分更新于 {MatchTime.Format(live!.Snapshot!.FetchedAt)}");
         if (_scoring!.Points.Count == 0) notices.Add(game.Status == GameStatus.Scheduled ? "比赛尚未开始，等待比分记录" : "暂无可绘制的文字比分记录");
         else
         {

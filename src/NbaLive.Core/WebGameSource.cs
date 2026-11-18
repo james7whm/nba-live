@@ -12,6 +12,10 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
     private readonly GamePageParser _parser = new();
     private readonly PriorityRequestGate _requests = new();
     private readonly ConcurrentDictionary<string, GameInfo> _knownGames = new();
+    private readonly ConcurrentDictionary<string, MobileMatch> _mobileMatches = new();
+    private sealed record LegacyPlayerMapping(IReadOnlyDictionary<string, string> Away, IReadOnlyDictionary<string, string> Home, string? AwaySlug, string? HomeSlug);
+    private readonly ConcurrentDictionary<string, LegacyPlayerMapping> _legacyPlayerMappings = new();
+    private readonly ConcurrentDictionary<string, DateTimeOffset> _mobileStatisticsRetryAfter = new();
     private bool _useHttp;
     private bool _mobileHttp;
     private sealed record SnapshotCache(string GameId, string Html, LiveSnapshot Snapshot);
@@ -22,6 +26,7 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
     private sealed record RosterCache(DateTimeOffset RetryAfter, IReadOnlyDictionary<string, string> Numbers);
     private readonly ConcurrentDictionary<string, RosterCache> _rosters = new();
     public string Transport => (_useHttp ? "HTTP（只读公开比赛数据）" : "HTTPS") + (_mobileHttp ? " · 移动接口 HTTP（匿名只读）" : "");
+    public string? StatisticsFallbackReason { get; private set; }
 
     public WebGameSource(HttpMessageHandler? handler = null, bool loadRosters = false)
     {
@@ -143,29 +148,40 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
 
     public async Task<IReadOnlyList<GameInfo>> GetGames(DateOnly date, CancellationToken cancellationToken)
     {
-        IReadOnlyList<GameInfo>? games = null;
-        Exception? webFailure = null;
-        try { games = _parser.ParseGames(await Read($"/games/{date:yyyy-MM-dd}", cancellationToken), date); }
-        catch (Exception ex) when (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !cancellationToken.IsCancellationRequested) { webFailure = ex; }
-        if (games is null) games = [];
-        if (date == MatchTime.Today || games.Count == 0 || games.Any(g => g.Status == GameStatus.Live))
+        IReadOnlyList<GameInfo>? mobile = null;
+        string? mobileJson = null;
+        Exception? mobileFailure = null;
+        try
         {
-            try
+            mobileJson = await ReadMobile(new Uri(MobileApi + "scheduleList?competitionTag=nba&time_zone=Asia%2FShanghai"), false, cancellationToken);
+            mobile = MobileSchedule.Games(mobileJson, date);
+        }
+        catch (Exception ex) when (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !cancellationToken.IsCancellationRequested) { mobileFailure = ex; }
+        cancellationToken.ThrowIfCancellationRequested();
+        IReadOnlyList<GameInfo> games;
+        try
+        {
+            var web = _parser.ParseGames(await Read($"/games/{date:yyyy-MM-dd}", cancellationToken), date);
+            // Existing web IDs keep bookmarks and structured history stable where the pairing is unique.
+            games = mobile is { Count: > 0 } ? MobileSchedule.Combine(web, mobile) : web;
+        }
+        catch (Exception ex) when (mobile is not null && (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !cancellationToken.IsCancellationRequested))
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            games = mobile;
+        }
+        if (mobile is null && mobileFailure is not null && games.Count == 0)
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(mobileFailure).Throw();
+        foreach (var game in games)
+        {
+            _knownGames[game.Id] = game;
+            if (mobileJson is not null && mobile is not null && !MobileSchedule.IsMobileId(game.Id))
             {
-                var json = await ReadMobile(new Uri("http://games.mobileapi.hupu.com/1/7.5.59/basketballapi/scheduleList?competitionTag=nba&time_zone=Asia%2FShanghai"), false, cancellationToken);
-                var mobile = MobileSchedule.Games(json, date);
-                if (mobile is { Count: > 0 }) games = MobileSchedule.Combine(games, mobile);
-                else if (mobile is null && webFailure is not null) throw new SourceFormatException("赛程日期不在移动端返回范围内");
-                else if (mobile is null) games = AnchorParser.MergeSchedule(json, games);
-                webFailure = null;
-            }
-            catch (Exception ex) when (games.Count > 0 && (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !cancellationToken.IsCancellationRequested))
-            {
-                // The optional mobile schedule must not make the original list unavailable.
+                var match = AnchorParser.Resolve(mobileJson, game);
+                if (match is not null) _mobileMatches[game.Id] = match;
+                else _mobileMatches.TryRemove(game.Id, out _);
             }
         }
-        if (webFailure is not null) System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(webFailure).Throw();
-        foreach (var game in games) _knownGames[game.Id] = game;
         return games;
     }
 
@@ -179,21 +195,44 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
             var game = MobileSchedule.Match(json, gameId, known); _knownGames[gameId] = game;
             return new LiveSnapshot(game, [], DateTimeOffset.UtcNow) { StructuredUnavailable = true };
         }
+        GameInfo? mobileScore = null;
+        if (_mobileMatches.TryGetValue(gameId, out var match))
+        {
+            try
+            {
+                var json = await ReadMobile(new Uri(MobileApi + "singleMatch?matchId=" + Uri.EscapeDataString(match.Id)), true, cancellationToken);
+                var updated = AnchorParser.Match(json, match); _mobileMatches[gameId] = updated;
+                if (updated.Game.Status != GameStatus.Unknown &&
+                    (updated.Game.Status is not (GameStatus.Live or GameStatus.Finished) || updated.Game.AwayScore is not null && updated.Game.HomeScore is not null) &&
+                    (!_knownGames.TryGetValue(gameId, out var previous) || previous.Status != GameStatus.Finished || updated.Game.Status == GameStatus.Finished))
+                    mobileScore = updated.Game;
+            }
+            catch (Exception ex) when (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !cancellationToken.IsCancellationRequested) { }
+        }
         string html;
         try { html = await Read($"/games/playbyplay/{gameId}", cancellationToken); }
         catch (HttpRequestException ex) when (RuntimeCompat.StatusCode(ex) == HttpStatusCode.NotFound &&
             _knownGames.TryGetValue(gameId, out var waiting) && waiting.Status == GameStatus.Scheduled)
-        { return new(waiting, [], DateTimeOffset.UtcNow); }
+        { return new(mobileScore ?? waiting, [], DateTimeOffset.UtcNow); }
+        catch (Exception ex) when (mobileScore is not null && (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !cancellationToken.IsCancellationRequested))
+        { cancellationToken.ThrowIfCancellationRequested(); return new LiveSnapshot(mobileScore, [], DateTimeOffset.UtcNow) { StructuredUnavailable = true }; }
         // The legacy site returns a genuinely empty 200 response before publishing the live page.
         if (string.IsNullOrWhiteSpace(html) && _knownGames.TryGetValue(gameId, out var scheduled) && scheduled.Status == GameStatus.Scheduled)
-            return new(scheduled, [], DateTimeOffset.UtcNow);
+            return new(mobileScore ?? scheduled, [], DateTimeOffset.UtcNow);
         var now = DateTimeOffset.UtcNow;
         var cached = Volatile.Read(ref _snapshotCache);
-        if (cached?.GameId == gameId && cached.Html == html) return cached.Snapshot with { FetchedAt = now };
-        var snapshot = _parser.ParseSnapshot(html, gameId, now);
+        if (cached?.GameId == gameId && cached.Html == html) return WithMobileScore(cached.Snapshot with { FetchedAt = now }, mobileScore);
+        LiveSnapshot snapshot;
+        try { snapshot = _parser.ParseSnapshot(html, gameId, now); }
+        catch (SourceFormatException) when (mobileScore is not null)
+        { return new LiveSnapshot(mobileScore, [], now) { StructuredUnavailable = true }; }
         Volatile.Write(ref _snapshotCache, new(gameId, html, snapshot));
-        return snapshot;
+        return WithMobileScore(snapshot, mobileScore);
     }
+    private static LiveSnapshot WithMobileScore(LiveSnapshot snapshot, GameInfo? mobile) =>
+        mobile is null || mobile.Status == GameStatus.Unknown || snapshot.Game.Status == GameStatus.Finished && mobile.Status != GameStatus.Finished ||
+        mobile.Status is GameStatus.Live or GameStatus.Finished && (mobile.AwayScore is null || mobile.HomeScore is null)
+            ? snapshot : snapshot with { Game = mobile };
     public void Dispose() => _client.Dispose();
 
     public async Task<BoxScoreSnapshot> GetBoxScore(string gameId, CancellationToken cancellationToken)
@@ -205,8 +244,46 @@ public sealed class WebGameSource : IGameSource, IStatisticsSource, IDisposable
             var json = await ReadMobile(new Uri(MobileApi + "playerMatchStats?matchId=" + Uri.EscapeDataString(gameId)), false, cancellationToken);
             return MobileSchedule.BoxScore(json, game, DateTimeOffset.UtcNow);
         }
+        string? alreadyReadWeb = null;
+        if (_mobileMatches.TryGetValue(gameId, out var mobileMatch) &&
+            (!_mobileStatisticsRetryAfter.TryGetValue(gameId, out var retryAfter) || retryAfter <= DateTimeOffset.UtcNow))
+        {
+            StatisticsFallbackReason = null;
+            try
+            {
+                var json = await ReadMobile(new Uri(MobileApi + "playerMatchStats?matchId=" + Uri.EscapeDataString(mobileMatch.Id)), false, cancellationToken);
+                var mobile = MobileSchedule.BoxScore(json, mobileMatch.Game with { Id = mobileMatch.Id }, DateTimeOffset.UtcNow);
+                if (!_legacyPlayerMappings.TryGetValue(gameId, out var identities))
+                {
+                    // Fetch legacy IDs solely for compatibility with saved follows and structured events.
+                    var identityHtml = await Read(SourcePages.BoxScore(gameId).AbsolutePath, cancellationToken); alreadyReadWeb = identityHtml;
+                    var web = new BoxScoreParser().Parse(identityHtml, gameId, DateTimeOffset.UtcNow);
+                    if (TeamPalette.Resolve(web.Game.Away) == TeamPalette.Unknown || TeamPalette.Resolve(web.Game.Home) == TeamPalette.Unknown ||
+                        TeamPalette.Resolve(web.Game.Away).Key != TeamPalette.Resolve(mobile.Game.Away).Key || TeamPalette.Resolve(web.Game.Home).Key != TeamPalette.Resolve(mobile.Game.Home).Key)
+                        throw new SourceFormatException("球员统计球队身份不匹配");
+                    async Task<string> TeamRoster(string? teamId)
+                    {
+                        if (string.IsNullOrEmpty(teamId)) throw new SourceFormatException("球队编号缺失");
+                        return await ReadMobile(new Uri(MobileApi + "teamPlayerList?competitionType=nba&competitionLeagueType=nba&leagueType=nba&teamId=" + Uri.EscapeDataString(teamId)), false, cancellationToken);
+                    }
+                    var awayRoster = await TeamRoster(mobile.Away.MobileTeamId);
+                    var homeRoster = await TeamRoster(mobile.Home.MobileTeamId);
+                    identities = new(MobileSchedule.LegacyPlayerIds(mobile.Away, web.Away, awayRoster), MobileSchedule.LegacyPlayerIds(mobile.Home, web.Home, homeRoster), web.Away.RosterSlug, web.Home.RosterSlug);
+                    _legacyPlayerMappings[gameId] = identities;
+                }
+                return mobile with { Game = mobileMatch.Game,
+                    Away = MobileSchedule.ApplyLegacyPlayerIds(mobile.Away, identities.Away, identities.AwaySlug),
+                    Home = MobileSchedule.ApplyLegacyPlayerIds(mobile.Home, identities.Home, identities.HomeSlug) };
+            }
+            catch (Exception ex) when (ex is HttpRequestException or SourceFormatException || ex is OperationCanceledException && !cancellationToken.IsCancellationRequested)
+            {
+                // If identities cannot be proved, retain the compatible web statistics.
+                StatisticsFallbackReason = ex.Message;
+                _mobileStatisticsRetryAfter[gameId] = DateTimeOffset.UtcNow.AddMinutes(1);
+            }
+        }
         string html;
-        try { html = await Read(SourcePages.BoxScore(gameId).AbsolutePath, cancellationToken); }
+        try { html = alreadyReadWeb ?? await Read(SourcePages.BoxScore(gameId).AbsolutePath, cancellationToken); }
         catch (HttpRequestException ex) when (RuntimeCompat.StatusCode(ex) == HttpStatusCode.NotFound &&
             _knownGames.TryGetValue(gameId, out var waiting) && waiting.Status == GameStatus.Scheduled)
         { return BoxScoreSnapshot.Waiting(waiting, DateTimeOffset.UtcNow); }

@@ -1,6 +1,15 @@
 using NbaLive.Core;
 using System.Text.Json;
 
+if(args.Contains("--probe-game-score"))
+{
+    using var transport = new WebGameSource();
+    var game = new GameInfo("score-probe", "76人", "篮网", null, null, GameStatus.Live, "第四节", new DateOnly(2026,11,17));
+    var data = await new GameScoreSource(transport).Get(game, default);
+    Console.WriteLine(JsonSerializer.Serialize(new { data.Game.Score, data.Periods, Points=data.Points.Count, Last=data.Points.LastOrDefault(), data.HasGaps, data.ScoreMismatch }));
+    return;
+}
+
 if(args.Contains("--probe-play-in"))
 {
     try
@@ -122,8 +131,10 @@ if (args.Contains("--probe-statistics"))
     var gameIndex = Array.IndexOf(args, "--game");
     if (gameIndex < 0 || gameIndex + 1 >= args.Length) throw new ArgumentException("--probe-statistics --game ID");
     using var source = new WebGameSource(loadRosters: true);
+    var dateIndex = Array.IndexOf(args, "--date");
+    if (dateIndex >= 0) await source.GetGames(DateOnly.Parse(args[dateIndex + 1], System.Globalization.CultureInfo.InvariantCulture), CancellationToken.None);
     var snapshot = await source.GetBoxScore(args[gameIndex + 1], CancellationToken.None);
-    Console.WriteLine(JsonSerializer.Serialize(new { source.Transport, snapshot.Game, snapshot.FetchedAt,
+    Console.WriteLine(JsonSerializer.Serialize(new { source.Transport, source.StatisticsFallbackReason, snapshot.Game, snapshot.Source, snapshot.FetchedAt,
         AwayPlayers = snapshot.Away.Players.Count, HomePlayers = snapshot.Home.Players.Count,
         AwayTotal = snapshot.Away.Total, HomeTotal = snapshot.Home.Total, FirstPlayer = snapshot.Away.Players.FirstOrDefault() }));
     return;
@@ -274,8 +285,8 @@ var tests = new (string Name, Func<Task> Run)[]
         const string list = "<div class='gamecenter_livestart'><div class='gamecenter_content_l'><div class='list_box'>" +
             "<div class='team_vs_a_1'><div class='txt'><a>客队</a></div></div><div class='team_vs_a_2'><div class='txt'><a>主队</a></div></div>" +
             "<div class='team_vs_b'>未开始 09:30</div><a href='/games/boxscore/1'>比赛前瞻</a></div></div></div>";
-        var handler = new FakeHttpHandler([new(System.Net.HttpStatusCode.OK) { Content = new StringContent(list) },
-            new(System.Net.HttpStatusCode.ServiceUnavailable), // optional mobile schedule
+        var handler = new FakeHttpHandler([new(System.Net.HttpStatusCode.ServiceUnavailable), // mobile schedule unavailable
+            new(System.Net.HttpStatusCode.OK) { Content = new StringContent(list) },
             new(System.Net.HttpStatusCode.OK) { Content = new StringContent("") }, new(System.Net.HttpStatusCode.NotFound),
             new(System.Net.HttpStatusCode.Found) { Headers = { Location = new Uri(SourcePages.BaseUri, "games/boxscore/1") } },
             new(System.Net.HttpStatusCode.OK) { Content = new StringContent(Page(Rows(Row("1", "12:00", "第一节开始")))) }]);

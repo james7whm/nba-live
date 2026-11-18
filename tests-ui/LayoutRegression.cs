@@ -22,6 +22,18 @@ internal static class LayoutRegression
     internal static async Task<int> Run(Window overlay,SessionState state,AppSettings settings)
     {
         var count=0;void Check(bool ok,string text){if(!ok)throw new Exception("Layout: "+text);count++;}
+        // A verified scoring feed must replace even a nonempty but incomplete live history.
+        var scoreView=Activator.CreateInstance(Assembly.GetType("NbaLive.GameScoreView")!,BindingFlags.NonPublic|BindingFlags.Instance,null,[],null)!;
+        var scoreGame=state.Snapshot!.Game;
+        var incomplete=state with { History=new[] { new LiveEntry("partial",1,"12:00","","","0-0",1) } };
+        var independent=GameScoring.Build(scoreGame,new[] { new LiveEntry("full",1,"12:00","","","0-0",1), new LiveEntry("full2",1,"11:00","","","2-0",2) });
+        var stats=new StatisticsState(scoreGame,null,"",false,false);
+        Call(scoreView,"SetExternal",independent,DateTimeOffset.UtcNow,"");
+        Call(scoreView,"Update",incomplete,stats);
+        Check(ReferenceEquals(Field(scoreView,"_scoring"),independent),"verified scoring feed takes priority over incomplete nonempty live history");
+        var another=scoreGame with { Id=scoreGame.Id+"2" };
+        Call(scoreView,"Update",incomplete,new StatisticsState(another,null,"",false,false));
+        Check(((GameScoringSnapshot)Field(scoreView,"_scoring")).Game.Id==another.Id,"previous match scoring is never shown for a new match");
         var lineup=(Panel)Field(overlay,"_lineup");
         Check(lineup.Children.Count==0,"text mode defers unused lineup controls");
         Call(overlay,"ApplyStyle",settings with {ContentMode=OverlayContent.Lineup}); Call(overlay,"Render",state,true); await Pump();

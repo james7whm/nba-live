@@ -47,7 +47,7 @@ public static class MobileSchedule
             var matches = web.Where(w => Same(w, item)).ToArray();
             var reverseCount = matches.Length == 1 ? mobile.Count(m => Same(matches[0], m)) : 0;
             if (matches.Length > 1 || reverseCount > 1) throw new SourceFormatException("比赛映射存在歧义");
-            if (matches.Length == 1 && (matches[0].Status == GameStatus.Finished && item.Status != GameStatus.Finished ||
+            if (matches.Length == 1 && (item.Status == GameStatus.Unknown || matches[0].Status == GameStatus.Finished && item.Status != GameStatus.Finished ||
                 item.Status is GameStatus.Live or GameStatus.Finished && (item.AwayScore is null || item.HomeScore is null)))
                 merged.Add(matches[0]);
             else merged.Add(matches.Length == 1 ? item with { Id = matches[0].Id } : item);
@@ -99,8 +99,29 @@ public static class MobileSchedule
                 if (isTotal) total = p; else players.Add(p);
             }
             if (players.Select(p => p.Id).Distinct().Count() != players.Count) throw new SourceFormatException("移动端球员编号重复");
-            return new(team, players, total) { CourtFetchedAt = fetchedAt };
+            return new(team, players, total) { CourtFetchedAt = fetchedAt, MobileTeamId = teamId };
         }
-        return new(game, Team("awayPlayers",game.Away,"awayTeamId"), Team("homePlayers",game.Home,"homeTeamId"),fetchedAt);
+        return new BoxScoreSnapshot(game, Team("awayPlayers",game.Away,"awayTeamId"), Team("homePlayers",game.Home,"homeTeamId"),fetchedAt) { Source = "mobile" };
+    }
+    public static IReadOnlyDictionary<string, string> LegacyPlayerIds(TeamStatistics mobile, TeamStatistics web, string rosterJson)
+    {
+        if (mobile.MobileTeamId is not { Length: > 0 } teamId || web.Players.Count == 0 || mobile.Players.Count == 0)
+            throw new SourceFormatException("球员编号映射信息不完整");
+        var mobileIds = mobile.Players.Select(p => p.Id).ToArray();
+        var ids = new Dictionary<string, string>();
+        foreach (var player in web.Players)
+        {
+            string mobileId;
+            try { mobileId = PlayerGameDetailParser.ResolvePlayer(rosterJson, player.Id, teamId, mobileIds); }
+            catch (SourceFormatException) { throw new SourceFormatException("无法可靠映射球员编号：" + player.Id); }
+            if (!ids.TryAdd(mobileId, player.Id)) throw new SourceFormatException("球员编号映射存在歧义");
+        }
+        return ids;
+    }
+    public static TeamStatistics ApplyLegacyPlayerIds(TeamStatistics mobile, IReadOnlyDictionary<string, string> ids, string? rosterSlug)
+    {
+        var players = mobile.Players.Select(p => ids.TryGetValue(p.Id, out var id) ? p with { Id = id } : p).ToArray();
+        if (players.Select(p => p.Id).Distinct().Count() != players.Length) throw new SourceFormatException("球员编号映射存在冲突");
+        return mobile with { RosterSlug = rosterSlug, Players = players };
     }
 }

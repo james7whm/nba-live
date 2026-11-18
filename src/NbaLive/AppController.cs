@@ -316,6 +316,7 @@ internal sealed class AppController : IDisposable
         _statistics = window;
         window.TeamRequested+=team=>OpenTeams(team);
         window.ConfigureDetails(_webSource is not null ? new PlayerGameDetailSource(_webSource) : new DemoPlayerDetailSource());
+        window.ConfigureScores(_webSource is not null ? new GameScoreSource(_webSource) : null);
         window.SetLiveState(_session.StructuredState);
         window.Closed += async (_, _) =>
         {

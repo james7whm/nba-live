@@ -32,6 +32,14 @@ internal sealed class StatisticsWindow : Window
     private bool _closed;
     private SessionState? _liveState;
     private string _notice = "";
+    private GameScoreSource? _scoreSource;
+    private readonly System.Windows.Threading.DispatcherTimer _scoreTimer = new() { Interval = TimeSpan.FromSeconds(15) };
+    private CancellationTokenSource? _scoreCancellation;
+    private string? _scoreGameId;
+    private GameScoringSnapshot? _scoreSnapshot;
+    private DateTimeOffset? _scoreAt;
+    private bool _scoreLoading;
+
 
     internal StatisticsWindow(StatisticsCoordinator coordinator, bool demo, AppSettings settings,
         Func<FavoritePlayer, string?> toggleFavorite, Func<StatisticsPreset, StatisticsTableLayout[], string?> savePreferences)
@@ -80,7 +88,7 @@ internal sealed class StatisticsWindow : Window
         courtOnly.Checked += (_, _) => Filter(); courtOnly.Unchecked += (_, _) => Filter();
         followedOnly.Checked += (_, _) => Filter(); followedOnly.Unchecked += (_, _) => Filter();
         var tabs = _tabs = new TabControl();
-        tabs.SelectionChanged += (_, e) => { if (!ReferenceEquals(e.Source, tabs)) return; switches.IsEnabled = tabs.SelectedIndex != 2; CloseDetail(); };
+        tabs.SelectionChanged += (_, e) => { if (!ReferenceEquals(e.Source, tabs)) return; switches.IsEnabled = tabs.SelectedIndex != 2; CloseDetail(); UpdateScoreDemand(); };
         _awayTab = new() { Header = "客队", Content = _away, Padding = new(18, 8, 18, 8) };
         _homeTab = new() { Header = "主队", Content = _home, Padding = new(18, 8, 18, 8) };
         tabs.Items.Add(_awayTab);
@@ -95,7 +103,9 @@ internal sealed class StatisticsWindow : Window
         _home.PlayerRequested += player => OpenDetail(_coordinator.State.Snapshot?.Home.Team, player);
         _detail.CloseRequested += CloseDetail; _detail.RefreshRequested += () => _detailCoordinator?.Refresh(); _detail.FollowRequested += ToggleFavorite;
         PreviewKeyDown += (_, e) => { if (e.Key == Key.Escape && _detail.Visibility == Visibility.Visible) { CloseDetail(); e.Handled = true; } };
-        IsVisibleChanged += (_, _) => _detailCoordinator?.SetVisible(IsVisible && _detail.Visibility == Visibility.Visible);
+        IsVisibleChanged += (_, _) => { _detailCoordinator?.SetVisible(IsVisible && _detail.Visibility == Visibility.Visible); UpdateScoreDemand(); };
+        StateChanged += (_, _) => UpdateScoreDemand();
+        _scoreTimer.Tick += (_, _) => _ = RefreshScore();
         Content = root;
         _away.FollowRequested += ToggleFavorite;
         _home.FollowRequested += ToggleFavorite;
@@ -110,8 +120,45 @@ internal sealed class StatisticsWindow : Window
             ApplyPreset(); SavePreferences();
         };
         _coordinator.Changed += OnState;
-        Closed += (_, _) => { _away.Stop(); _home.Stop(); _closed = true; _detailCoordinator?.Dispose(); _coordinator.Changed -= OnState; };
+        Closed += (_, _) => { _away.Stop(); _home.Stop(); _closed = true; _detailCoordinator?.Dispose(); _scoreTimer.Stop(); _scoreCancellation?.Cancel(); _coordinator.Changed -= OnState; };
         OnState(_coordinator.State);
+    }
+    internal void ConfigureScores(GameScoreSource? source) { _scoreSource = source; UpdateScoreDemand(); }
+    private void UpdateScoreDemand()
+    {
+        var game = _coordinator.State.SelectedGame ?? _coordinator.State.Snapshot?.Game;
+        if (_scoreGameId != game?.Id)
+        {
+            _scoreCancellation?.Cancel(); _scoreGameId = game?.Id; _scoreSnapshot = null; _scoreAt = null;
+            _scores.SetExternal(null, null, "");
+        }
+        var enabled = !_closed && _scoreSource is not null && IsVisible && WindowState != WindowState.Minimized && _tabs.SelectedIndex == 2 && game is not null;
+        if (!enabled) { _scoreTimer.Stop(); _scoreCancellation?.Cancel(); return; }
+        _scoreTimer.Start();
+        if (_scoreAt is null || DateTimeOffset.UtcNow - _scoreAt > TimeSpan.FromSeconds(15)) _ = RefreshScore();
+    }
+    private async Task RefreshScore()
+    {
+        var game = _coordinator.State.SelectedGame ?? _coordinator.State.Snapshot?.Game;
+        if (_scoreLoading || _scoreSource is null || game is null || !IsVisible || WindowState == WindowState.Minimized || _tabs.SelectedIndex != 2) return;
+        var cancellation = _scoreCancellation = new CancellationTokenSource(); _scoreLoading = true;
+        try
+        {
+            var result = await _scoreSource.Get(game, cancellation.Token);
+            if (cancellation.IsCancellationRequested || _closed || _scoreGameId != game.Id) return;
+            _scoreSnapshot = result; _scoreAt = DateTimeOffset.UtcNow;
+            _scores.SetExternal(result, _scoreAt, ""); _scores.Update(_liveState, _coordinator.State);
+        }
+        catch (OperationCanceledException) { }
+        catch (Exception)
+        {
+            if (!cancellation.IsCancellationRequested && !_closed && _scoreGameId == game.Id)
+            {
+                _scores.SetExternal(_scoreSnapshot, _scoreAt, _scoreSnapshot is null ? "分节及走势暂不可用，正在重试" : "更新失败，保留上次记录");
+                _scores.Update(_liveState, _coordinator.State);
+            }
+        }
+        finally { _scoreLoading = false; if (ReferenceEquals(_scoreCancellation,cancellation)) _scoreCancellation = null; cancellation.Dispose(); }
     }
     private void ApplyPreset()
     {
@@ -217,6 +264,7 @@ internal sealed class StatisticsWindow : Window
         _away.SetChanges(state.Changes);
         _home.SetChanges(state.Changes);
         UpdateCourtIndicators();
+        UpdateScoreDemand();
         _scores.Update(_liveState, state);
         var updated = state.Snapshot is null ? "" : $" · 最近更新 {MatchTime.Format(state.Snapshot.FetchedAt)}";
         _status.Text = (_demo ? "演示数据 · " : "") + state.Message +

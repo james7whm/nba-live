@@ -14,10 +14,12 @@ public sealed record PlayerStatistics(string Id, string Name, bool IsStarter, st
 public sealed record TeamStatistics(string Team, IReadOnlyList<PlayerStatistics> Players, PlayerStatistics? Total)
 {
     public string? RosterSlug { get; init; }
+    public string? MobileTeamId { get; init; }
     public DateTimeOffset? CourtFetchedAt { get; init; }
 }
 public sealed record BoxScoreSnapshot(GameInfo Game, TeamStatistics Away, TeamStatistics Home, DateTimeOffset FetchedAt)
 {
+    public string Source { get; init; } = "web";
     public bool HasPlayerData => Away.Players.Count > 0 || Home.Players.Count > 0;
     public static BoxScoreSnapshot Waiting(GameInfo game, DateTimeOffset now) =>
         new(game, new(game.Away, [], null), new(game.Home, [], null), now);
